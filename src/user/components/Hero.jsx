@@ -5,23 +5,17 @@ import Logo from "../assets/Logo.svg";
 import { Menu,X  } from 'lucide-react';
 
 
-const navigation = [
-    { name: 'Product', href: '#' },
-    { name: 'Features', href: '#' },
-    { name: 'Marketplace', href: '#' },
-    { name: 'Company', href: '#' },
-  ]
   
 export default function Hero() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <div className="text-white  relative ">
-        <div className="text-white  ">
-            <div className="  isolate px-6 pt-14 lg:px-8">
-                <div className="lg:flex     items-center h-[73vh]">
-                    <div className="mx-auto max-w-2xl ">
-                    <div className=" sm:mb-8 flex ">
+    <div className="text-white  relative pt-40   ">
+        <div className="text-white   ">
+            <div className="  isolate px-6  ">
+                <div className="lg:flex  ">
+                    <div className="mx-auto w ">
+                    <div className=" mb-8 md:flex  ">
                         <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-200 ring-1 ring-[#FD356E] bg-[#e7507b33] hover:ring-gray-400/20">
                         Announcing our next round of funding  &nbsp;
                         <a href="#" className="font-semibold text-[#fd356e]">
@@ -30,7 +24,7 @@ export default function Hero() {
                         </a>
                         </div>
                     </div>
-                    <div className="text-start">
+                    <div className="text-start pb-6">
                         <h1 className="text-4xl font-bold tracking-tight text-gray-00 sm:text-6xl">
                         Data to enrich your online business
                         </h1>
@@ -51,12 +45,25 @@ export default function Hero() {
                         </div>
                     </div>
                     </div>
-                    <div className="mx-auto max-w-2xl py-32 -mr-40  sm:py-48 lg:py-56">
-                        <div className=" border-[.4rem] rounded-2xl backdrop-blur-2xl bg-gradient-to-b border-neutral-800 from-inherit bg-zinc-800/30 w-[35rem] h-[35rem]"></div>
+                    <div className="relative  ">
+                        <div className="    max-md:absolute max-md:top-1/2 max-md:right-20 ">
+                            <div className=" overflow-hidden  w-[35rem] h-[35rem]   ">
+                            </div>
+                        </div>
                     </div>
+
+                    <div className="relative  ">
+                        <div className="  w-[35rem] h-[25rem]  md:absolute md:top-40 md:-right-40 ">
+                            <div className=" overflow-hidden border-[.4rem] md:w-[55rem] h-fit  rounded-2xl backdrop-blur-2xl bg-gradient-to-b border-neutral-800 from-inherit bg-zinc-800/30 ">
+                            <img src="https://img.freepik.com/free-vector/infographic-dashboard-user-panel_52683-30026.jpg?w=1380&t=st=1721667026~exp=1721667626~hmac=c743502cec671922c506e5b531ee500f2758b0064966e5812500c024cfc8da86" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                   
                 </div>
             </div>
         </div>
+
         <div
                 aria-hidden="true"
                 className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
@@ -68,7 +75,7 @@ export default function Hero() {
                     }}
                     className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#fd356e] to-[#5f56d2] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
                 />
-                </div>
+       </div>
     </div>
   )
 }
