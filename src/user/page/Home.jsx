@@ -5,7 +5,7 @@ export default function Home() {
 
   return (
    <>
-   <div className="h-screen max-md:overflow-hidden ">
+   <div className="h-screen  ">
         <Hero/>
    </div>
    
