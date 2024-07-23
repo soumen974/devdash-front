@@ -10,7 +10,7 @@ export default function Hero() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <div className="text-white  relative lg:pt-40 pt-32 ">
+    <div className="text-white  relative lg:pt-40 md:pt-32 pt-24 ">
 
        <div
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
