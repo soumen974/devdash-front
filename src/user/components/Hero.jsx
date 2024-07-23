@@ -10,7 +10,7 @@ export default function Hero() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <div className="text-white  relative pt-40   ">
+    <div className="text-white  relative lg:pt-40 pt-32 ">
 
        <div
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -24,12 +24,12 @@ export default function Hero() {
             }}
           />
         </div>
-        <div className="text-white   ">
-            <div className="  isolate px-6  ">
+        <div className="text-white px-5  ">
+            <div className="  isolate   ">
                 <div className="lg:flex  ">
                     <div className="mx-auto  ">
                         <div className=" mb-8 flex  ">
-                            <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-200 ring-1 ring-[#FD356E] bg-[#e7507b33] hover:ring-gray-400/20">
+                            <div className="relative rounded-full px-2 sm:px-3 sm:py-1 text-[3vw] md:text-sm leading-6 text-gray-200 ring-1 ring-[#FD356E] bg-[#e7507b33] hover:shadow-md hover:shadow-[#FD356E]">
                             Announcing our next round of funding  &nbsp;
                             <a href="#" className="font-semibold text-[#fd356e]">
                                 <span aria-hidden="true" className="absolute inset-0" />
