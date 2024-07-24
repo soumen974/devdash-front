@@ -4,7 +4,7 @@ import { Menu } from 'lucide-react';
 export default function Navbar() {
   return (
     <>
-    <div className="text-white items-center px-3 lg:px-9 py-4 border-b border-[#5e5e5e7a]   backdrop-blur-sm    ">
+    <div className="text-white items-center px-3 lg:px-9 py-3 border-b border-[#5e5e5e7a]   backdrop-blur-sm    ">
       <div className="mx-auto max-w-7xl ">
 
           <div className="text-white flex justify-between items-center  ">
