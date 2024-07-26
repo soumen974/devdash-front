@@ -2,6 +2,33 @@ import React from 'react'
 import { Fragment, useRef, useState, useEffect } from 'react'
 
 export default function Auth() {
+
+    const handlesignUp= async(e)=>{
+        e.preventDefault();
+        try{
+         const response=   await fetch('http://localhost:5000/auth/register',{
+                method:'POST',
+                headers:{
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+            const responseData=await response.json();
+            if(response.ok){
+
+            }else{
+
+            }
+        }catch(error){
+            if(error.response){
+                console.log(error.response.data.error?.[0]?.msg|| error.response.data.error|| 'failed register');
+
+            }else{
+                console.log('unknown issue , registrestion failed');
+            }
+        }
+    }
+
   return (
     <div className="bg-[#19191C] h-screen flex justify-center items-center text-white">
         <div className=' mx-auto max-w-xl'>
