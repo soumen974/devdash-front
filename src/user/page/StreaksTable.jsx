@@ -1,95 +1,60 @@
-// src/StreaksTable.js
-import React, { useState } from 'react';
+// src/components/Heatmap.js
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const StreaksTable = () => {
-  const [username, setUsername] = useState('');
-  const [streaks, setStreaks] = useState([]);
-  const [loading, setLoading] = useState(false);
+const token = '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';
+const username = 'soumen974'; 
 
-  const getContributions = async (username) => {
-    const url = `https://api.github.com/users/${username}/events`;
-    const response = await axios.get(url);
-    return response.data;
-  };
-
-  const calculateStreaks = (events) => {
-    const contributions = {};
-
-    events.forEach((event) => {
-      if (['PushEvent', 'PullRequestEvent', 'IssuesEvent'].includes(event.type)) {
-        const date = event.created_at.slice(0, 10);
-        contributions[date] = (contributions[date] || 0) + 1;
-      }
-    });
-
-    const dates = Object.keys(contributions).sort();
-    const streaks = [];
-    let currentStreak = 0;
-    let previousDate = null;
-
-    dates.forEach((date) => {
-      const currentDate = new Date(date);
-      if (previousDate) {
-        const previousDateDt = new Date(previousDate);
-        const difference = (currentDate - previousDateDt) / (1000 * 60 * 60 * 24);
-        if (difference === 1) {
-          currentStreak += 1;
-        } else {
-          streaks.push(currentStreak);
-          currentStreak = 1;
+const query = `
+  query ($username: String!) {
+    user(login: $username) {
+      contributionsCollection {
+        contributionCalendar {
+          weeks {
+            contributionDays {
+              date
+              contributionCount
+              color
+            }
+          }
         }
-      } else {
-        currentStreak = 1;
       }
-      previousDate = date;
-    });
+    }
+  }
+`;
 
-    streaks.push(currentStreak);
-    return streaks;
-  };
+const StreaksTable = () => {
+  const [contributions, setContributions] = useState([]);
 
-  const handleFetchStreaks = async () => {
-    setLoading(true);
-    const events = await getContributions(username);
-    const streaks = calculateStreaks(events);
-    setStreaks(streaks);
-    setLoading(false);
-  };
+  useEffect(() => {
+    axios.post(
+      'https://api.github.com/graphql',
+      { query, variables: { username } },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    ).then((response) => {
+      const weeks = response.data.data.user.contributionsCollection.contributionCalendar.weeks;
+      const days = weeks.flatMap(week => week.contributionDays);
+      setContributions(days);
+    }).catch((error) => console.error('Error fetching contribution data:', error));
+  }, []);
 
   return (
-    <div>
-      <h1>GitHub Contribution Streaks</h1>
-      <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="Enter GitHub username"
-      />
-      <button onClick={handleFetchStreaks} disabled={loading}>
-        {loading ? 'Loading...' : 'Fetch Streaks'}
-      </button>
-      {streaks.length > 0 && (
-        <div>
-          <h2>Longest Streak: {Math.max(...streaks)}</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Streak Number</th>
-                <th>Days</th>
-              </tr>
-            </thead>
-            <tbody>
-              {streaks.map((streak, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{streak}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+    <div className="px-[50rem] bg-red-200 ">
+      <h2 className="text-xl font-bold mb-4 ">GitHub Contributions</h2>
+      <div className="grid grid-cols-10 -rotate-90  gap-1">
+        {contributions.map((day) => (
+          <div
+            key={day.date}
+            className="w-8 h-8 border border-gray-200"
+            style={{ backgroundColor: day.color }}
+            title={`${day.date}: ${day.contributionCount} contributions`}
+          ></div>
+        ))}
+      </div>
     </div>
   );
 };
