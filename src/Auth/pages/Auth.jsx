@@ -11,7 +11,7 @@ export default function Auth() {
                 headers:{
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(''),
             });
             const responseData=await response.json();
             if(response.ok){
