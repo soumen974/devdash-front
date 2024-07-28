@@ -43,13 +43,13 @@ const StreaksTable = () => {
   }, []);
 
   return (
-    <div className="px-[50rem] bg-red-200 ">
-      <h2 className="text-xl font-bold mb-4 ">GitHub Contributions</h2>
-      <div className="grid grid-cols-10 -rotate-90  gap-1">
+    <div className="md:px-[44vw] px-[39vw] bg-[#19191C]  ">
+      <h2 className="text-xl font-bold mb-4 text-white ">GitHub Contributions</h2>
+      <div className="grid grid-cols-7 -rotate-90  bg-slate-60 border border-gray-700 rounded-xl p-5  gap-3">
         {contributions.map((day) => (
           <div
             key={day.date}
-            className="w-8 h-8 border border-gray-200"
+            className="md:w-[1vw] w-[.71rem] h-[0.71rem] md:h-[1vw]  rounded-sm "
             style={{ backgroundColor: day.color }}
             title={`${day.date}: ${day.contributionCount} contributions`}
           ></div>

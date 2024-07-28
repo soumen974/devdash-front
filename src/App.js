@@ -3,6 +3,7 @@ import Layout from "./user/components/Layout";
 import Home from "./user/page/Home";
 import Notfound from "./components/Notfound";
 import Auth from "./Auth/pages/Auth";
+import Devlayout from "./user/components/Devlayout";
 function App() {
   return (
     <>
@@ -14,6 +15,9 @@ function App() {
           </Route>
 
           <Route path="/auth" element={<Auth/>} />
+          <Route path='/dashboard' element={<Devlayout/>}>
+
+          </Route>
 
 
           <Route path="*" element={<Notfound/>} />
