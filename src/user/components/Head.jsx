@@ -5,6 +5,7 @@ import DialogBox from '../../components/DialogBox';
 import SideBar from './SideBar';
 import { Search } from 'lucide-react';
 
+
 export default function Head() {
  
  const [sideBar, setsideBar] = useState(true);
@@ -13,71 +14,73 @@ export default function Head() {
     <>
         <SideBar  isSidebarOpen={sideBar} setIsSidebarOpen={setsideBar}/>
        
-        <div className=" sm:ml-64">
-          <div className="">
-           <div className=" pl-4 bg-[#101219] fixed w-full z-40 ">
-            
-            <nav aria-label="Top" className="  ">
-            
-              <div className="flex border-b border-gray-200 h-16 items-center">
-                
-                <button
-                    type="button"
-                    className="relative rounded-md bg-white p-2 text-gray-400 sm:hidden"
-                    onClick={() => setsideBar(!sideBar)}
-                  >
-                    <span className="absolute -inset-0.5" />
-                    <span className="sr-only">Open menu</span>
-                    <div className=" flex justify-center items-center gap-3 max-lg:pr-2">
-                 
-                        <div className="  hover:bg-[#6e6e6e53] px-3 py-2     rounded-md   lg:hidden ">
-                            <div className="w-5 p-[1px]  bg-transparent border-b-[1px] border-[#ffffff7d] my-[6px]  "></div>
-                            <div className="w-5 p-px bg-transparent border-b-[1px] border-[#ffffff7d]  my-[6px] "></div>
-                        </div>
-                    </div>
-                  </button>
-
-                {/* search bar */}
-                {/* <form className="ml-4   flex lg:ml-0">
+        <div className="  ">
+          <div className=" bg-[#101219] pl-4  fixed w-full z-40">
+            <div className="  ">
+              
+              <nav aria-label="Top" className="  ">
+              
+                <div className="flex max-sm:justify-between max-sm:pr-2 h-16 items-center">
                   
-                  <button className='text-gray-200' type="submit">
-                    <Search/>
-                  </button>
-                  <input className='border-b outline-none' type="text" name=""  placeholder='search' id="" />
-                </form> */}
+                  <div className=" flex   items-center gap-4 justify-start  ">
+                    <button   onClick={() => setsideBar(!sideBar)} className=" flex justify-center items-center  p-2   text-sm text-gray-300 rounded-lg  hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                      <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                      <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+                      </svg>
+                    </button>
 
-                <form  className=" ">
-                <label htmlFor="search" className="mb-2 mr-5 text-md font-medium absolute  left-12 bottom-4  text-gray-500">
-                  Search..
-                </label>
-                <div className="relative ">
-                  <input
-                    id="search"
-                    type="text"
-                    // value={searchTerm}
-                    // onChange={handleChangeField}
-                    // onKeyDown={handleChangeField}
-                    className="block w-full sm:max-w-lg pl-20 px-2  py-1 bg-transparent placeholder:text-gray-500   text-md text-gray-300 border-b border-[#424242] focus:outline-none focus:ring-yellow-500"
+                    <div className=" justify-center items-center  flex lg:ml-0">
+                      
+                      <a href="/" className='flex justify-center items-center gap-3 '>
+                      <span className="sr-only">Your Company</span>
+                      <img
+                          className="h-6 w-auto rounded-full"
+                          src={pagelogo}
+                          alt=""
+                      />
+                      
+                      <h1 className='font-semibold text-xl text-white'>FoxDash </h1>
+
+                      </a>
+                    </div>
+                  </div>
+
+                  <form  className={` ${!sideBar? 'sm:ml-80':'sm:ml-0'}`}>
+                  
+                  <div className="relative ">
+                    <input
+                      id="search"
+                      type="text"
+                      // value={searchTerm}
+                      // onChange={handleChangeField}
+                      // onKeyDown={handleChangeField}
+                      className="sm:block w-full hidden sm:max-w-lg pl-8 px-2  py-1 bg-transparent placeholder:text-gray-500   text-md text-gray-300 border-b border-[#424242] focus:outline-none focus:ring-yellow-500"
+                      placeholder='Search...'
+                      required
+                    />
+                    <button
+                      // onClick={handleSearch}
+                      className="sm:absolute max-sm:hidden  bg-gray-00 left-0 bottom-2 pr-2 font-medium text-sm text-gray-400"
+                    >
+                      <Search className=" size-6" />
+                    </button>
+
+                    <button
+                      // onClick={handleSearch}
+                      className="sm:hidden  pr-2 font-medium text-sm text-gray-400"
+                    >
+                      <Search className=" size-6" />
+                    </button>
                     
-                    required
-                  />
-                  <button
-                    // onClick={handleSearch}
-                    className="absolute bg-gray-00 left-0 bottom-2 pr-2 font-medium text-sm text-gray-400"
-                  >
-                    <Search className=" size-6" />
-                  </button>
+                  </div>
+                </form>
+
+
                 </div>
-              </form>
-
-               
-
-               
-              </div>
-            
-           </nav>
-            
-           </div>
+              
+            </nav>
+              
+            </div>
           </div>
       </div>
        

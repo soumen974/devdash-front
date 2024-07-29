@@ -6,54 +6,69 @@ import { Link, useNavigate } from 'react-router-dom';
 import { SquarePen,Delete } from 'lucide-react';
 
 import pagelogo from "../assets/Logo.svg";
-import Listbox from "../assets/Listbox.svg";
+import { Settings2,LogOut ,House  } from 'lucide-react';
 
 
 
-const TbCategoryPlus=({className})=>{
+const Addreminder=({className})=>{
    return (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
- <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
- <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6Z" />
+    
+   <svg className={className} width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <path d="M5.83333 11.6667C2.61167 11.6667 0 9.05497 0 5.83333C0 2.61167 2.61167 0 5.83333 0C9.05497 0 11.6667 2.61167 11.6667 5.83333C11.6667 9.05497 9.05497 11.6667 5.83333 11.6667ZM5.83333 10.5C8.41068 10.5 10.5 8.41068 10.5 5.83333C10.5 3.256 8.41068 1.16667 5.83333 1.16667C3.256 1.16667 1.16667 3.256 1.16667 5.83333C1.16667 8.41068 3.256 10.5 5.83333 10.5ZM6.41667 5.83333H8.75V7H5.25V2.91667H6.41667V5.83333Z" />
    </svg>
+
     );
     
 
 }
 
-const FaBoxesPacking=({className})=>{
+
+const Pageicon=({className})=>{
    return (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
-   <path strokeLinecap="round" strokeLinejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122" />
+    
+      <svg className={className} width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10.6667 11.8333H1.33333C1.01117 11.8333 0.75 11.5721 0.75 11.25V0.749959C0.75 0.427796 1.01117 0.166626 1.33333 0.166626H10.6667C10.9888 0.166626 11.25 0.427796 11.25 0.749959V11.25C11.25 11.5721 10.9888 11.8333 10.6667 11.8333ZM10.0833 10.6666V1.33329H1.91667V10.6666H10.0833ZM3.08333 2.49996H5.41667V4.83329H3.08333V2.49996ZM3.08333 5.99996H8.91667V7.16663H3.08333V5.99996ZM3.08333 8.33329H8.91667V9.49996H3.08333V8.33329ZM6.58333 3.08329H8.91667V4.24996H6.58333V3.08329Z" />
+      </svg>
+  
+   
+   
+    );
+    
+
+}
+
+const Aicontent=({className})=>{
+   return (
+     
+   <svg className={className} width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <path d="M5.57308 9.78547C5.37626 10.2362 4.75254 10.2362 4.55575 9.78547L4.04379 8.61285C3.58818 7.56939 2.76812 6.73872 1.74519 6.28465L0.336019 5.65915C-0.112007 5.46029 -0.112006 4.80852 0.336019 4.60965L1.70118 4.00367C2.75041 3.53792 3.58518 2.67651 4.03301 1.59741L4.55161 0.347797C4.74404 -0.115932 5.38478 -0.115933 5.57722 0.347797L6.09581 1.59742C6.54363 2.67651 7.37838 3.53792 8.42762 4.00367L9.7928 4.60965C10.2408 4.80852 10.2408 5.46029 9.7928 5.65915L8.38364 6.28465C7.36071 6.73872 6.54066 7.56939 6.08501 8.61285L5.57308 9.78547ZM2.02942 5.1344C3.36283 5.72629 4.44703 6.69917 5.0644 8.0378C5.68181 6.69917 6.766 5.72629 8.09938 5.1344C6.75007 4.53545 5.66245 3.51514 5.06441 2.15272C4.46637 3.51515 3.37874 4.53545 2.02942 5.1344ZM10.6988 12.6405L10.8428 12.3105C11.0995 11.7221 11.5618 11.2537 12.1386 10.9974L12.5821 10.8003C12.822 10.6937 12.822 10.3451 12.5821 10.2385L12.1634 10.0524C11.5717 9.78955 11.1012 9.30375 10.8489 8.6954L10.701 8.3388C10.598 8.0903 10.2544 8.0903 10.1513 8.3388L10.0035 8.6954C9.75127 9.30375 9.28069 9.78955 8.68901 10.0524L8.27024 10.2385C8.03037 10.3451 8.03037 10.6937 8.27024 10.8003L8.71381 10.9974C9.29066 11.2537 9.7529 11.7221 10.0096 12.3105L10.1536 12.6405C10.2589 12.882 10.5934 12.882 10.6988 12.6405ZM10.0998 10.5154L10.4279 10.1895L10.7492 10.5154L10.4279 10.8321L10.0998 10.5154Z" />
    </svg>
+   
     );
  
 }
 
-const FaUsers=({className})=>{
+
+
+
+const Classtimetable=({className})=>{
    return (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
-   <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+   
+   <svg className={className} width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <path d="M2.91667 1.16667V0H4.08333V1.16667H7.58333V0H8.75V1.16667H11.0833C11.4055 1.16667 11.6667 1.42784 11.6667 1.75V4.66667H10.5V2.33333H8.75V3.5H7.58333V2.33333H4.08333V3.5H2.91667V2.33333H1.16667V10.5H4.66667V11.6667H0.583333C0.26117 11.6667 0 11.4055 0 11.0833V1.75C0 1.42784 0.26117 1.16667 0.583333 1.16667H2.91667ZM8.75 6.41667C7.46136 6.41667 6.41667 7.46136 6.41667 8.75C6.41667 10.0386 7.46136 11.0833 8.75 11.0833C10.0386 11.0833 11.0833 10.0386 11.0833 8.75C11.0833 7.46136 10.0386 6.41667 8.75 6.41667ZM5.25 8.75C5.25 6.81701 6.81701 5.25 8.75 5.25C10.683 5.25 12.25 6.81701 12.25 8.75C12.25 10.683 10.683 12.25 8.75 12.25C6.81701 12.25 5.25 10.683 5.25 8.75ZM8.16667 7V8.99162L9.50419 10.3291L10.3291 9.50419L9.33333 8.50838V7H8.16667Z" />
    </svg>
+   
     );
  
 }
 
-
-const FaCubes=({className})=>{
+const Worklist=({className})=>{
    return (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
-   <path strokeLinecap="round" strokeLinejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+     
+    <svg width="11" height="12" viewBox="0 0 11 12" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
+      <path d="M9.91667 11.6667H0.583333C0.26117 11.6667 0 11.4055 0 11.0833V0.583333C0 0.26117 0.26117 0 0.583333 0H9.91667C10.2388 0 10.5 0.26117 10.5 0.583333V11.0833C10.5 11.4055 10.2388 11.6667 9.91667 11.6667ZM9.33333 10.5V1.16667H1.16667V10.5H9.33333ZM2.91667 2.91667H7.58333V4.08333H2.91667V2.91667ZM2.91667 5.25H7.58333V6.41667H2.91667V5.25ZM2.91667 7.58333H7.58333V8.75H2.91667V7.58333Z" />
    </svg>
-    );
- 
-}
 
-const LuLayoutDashboard=({className})=>{
-   return (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z" />
-    </svg>
     
     );
 }
@@ -135,111 +150,88 @@ const [note, setNote] = useState('');
     setNote('');
     localStorage.removeItem('note');
   };
+
+  const navLinks=[
+   { title: 'Dashboard', path: '/', icon: <House className='text-white w-5 h-5' /> },
+   { title: 'Add to work list', path: '/', icon: <Worklist className='fill-white w-5 h-5' /> },
+   { title: 'Add Reminder', path: '/', icon: <Addreminder className=' fill-white w-5 h-5' /> },
+   { title: 'Add class Time table', path: '/', icon: <Classtimetable className=' fill-white w-5 h-5'/> },
+   { title: 'Your Portfolio', path: '/', icon: <Pageicon className='fill-white w-5 h-5'/> },
+   { title: 'Try Gemini', path: '/', icon: <Aicontent className='fill-white w-5 h-5'/> }
+  ]
+
   return (
     <>
-    
+      <aside  id="cta-button-sidebar" className={`fixed top-0  left-0 sm:z-20 z-20 ${!isSidebarOpen? 'w-64':'w-[4.5rem]'} h-screen transition-transform ${!isSidebarOpen? "translate-x-0  sm:translate-x-0": "sm:-translate-x-0 -translate-x-full    "} `} aria-label="Sidebar">
+         <div className="h-full divide-y-[1px] divide-[#2d313f] flex justify-between  flex-col px-3 py-4 overflow-y-auto bg-[#14161D]">
+           
+            <div className="">
+               <div className="flex items-center gap-4 justify-start pb-5 ">
+                  <button  onClick={()=>{setIsSidebarOpen(!isSidebarOpen)}} className=" flex justify-center items-center  p-2  ms-3 text-sm text-gray-300 rounded-lg  hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                     <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                     <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+                     </svg>
+                  </button>
 
-
-<aside  id="cta-button-sidebar" className={`fixed top-0 left-0 sm:z-40 z-50 w-64 h-screen transition-transform ${!isSidebarOpen? "translate-x-0  sm:translate-x-0": " -translate-x-full  sm:translate-x-0  "} `} aria-label="Sidebar">
-   <div className="h-full px-3 py-4 overflow-y-auto bg-[#14161D]">
-      <div className="flex justify-start pb-5 sm:hidden">
-         <button  onClick={()=>{setIsSidebarOpen(!isSidebarOpen)}} className=" flex justify-end  p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg  hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
-            <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
-            </svg>
-         </button>
-      </div>
-      <ul className="space-y-2 font-medium">
-        <li className="my-4  flex lg:ml-0">
-            
-                  <a href="/" className='flex justify-center items-center gap-3 '>
-                    <span className="sr-only">Your Company</span>
-                    <img
-                      className="h-8 w-auto rounded-full"
-                      src={pagelogo}
-                      alt=""
-                    />
-                  
-                  <h1 className='font-semibold text-xl text-white'>FoxDash </h1>
-
-                  </a>
+                 
+               </div>
                
-        </li>
+               <ul className="space-y-2 font-medium">
+                 
+ 
+                  {navLinks.map((links) => (
+                     <li key={links.title}>
+                     <Link to={"/seller"} className={`flex items-center ${!isSidebarOpen? 'py-3 pl-6 rounded-full':'p-3 flex rounded-lg justify-center'}   text-gray-900  dark:text-white hover:bg-[#262936] dark:hover:bg-gray-700 group`}>
+                     <div className="flex-shrink-0  text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" >
+                       {links.icon}</div>
+                        <span className={`${!isSidebarOpen? '':'hidden'} ms-3`}>{links.title}</span>
+                     </Link>
+                     </li>
+                  ))}
+                 
+                  
+               
+               </ul>
+            </div>
 
-         <li>
-            <Link to={"/seller"} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-               <LuLayoutDashboard className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-               <span className="ms-3">Dashboard</span>
-            </Link>
-         </li>
-         <li>
-            <Link to={"/seller/categoriesadd"} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-               <TbCategoryPlus className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-               <span className="flex-1 ms-3 whitespace-nowrap">Listbox</span>
-            </Link>
-         </li>
-        
-         <li>
-            <Link to={"/seller/productadd"} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                <FaCubes className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-               <span className="flex-1 ms-3 whitespace-nowrap">Add Products</span>
-            </Link>
-         </li>
-         <li>
-            <Link to={"/seller/categoriesadd"} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-               <TbCategoryPlus className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-               <span className="flex-1 ms-3 whitespace-nowrap">Scheduled Adding</span>
-               <span className="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span>
-            </Link>
-         </li>
-         <li>
-            <Link to={"/seller/orders"} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                <FaBoxesPacking className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-               <span className="flex-1 ms-3 whitespace-nowrap">Order</span>
-               {NoOfNewOrder ? <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">{NoOfNewOrder} </span> : null}
-            </Link>
-         </li>
-         <li>
-            <Link to={"/seller"} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-               <FaUsers className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-               <span className="flex-1 ms-3 whitespace-nowrap">Users</span>
-            </Link>
-         </li>
-        
-         
-         <li onClick={()=>{setDialogopenOpen(true);setIsSidebarOpen(!isSidebarOpen)}} >
-            <Link to={"/seller"} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                <LuLogOut className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+            <ul className="space-y-2 pt-2 font-medium">
 
-               <span  className="flex-1 ms-3 whitespace-nowrap">Logout</span>
-            </Link>
-         </li>
-         <li>
-            <Link to={"/seller"} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-               <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
-                  <path d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z"/>
-                  <path d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z"/>
-               </svg>
-               <span className="flex-1 ms-3 whitespace-nowrap">Sign Up</span>
-            </Link>
-         </li>
-      </ul>
-      
-   </div>
-</aside>
-<span onClick={() => { setIsSidebarOpen(!isSidebarOpen); }} className={`fixed w-full z-44 h-screen flex ${!isSidebarOpen ? 'display' : 'hidden'}`}></span>
-      <DialogBox 
-         open={Dialogopen}
-         setOpen={setDialogopenOpen} 
-         title={"Session Logout"}
-         message={"Are you sure you want to Logout your account ,then you have to Login agin to access your account."}
-         ActionButtonName={"Logout"}
-         ActionButtonColorRed={true}
-         IconName={false}
-         handleLogic={handleLogout}
-         Loading={Loading}
-         />
+                  <li>
+                     <Link to={"/seller/orders"} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <Settings2 className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                        <span className={`${!isSidebarOpen? '':'hidden'} ms-3`}>Settings</span>
+                        {NoOfNewOrder ? <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">{NoOfNewOrder} </span> : null}
+                     </Link>
+                  </li>
+                  
+               
+                  
+                  <li onClick={()=>{setDialogopenOpen(true);setIsSidebarOpen(!isSidebarOpen)}} >
+                     <Link to={"/seller"} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <LogOut className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+
+                        <span  className={`${!isSidebarOpen? '':'hidden'} ms-3`}>Logout</span>
+                     </Link>
+                  </li>
+                  
+               </ul>
+
+
+            
+         </div>
+      </aside>
+      <span onClick={() => { setIsSidebarOpen(true); }} className={`fixed w-full  z-44 h-screen  ${!isSidebarOpen ? 'md:hidden flex' : 'md:hidden'}`}></span>
+            <DialogBox 
+               open={Dialogopen}
+               setOpen={setDialogopenOpen} 
+               title={"Session Logout"}
+               message={"Are you sure you want to Logout your account ,then you have to Login agin to access your account."}
+               ActionButtonName={"Logout"}
+               ActionButtonColorRed={true}
+               IconName={false}
+               handleLogic={handleLogout}
+               Loading={Loading}
+               />
 
 
     </>
