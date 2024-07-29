@@ -162,7 +162,7 @@ const [note, setNote] = useState('');
 
   return (
     <>
-      <aside  id="cta-button-sidebar" className={`fixed top-0  left-0 sm:z-20 z-20 ${!isSidebarOpen? 'w-64':'w-[4.5rem]'} h-screen transition-transform ${!isSidebarOpen? "translate-x-0  sm:translate-x-0": "sm:-translate-x-0 -translate-x-full    "} `} aria-label="Sidebar">
+      <aside  id="cta-button-sidebar" className={`fixed top-0  left-0 sm:z-20 z-20 ${!isSidebarOpen? 'w-64':'w-[4.5rem]'} h-screen transition-all  ${!isSidebarOpen? "translate-x-0  sm:translate-x-0": "sm:-translate-x-0 -translate-x-full    "} `} aria-label="Sidebar">
          <div className="h-full divide-y-[1px] divide-[#2d313f] flex justify-between  flex-col px-3 py-4 overflow-y-auto bg-[#14161D]">
            
             <div className="">
@@ -181,10 +181,10 @@ const [note, setNote] = useState('');
  
                   {navLinks.map((links) => (
                      <li key={links.title}>
-                     <Link to={"/seller"} className={`flex items-center ${!isSidebarOpen? 'py-3 pl-6 rounded-full':'p-3 flex rounded-lg justify-center'}   text-gray-900  dark:text-white hover:bg-[#262936] dark:hover:bg-gray-700 group`}>
-                     <div className="flex-shrink-0  text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" >
+                     <Link to={"/seller"} title={links.title} className={`flex items-center ${!isSidebarOpen? 'py-3 pl-6  rounded-full':'p-3 flex rounded-lg justify-center'}   text-gray-900  dark:text-white hover:bg-[#262936] dark:hover:bg-gray-700 group`}>
+                     <div className="flex-shrink-0  text-gray-500 transition-all duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" >
                        {links.icon}</div>
-                        <span className={`${!isSidebarOpen? '':'hidden'} ms-3`}>{links.title}</span>
+                        <span className={`${!isSidebarOpen? '':'  sm:-translate-x-0 -translate-x-full'} ms-3`}>{links.title}</span>
                      </Link>
                      </li>
                   ))}

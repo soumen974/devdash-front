@@ -45,7 +45,7 @@ export default function Head() {
                     </div>
                   </div>
 
-                  <form  className={` ${!sideBar? 'sm:ml-80':'sm:ml-0'}`}>
+                  <form  className={` ${!sideBar? 'sm:ml-28':'sm:ml-5'}`}>
                   
                   <div className="relative ">
                     <input
@@ -62,7 +62,7 @@ export default function Head() {
                       // onClick={handleSearch}
                       className="sm:absolute max-sm:hidden  bg-gray-00 left-0 bottom-2 pr-2 font-medium text-sm text-gray-400"
                     >
-                      <Search className=" size-6" />
+                      <Search className=" size-5" />
                     </button>
 
                     <button
