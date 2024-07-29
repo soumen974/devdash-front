@@ -73,14 +73,7 @@ const Worklist=({className})=>{
     );
 }
 
-const LuLogOut=({className})=>{
-   return (
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
-   <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
-   </svg>
-    );
 
-}
 
 
 const SideBar = (Props) => {
@@ -160,9 +153,16 @@ const [note, setNote] = useState('');
    { title: 'Try Gemini', path: '/', icon: <Aicontent className='fill-white w-5 h-5'/> }
   ]
 
+  const navLink_bottom=[
+   { title: 'Settings', path: '/', icon: <Settings2 className=' w-5 h-5' /> },
+   { title: 'Logout', path: '/', icon: <LogOut className=' w-5 h-5' /> }
+
+
+  ]
+
   return (
     <>
-      <aside  id="cta-button-sidebar" className={`fixed top-0  left-0 sm:z-20 z-20 ${!isSidebarOpen? 'w-64':'w-[4.5rem]'} h-screen transition-all  ${!isSidebarOpen? "translate-x-0  sm:translate-x-0": "sm:-translate-x-0 -translate-x-full    "} `} aria-label="Sidebar">
+      <aside  id="cta-button-sidebar" className={`fixed top-0  left-0 sm:z-20 z-20 ${!isSidebarOpen? 'w-64':'w-[4.5rem]'} h-screen transition-all ease-in-out duration-300  ${!isSidebarOpen? "translate-x-0  sm:translate-x-0": "sm:-translate-x-0 -translate-x-full    "} `} aria-label="Sidebar">
          <div className="h-full divide-y-[1px] divide-[#2d313f] flex justify-between  flex-col px-3 py-4 overflow-y-auto bg-[#14161D]">
            
             <div className="">
@@ -181,10 +181,10 @@ const [note, setNote] = useState('');
  
                   {navLinks.map((links) => (
                      <li key={links.title}>
-                     <Link to={"/seller"} title={links.title} className={`flex items-center ${!isSidebarOpen? 'py-3 pl-6  rounded-full':'p-3 flex rounded-lg justify-center'}   text-gray-900  dark:text-white hover:bg-[#262936] dark:hover:bg-gray-700 group`}>
-                     <div className="flex-shrink-0  text-gray-500 transition-all duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" >
+                     <Link to={links.path} title={links.title} className={`flex items-center ${!isSidebarOpen? 'py-3 pl-6  rounded-full':'p-3 flex rounded-lg justify-center'}   text-gray-900  dark:text-white hover:bg-[#262936] dark:hover:bg-gray-700 group`}>
+                     <div className="flex-shrink-0  text-gray-500   dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" >
                        {links.icon}</div>
-                        <span className={`${!isSidebarOpen? '':'  sm:-translate-x-0 -translate-x-full'} ms-3`}>{links.title}</span>
+                        <span className={`${!isSidebarOpen? "  left-14 ease-in-out  block w-full opacity-100 transition-block delay-500 ": " opacity-0 hidden transition-hidden ease-in-out duration-500  "} absolute   transition-opacity ease-in duration-700  ms-3`}>{links.title}</span>
                      </Link>
                      </li>
                   ))}
@@ -196,23 +196,15 @@ const [note, setNote] = useState('');
 
             <ul className="space-y-2 pt-2 font-medium">
 
-                  <li>
-                     <Link to={"/seller/orders"} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <Settings2 className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                        <span className={`${!isSidebarOpen? '':'hidden'} ms-3`}>Settings</span>
-                        {NoOfNewOrder ? <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">{NoOfNewOrder} </span> : null}
+            {navLink_bottom.map((links) => (
+                     <li key={links.title}>
+                     <Link to={links.path} title={links.title} className={`flex items-center ${!isSidebarOpen? 'py-3 pl-6  rounded-full':'p-3 flex rounded-lg justify-center'}   text-gray-900  dark:text-white hover:bg-[#262936] dark:hover:bg-gray-700 group`}>
+                     <div className="flex-shrink-0  text-gray-500   dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" >
+                       {links.icon}</div>
+                        <span className={`${!isSidebarOpen? "  left-14  opacity-100 ": " opacity-0 -left-44  transition-opacity ease-in-out duration-1000  "} absolute   transition-left ease-in-out duration-500  ms-3`}>{links.title}</span>
                      </Link>
-                  </li>
-                  
-               
-                  
-                  <li onClick={()=>{setDialogopenOpen(true);setIsSidebarOpen(!isSidebarOpen)}} >
-                     <Link to={"/seller"} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <LogOut className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-
-                        <span  className={`${!isSidebarOpen? '':'hidden'} ms-3`}>Logout</span>
-                     </Link>
-                  </li>
+                     </li>
+                  ))}
                   
                </ul>
 
