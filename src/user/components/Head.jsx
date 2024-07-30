@@ -22,7 +22,7 @@ const Notification=({className})=>{
 
 export default function Head() {
  
- const [sideBar, setsideBar] = useState(true);
+ const [sideBar, setsideBar] = useState(false);
       
   return (
     <>

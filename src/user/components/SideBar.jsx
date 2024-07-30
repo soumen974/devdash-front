@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import DialogBox from '../../components/DialogBox';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 // import { PencilSquareIcon,BeakerIcon,PlusIcon} from '@heroicons/react/24/outline';
 import { SquarePen,Delete } from 'lucide-react';
 
@@ -115,42 +115,17 @@ useEffect(() => {
    fetchSellerOrders();
  }, [shopId]);
 
- const NoOfNewOrder=(orderItems.filter(order => order.status === 'Order Placed').length);
 
 
-//  ---node--
-const [NoteAdd, setNoteAdd] = useState(true);
 
-
-const [note, setNote] = useState('');
-
-  useEffect(() => {
-    const storedNote = localStorage.getItem('note');
-    if (storedNote) {
-      setNote(storedNote);
-    }
-  }, []);
-
-  const handleInputChange = (e) => {
-    setNote(e.target.value);
-  };
-
-  const saveNote = () => {
-    localStorage.setItem('note', note);
-  };
-
-  const clearNote = () => {
-    setNote('');
-    localStorage.removeItem('note');
-  };
 
   const navLinks=[
-   { title: 'Dashboard', path: '/', icon: <House className='text-white w-5 h-5' /> },
-   { title: 'Add to work list', path: '/', icon: <Worklist className='fill-white w-5 h-5' /> },
-   { title: 'Add Reminder', path: '/', icon: <Addreminder className=' fill-white w-5 h-5' /> },
-   { title: 'Add class Time table', path: '/', icon: <Classtimetable className=' fill-white w-5 h-5'/> },
-   { title: 'Your Portfolio', path: '/', icon: <Pageicon className='fill-white w-5 h-5'/> },
-   { title: 'Try Gemini', path: '/', icon: <Aicontent className='fill-white w-5 h-5'/> }
+   { title: 'Dashboard', path: '/dashboard', icon: <House className={({ isActive }) =>` ${isActive ? 'text-[#FD356E]' : 'text-white'} text-white w-5 h-5`} /> },
+   { title: 'Add to work list', path: '/worklist', icon: <Worklist className='fill-white w-5 h-5' /> },
+   { title: 'Add Reminder', path: '/reminder', icon: <Addreminder className=' fill-white w-5 h-5' /> },
+   { title: 'Add class Time table', path: '/classtimetable', icon: <Classtimetable className=' fill-white w-5 h-5'/> },
+   { title: 'Your Portfolio', path: '/portfolio', icon: <Pageicon className='fill-white w-5 h-5'/> },
+   { title: 'Try Gemini', path: '/gemini', icon: <Aicontent className='fill-white w-5 h-5'/> }
   ]
 
   const navLink_bottom=[
@@ -181,11 +156,11 @@ const [note, setNote] = useState('');
  
                   {navLinks.map((links) => (
                      <li key={links.title}>
-                     <Link to={links.path} title={links.title} className={`flex items-center ${!isSidebarOpen? 'py-3 pl-6  rounded-full':'p-3 flex rounded-lg justify-center'}   text-gray-900  dark:text-white hover:bg-[#262936] dark:hover:bg-gray-700 group`}>
+                     <NavLink to={links.path} title={links.title} className={({ isActive }) => `flex items-center ${isActive ? 'text-[#FD356E]' : 'text-white'} ${!isSidebarOpen? 'py-3 pl-6  rounded-full':'p-3 flex rounded-lg justify-center'}    hover:bg-[#262936] dark:hover:bg-gray-700 group`}>
                      <div className="flex-shrink-0  text-gray-500   dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" >
                        {links.icon}</div>
-                        <span className={`${!isSidebarOpen? "  left-14 ease-in-out  block w-full opacity-100 transition-block delay-500 ": " opacity-0 hidden transition-hidden ease-in-out duration-500  "} absolute   transition-opacity ease-in duration-700  ms-3`}>{links.title}</span>
-                     </Link>
+                        <span className={`${!isSidebarOpen? "  left-14  opacity-100 ": " opacity-0 -left-44  transition-opacity ease-in-out duration-1000  "} absolute   transition-left ease-in-out duration-500  ms-3`}>{links.title}</span>
+                     </NavLink>
                      </li>
                   ))}
                  
@@ -198,7 +173,7 @@ const [note, setNote] = useState('');
 
             {navLink_bottom.map((links) => (
                      <li key={links.title}>
-                     <Link to={links.path} title={links.title} className={`flex items-center ${!isSidebarOpen? 'py-3 pl-6  rounded-full':'p-3 flex rounded-lg justify-center'}   text-gray-900  dark:text-white hover:bg-[#262936] dark:hover:bg-gray-700 group`}>
+                     <Link to={links.path} title={links.title} className={`flex items-center ${!isSidebarOpen? 'py-3 pl-6  rounded-full':'p-3 flex rounded-lg justify-center'}   text-white hover:bg-[#262936] dark:hover:bg-gray-700 group`}>
                      <div className="flex-shrink-0  text-gray-500   dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" >
                        {links.icon}</div>
                         <span className={`${!isSidebarOpen? "  left-14  opacity-100 ": " opacity-0 -left-44  transition-opacity ease-in-out duration-1000  "} absolute   transition-left ease-in-out duration-500  ms-3`}>{links.title}</span>

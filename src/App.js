@@ -4,6 +4,7 @@ import Home from "./user/page/Home";
 import Notfound from "./components/Notfound";
 import Auth from "./Auth/pages/Auth";
 import Devlayout from "./user/components/Devlayout";
+import DashHome from "./user/page/DashHome";
 function App() {
   return (
     <>
@@ -14,9 +15,8 @@ function App() {
            <Route path="/" element={<Home/>} />
           </Route>
 
-          <Route path="/auth" element={<Auth/>} />
-          <Route path='/dashboard' element={<Devlayout/>}>
-
+          <Route path="/dashboard" element={<Devlayout/>}>
+            <Route path="/dashboard" element={<DashHome/>} />
           </Route>
 
 
