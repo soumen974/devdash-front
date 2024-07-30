@@ -9,8 +9,8 @@ export default function Home() {
    <>
    <div className="h-screen  ">
         <Hero/>
-        <StreaksTable/>
-        <LeetCodestreeks/>
+        {/* <StreaksTable/> */}
+        {/* <LeetCodestreeks/> */}
         
    </div>
    
