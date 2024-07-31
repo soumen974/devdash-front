@@ -3,6 +3,7 @@ import pagelogo from "../assets/Logo.svg";
 import { useNavigate } from 'react-router-dom';
 import DialogBox from '../../components/DialogBox';
 import SideBar from './SideBar';
+import RightSideBar from "./RightSideBar";
 import { Search } from 'lucide-react';
 import {User ,ChevronDown  } from 'lucide-react';
 
@@ -27,6 +28,8 @@ export default function Head() {
   return (
     <>
         <SideBar  isSidebarOpen={sideBar} setIsSidebarOpen={setsideBar}/>
+        <RightSideBar/>
+
        
         <div className="  ">
           <div className=" bg-[#101219] pl-4  fixed w-full z-40">
