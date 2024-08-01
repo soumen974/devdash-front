@@ -22,6 +22,7 @@ function App() {
            <Route path="/" element={<Home/>} />
           </Route>
 
+          <Route path="/auth/register" element={<Auth/>} />
           <Route path="/dashboard" element={<Devlayout/>}>
             <Route path="/dashboard" element={<DashHome/>} />
             <Route path="/dashboard/worklist" element={<WorkListing/>} />

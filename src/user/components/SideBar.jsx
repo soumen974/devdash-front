@@ -157,6 +157,7 @@ useEffect(() => {
                {navLinks.map((link) => (
                <li key={link.title}>
                   <NavLink
+                  title={link.title}
                      to={link.path}
                      end={link.path === '/dashboard'}
                      className={({ isActive }) =>
