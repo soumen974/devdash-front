@@ -1,7 +1,9 @@
 import React from 'react'
-
+import StreaksTable from "./StreaksTable";
 export default function DashHome() {
   return (
-    <div className='p-40  flex items-center justify-center bg-green-400 '>DashHome</div>
+    <div className='  flex items-center justify-center  '>
+    <StreaksTable/>
+    </div>
   )
 }
