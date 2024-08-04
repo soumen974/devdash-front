@@ -4,12 +4,15 @@ import MessageBox from "../../components/MessageBox";
 import axios from 'axios';
 import LoaderSpin from "../../components/LoaderSpin";
 import VerifyMail from "../components/VerifyMail";
+import AdData from "../components/AdData";
 export default function Auth() {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     const[loading,setLoading] = useState(false);
     const[isCodeSend,setIsCodeSend] = useState(false);
+    const [isoktoProceed, setIisoktoProceed] = useState(false);
+
   
     const handleSubmit = async (e) => {
         setLoading(true);
@@ -22,8 +25,11 @@ export default function Auth() {
         setMessage(response.data.message);
         setLoading(false);
         setIsCodeSend(true);
+       
+        setError('');
       } catch (err) {
         setLoading(false);
+        setMessage('');
         if (err.response && err.response.data && err.response.data.errors) {
           setError(err.response.data.errors.map(e => e.msg).join(', '));
         } else if (err.response && err.response.data && err.response.data.error) {
@@ -71,7 +77,17 @@ export default function Auth() {
                 </form>
             </div>
             :
-            <VerifyMail email={email}  isCodeSend={isCodeSend} setIsLoading={loading}/>
+            !isoktoProceed?
+            <VerifyMail 
+            email={email}
+              isCodeSend={isCodeSend}
+               setIsLoading={setLoading}
+                setIsCodeSend={setIsCodeSend}
+                 setIisoktoProceed={setIisoktoProceed}/>
+                 :
+                 <div className="">
+                  <AdData email={email}/>
+                 </div>
         }
 
 
