@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function VerifyMail({ email, setIsLoading, isCodeSend,setIsCodeSend ,setIisoktoProceed}) {
+export default function VerifyMail({ email, setIsLoading,setMessagetoAuth, isCodeSend,setIsCodeSend ,setIisoktoProceed}) {
   const [success, setSuccess] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [isOtpopen, setIsOtpopen] = useState(isCodeSend);
@@ -51,6 +51,7 @@ export default function VerifyMail({ email, setIsLoading, isCodeSend,setIsCodeSe
     e.preventDefault();
     const code = codes.join('');
     setIsLoading(true);
+    
 
     try {
       await axios.post('http://localhost:5000/auth/verify-email', { email, code });
@@ -58,10 +59,16 @@ export default function VerifyMail({ email, setIsLoading, isCodeSend,setIsCodeSe
       setSuccess(true);
       setIsOtpVerified(true);
       // setIsCodeSend(false);
+      setTimeout(() => {
+        setMessagetoAuth('');
+
+      }, 2000);
+      setMessagetoAuth('Email verified successfully!');
       setIsOtpopen(false);
       setIisoktoProceed(true);
       setError('');
     } catch (err) {
+      
       if (err.response && err.response.data && err.response.data.errors) {
         setError(err.response.data.errors.map((e) => e.msg).join(', '));
       } else if (err.response && err.response.data && err.response.data.error) {

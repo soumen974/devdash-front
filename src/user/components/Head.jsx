@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState ,useEffect} from 'react'
+import axios from "axios";
 import pagelogo from "../assets/Logo.svg";
 import { useNavigate } from 'react-router-dom';
 import DialogBox from '../../components/DialogBox';
@@ -24,6 +25,36 @@ const Notification=({className})=>{
 export default function Head() {
  
  const [sideBar, setsideBar] = useState(false);
+
+ const [message, setMessage] = useState('');
+  const [developerData, setDeveloperData] = useState({});
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
+
+ useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/auth/protected', { withCredentials: true });
+        setMessage(response.data.message);
+        setDeveloperData(response.data.developer_data);
+        setError('');
+      } catch (error) {
+        setError(error.response?.data?.error || 'Error fetching data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // if (loading) {
+  //   return <p>Loading...</p>;
+  // }
+
+  // if (error) {
+  //   return <p className="text-red-500">{error}</p>;
+  // }
       
   return (
     <>
@@ -113,6 +144,9 @@ export default function Head() {
                       </div>
                     </div>
                 </div>
+                <p><strong>Username:</strong> {developerData.username}</p>
+                <p><strong>ID:</strong> {developerData.id}</p>
+                <p><strong>Email:</strong> {developerData.email}</p>
               
             </nav>
               

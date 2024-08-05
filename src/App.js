@@ -10,6 +10,7 @@ import Reminderading from "./user/page/Reminderading";
 import Classtimetable from "./user/page/Classtimetable";
 import Portfolio from "./user/page/Portfolio";
 import Gemini from "./user/page/Gemini";
+import Login from "./Auth/pages/AuthLogin";
 
 
 function App() {
@@ -23,6 +24,8 @@ function App() {
           </Route>
 
           <Route path="/auth/register" element={<Auth/>} />
+          <Route path="/auth/login" element={<Login/>} />
+
           <Route path="/dashboard" element={<Devlayout/>}>
             <Route path="/dashboard" element={<DashHome/>} />
             <Route path="/dashboard/worklist" element={<WorkListing/>} />

@@ -70,7 +70,7 @@ export default function Auth() {
                     className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#FD356E] hover:bg-[#FD356E] focus:outline-none focus:ring-2 focus:ring-[#FD356E] focus:ring-offset-2 focus:ring-offset-gray-800 ${
                         loading ? 'cursor-wait' : ''
                     }`}
->                         {loading ? <LoaderSpin /> :"Sign in"}
+>                         {loading ? <LoaderSpin /> :"Sign up"}
                         </button>
                     </div>
                     
@@ -83,10 +83,13 @@ export default function Auth() {
               isCodeSend={isCodeSend}
                setIsLoading={setLoading}
                 setIsCodeSend={setIsCodeSend}
+                setMessagetoAuth={setMessage}
                  setIisoktoProceed={setIisoktoProceed}/>
                  :
                  <div className="">
-                  <AdData email={email}/>
+                  <AdData
+                   email={email}
+                   setMessagetoAuth={setMessage}/>
                  </div>
         }
 
