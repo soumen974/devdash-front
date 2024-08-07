@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import MessageBox from '../../components/MessageBox';
+import { useNavigate } from 'react-router-dom';
 
 export default function AuthLogin() {
   const [loading, setLoading] = useState(false);
@@ -8,6 +9,7 @@ export default function AuthLogin() {
   const [password, setPassword] = useState('');
   const [responseMessage, setResponseMessage] = useState('');
   const [error, setError] = useState('');
+  const navigate=useNavigate();
 
   const loginAuth = async (e) => {
     e.preventDefault();
@@ -16,14 +18,19 @@ export default function AuthLogin() {
       const response = await axios.post('http://localhost:5000/auth/login', {
         email,
         password,
+      },{
+        withCredentials: true,
       });
       setResponseMessage(response.data.message); 
       setError(''); 
+      setLoading(false);
+      navigate('/dashboard');
     } catch (error) {
+      setLoading(false);
       setError(error.response?.data?.message || 'Login failed'); 
       setResponseMessage('');
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 

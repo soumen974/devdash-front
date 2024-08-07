@@ -97,27 +97,28 @@ const SideBar = (Props) => {
    
  };
 
+//  ----
+
+const authLogout = async () => {
+   try {
+     // Make a request to the backend to clear the cookie and log out
+     await axios.post('http://localhost:5000/auth/logout',{}, { withCredentials: true });
+   //   alert('Logout successful');
+   setTimeout(() => {
+      // navigate('/');
+      window.location.reload();
+
+   }, 1000);
+   } catch (error) {
+     console.error('Logout failed:', error);
+   }
+ };
+
+
+
+
 //  ----new order count ---
-const shopId = localStorage.getItem('ShopId');
-const [orderItems, setOrderItems] = useState([]);
-
-
-useEffect(() => {
-   const fetchSellerOrders = async () => {
-     try {
-       const response = await axios.get(`http://localhost:5000/seller-orders/${shopId}`);       
-       setOrderItems(response.data.orders);
-     } catch (err) {
-       console.log(err.response ? err.response.data.message : 'Error fetching seller orders');
-     }
-   };
-
-   fetchSellerOrders();
- }, [shopId]);
-
-
-
-
+  const [orderItems, setOrderItems] = useState([]);
 
   const navLinks=[
    { title: 'Dashboard', path: '/dashboard' },
@@ -131,7 +132,6 @@ useEffect(() => {
   const navLink_bottom=[
    { title: 'Settings', path: '/', icon: <Settings2 className=' w-5 h-5' /> },
    { title: 'Logout', path: '/', icon: <LogOut className=' w-5 h-5' /> }
-
 
   ]
 
@@ -188,16 +188,26 @@ useEffect(() => {
             </div>
 
             <ul className="space-y-2 pt-2 font-medium">
+            {/* navigation.categories.slice(0, 1) */}
+            {navLink_bottom.slice(0, 1).map((links) => (
+               <li key={links.title}>
+               <Link to={links.path} title={links.title} className={`flex items-center ${!isSidebarOpen? 'py-3 pl-6  rounded-full':'p-3 flex rounded-lg justify-center'}   text-white hover:bg-[#262936] dark:hover:bg-gray-700 group`}>
+               <div  className="flex-shrink-0  text-gray-500   dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" >
+                  {links.icon}</div>
+                  <span className={`${!isSidebarOpen? "  left-14  opacity-100 ": " opacity-0 -left-44  transition-opacity ease-in-out duration-1000  "} absolute   transition-left ease-in-out duration-500  ms-3`}>{links.title}</span>
+               </Link>
+               </li>
+            ))}
 
-            {navLink_bottom.map((links) => (
-                     <li key={links.title}>
-                     <Link to={links.path} title={links.title} className={`flex items-center ${!isSidebarOpen? 'py-3 pl-6  rounded-full':'p-3 flex rounded-lg justify-center'}   text-white hover:bg-[#262936] dark:hover:bg-gray-700 group`}>
-                     <div className="flex-shrink-0  text-gray-500   dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" >
-                       {links.icon}</div>
-                        <span className={`${!isSidebarOpen? "  left-14  opacity-100 ": " opacity-0 -left-44  transition-opacity ease-in-out duration-1000  "} absolute   transition-left ease-in-out duration-500  ms-3`}>{links.title}</span>
-                     </Link>
-                     </li>
-                  ))}
+            {navLink_bottom.slice(1, 2).map((links) => (
+               <li key={links.title}>
+               <div onClick={authLogout} title={links.title} className={`flex cursor-pointer items-center ${!isSidebarOpen? 'py-3 pl-6  rounded-full':'p-3 flex rounded-lg justify-center'}   text-white hover:bg-[#262936] dark:hover:bg-gray-700 group`}>
+               <div  className="flex-shrink-0   text-gray-500   dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" >
+                  {links.icon}</div>
+                  <span className={`${!isSidebarOpen? "  left-14  opacity-100 ": " opacity-0 -left-44  transition-opacity ease-in-out duration-1000  "} absolute   transition-left ease-in-out duration-500  ms-3`}>{links.title}</span>
+               </div>
+               </li>
+            ))}
                   
             </ul>
 
