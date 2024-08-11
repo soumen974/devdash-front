@@ -45,15 +45,11 @@ const StreaksTable = () => {
   const getColorClass = (color) => {
     switch (color) {
       case '#ebedf0':
-        return '#27272a4d';
-      case '#c6e48b':
-        return 'var(--contribution-color-1)';
-      case '#7bc96f':
-        return 'var(--contribution-color-2)';
-      case '#239a3b':
-        return 'var(--contribution-color-3)';
-      case '#196127':
-        return 'var(--contribution-color-4)';
+        return '#1D1D20';
+      case '#9be9a8':
+        return '#0e4429';
+      case '#30a14e':
+        return '#26a641';
       default:
         return color;
     }
@@ -67,7 +63,7 @@ const StreaksTable = () => {
   return (
     <div className="bg-red-20">
       <div className="border overflow-auto border-gray-600 rounded-md p-3 gap-1 grid grid-cols-8">
-        {contributions.map((day, index) => (
+      {contributions.map((day, index) => (
           <div
             key={day.date}
             className="cursor-pointer w-[2vw] h-[2vw] sm:w-[1.2vw] sm:h-[1.2vw] md:w-[1vw] md:h-[1vw] lg:w-[0.54rem] lg:h-[0.5rem] rounded-sm"

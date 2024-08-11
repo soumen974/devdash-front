@@ -41,3 +41,29 @@
     color: white;
   }
   
+
+  /* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 12px; /* width of the entire scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* transparent track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: black; /* black thumb */
+  border-radius: 10px; /* roundness of the thumb */
+  border: 3px solid transparent; /* creates padding around thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #333; /* slightly lighter black when hovered */
+}
+
+/* Firefox */
+html {
+  scrollbar-width: thin; /* "auto" or "thin" */
+  scrollbar-color: black transparent; /* thumb and track color */
+}
+ 

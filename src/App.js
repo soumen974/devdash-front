@@ -11,6 +11,7 @@ import Classtimetable from "./user/page/Classtimetable";
 import Portfolio from "./user/page/Portfolio";
 import Gemini from "./user/page/Gemini";
 import Login from "./Auth/pages/AuthLogin";
+import "./App.css"
 
 
 function App() {

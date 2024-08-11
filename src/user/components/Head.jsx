@@ -68,6 +68,7 @@ export default function Head() {
       
   return (
     <>
+    <div className="flex">
         <SideBar  isSidebarOpen={sideBar} setIsSidebarOpen={setsideBar}/>
         <RightSideBar/>
 
@@ -164,7 +165,7 @@ export default function Head() {
           </div>
         </div>
 
-
+     </div>
        
 
 
