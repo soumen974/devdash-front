@@ -138,7 +138,7 @@ const authLogout = async () => {
   return (
     <>
       <aside  id="cta-button-sidebar" className={`fixed top-0 left-0 z-40  w-64 h-screen transition-transform ${!isSidebarOpen? "translate-x-0  md:translate-x-0": " -translate-x-full  md:translate-x-0  "} `} aria-label="Sidebar">
-         <div className="h-full divide-y-[1px] divide-[#2d313f] flex justify-between  flex-col px-3 py-4 overflow-y-auto bg-[#14161D]">
+         <div className="h-screen divide-y-[1px] divide-[#2d313f] flex justify-between  flex-col px-3 py-4 overflow-y-auto bg-[#14161D]">
            
             <div className="">
                <div className="flex items-center gap-4 justify-start pb-5 ">
