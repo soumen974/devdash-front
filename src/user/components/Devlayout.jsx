@@ -6,10 +6,9 @@ export default function Devlayout() {
   return (
     <>
     <Head/>
-      <div className="p-4 bg-[#101219] h-screen pt-20 ">
-        <div className="p-0     ">
-          
-         <Outlet />
+      <div className="p-4 bg-[#101219]  pt-20 md:ml-64 md:mr-[4.1rem]">
+        <div className="p-0">
+        <Outlet />
         </div>
       </div>
       

@@ -15,7 +15,7 @@ export default function Navbar() {
   useEffect(() => {
      const fetchData = async () => {
        try {
-         const response = await axios.get('http://localhost:5000/auth/protected', { withCredentials: true });
+         const response = await axios.get(`${process.env.REACT_APP_API}/auth/protected`, { withCredentials: true });
          setMessage(response.data.message);
          setDeveloperData(response.data.developer_data);
          setError('');
@@ -55,7 +55,9 @@ export default function Navbar() {
 
           <div className="text-white flex justify-between items-center  ">
             <div className="flex  items-center">
-              <img src={Logo} className=' ' alt="" />
+              <img src={Logo} className=' h-8 w-8' alt="" />
+              <h1 className='text-xl '>FoxDash</h1>
+
             </div>
               <div className=" flex justify-center items-center gap-3 max-lg:pr-2">
                   {["Product", "Features","Sign in"].map((item, index) => (<a key={index} href="/auth/register" className={`text-md font-semibold   ${index==2? ' lg:text-[#fd356e] hover:shadow-md max-lg:bg-[#fd356e] max-lg:hover:shadow-[#fd356e52] py-2 px-4  rounded-md ':'ml-0 text-gray-300 hidden lg:block'}`}>{item}</a>))}

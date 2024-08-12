@@ -54,7 +54,7 @@ export default function VerifyMail({ email, setIsLoading,setMessagetoAuth, isCod
     
 
     try {
-      await axios.post('http://localhost:5000/auth/verify-email', { email, code });
+      await axios.post(`${process.env.api}/auth/verify-email`, { email, code });
       setMessage('Email verified successfully!');
       setSuccess(true);
       setIsOtpVerified(true);

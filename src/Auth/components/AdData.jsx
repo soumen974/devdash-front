@@ -48,7 +48,7 @@ const AdData = ({email,setMessagetoAuth}) => {
   const handleUsernameCheck = async () => {
    
     try {
-      const response = await axios.post('http://localhost:5000/auth/usernamecheck', { username });
+      const response = await axios.post(`${process.env.api}/auth/usernamecheck`, { username });
       if (response.data.exists) {
         setMessage(response.data.message);
       } else {
@@ -72,7 +72,7 @@ const AdData = ({email,setMessagetoAuth}) => {
   const handleRegistration = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/auth/addpassword', {
+      const response = await axios.post(`${process.env.api}/auth/addpassword`, {
         email,
         username,
         password

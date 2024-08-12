@@ -3,6 +3,7 @@ import axios from 'axios';
 import MessageBox from '../../components/MessageBox';
 import { useNavigate } from 'react-router-dom';
 
+
 export default function AuthLogin() {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -15,7 +16,7 @@ export default function AuthLogin() {
     e.preventDefault();
     setLoading(true); 
     try {
-      const response = await axios.post('http://localhost:5000/auth/login', {
+      const response = await axios.post(`${process.env.REACT_APP_API}/auth/login`, {
         email,
         password,
       },{

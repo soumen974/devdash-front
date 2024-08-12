@@ -35,7 +35,7 @@ export default function Head() {
  useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/auth/protected', { withCredentials: true });
+        const response = await axios.get(`${process.env.REACT_APP_API}/auth/protected`, { withCredentials: true });
         setMessage(response.data.message);
         setDeveloperData(response.data.developer_data);
         setLoading(false);
@@ -82,7 +82,7 @@ export default function Head() {
                 <div className="flex max-sm:justify-between ">
                   
                   <div className=" flex    gap-4 justify-start  ">
-                    <button   onClick={() => setsideBar(!sideBar)} className=" flex justify-center items-center  p-2   text-sm text-gray-300 rounded-lg  hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                    <button   onClick={() => setsideBar(!sideBar)} className=" md:hidden  flex justify-center items-center  p-2   text-sm text-gray-300 rounded-lg  hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
                       <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                       <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
                       </svg>
@@ -93,10 +93,12 @@ export default function Head() {
                       <a href="/" className='flex justify-center items-center gap-3 '>
                       <span className="sr-only">Your Company</span>
                       <img
-                          className="h-6 w-auto rounded-full"
+                          className="h-7  w-7 rounded-full"
                           src={pagelogo}
                           alt=""
                       />
+                        <h1 className='text-white text-xl font-semibold '>FoxDash</h1>
+
                       
 
                       </a>
@@ -139,26 +141,30 @@ export default function Head() {
                       <Search className=" size-6" />
                     </button>
 
-                    <div className="text-white flex gap-2 relative">
+                    <div className="text-white flex items-center   gap-2 relative">
                   
-                      <div className="before:w-2 before:h-2 before:absolute before:left-7 before:opacity-75 before:animate-ping  before:top-0 before:bg-red-500 before:rounded-full  \   after:w-2 after:h-2 after:absolute after:left-7   after:top-0 after:bg-red-500 after:rounded-full p-2">
-                        <Notification className="w-6 h-6 fill-white" />
+                      <div className=" items-center flex rounded-full  before:w-2 before:h-2 h-full w-fit before:absolute before:left-7 before:opacity-75 before:animate-ping  before:top-0 before:bg-red-500 before:rounded-full     after:w-2 after:h-2 after:absolute after:left-7   after:top-0 after:bg-red-500 after:rounded-full ">
+                        <Notification className="w-12 h-12 bg-gray-700 rounded-full p-3 fill-white" />
                       </div>
-                      <div className="md:flex hidden flex-row-reverse items-center gap-1">
-                        <div className=" bg-gray-700 rounded-full p-2 ">
-                          <User/>
+                      <div className="md:flex  group hidden  items-center gap-1">
+                        <div className="  rounded-full p-2 ">
+                          {/* <User/> */}
+                          <img className='w-12 h-12 rounded-full' src="https://www.befunky.com/images/wp/wp-2021-01-linkedin-profile-picture-focus-face.jpg?auto=avif,webp&format=jpg&width=950" alt="" />
                         </div>
-                        <div className="">
+                        <div className="relative">
                           <ChevronDown className='h-4 w-4 ' />
+                          <div className="absolute group-hover:block hidden top-10 bg-gray-500 p-5  -right-5">
+                          <p className='text-white'><strong>Username:</strong> {developerData.username}</p>
+                          <p className='text-white'><strong>ID:</strong> {developerData.id}</p>
+                          <p className='text-white'><strong>Email:</strong> {developerData.email}</p>
+
+                          </div>
                         </div>
                       </div>
                     </div>
                 </div>
                 
-                {/* <p><strong>Username:</strong> {developerData.username}</p>
-                <p><strong>ID:</strong> {developerData.id}</p>
-                <p><strong>Email:</strong> {developerData.email}</p>
-               */}
+                              
             </nav>
               
             </div>

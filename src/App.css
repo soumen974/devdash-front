@@ -65,5 +65,6 @@
 html {
   scrollbar-width: thin; /* "auto" or "thin" */
   scrollbar-color: black transparent; /* thumb and track color */
+   font-family: "Krona One", sans-serif;
 }
  
