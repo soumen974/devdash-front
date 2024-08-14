@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import DialogBox from '../../components/DialogBox';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-// import { PencilSquareIcon,BeakerIcon,PlusIcon} from '@heroicons/react/24/outline';
-import { SquarePen,Delete } from 'lucide-react';
 
-import pagelogo from "../assets/Logo.svg";
 import { Settings2,LogOut ,House  } from 'lucide-react';
 
 
@@ -137,7 +134,7 @@ const authLogout = async () => {
 
   return (
     <>
-      <aside  id="cta-button-sidebar" className={`fixed top-0 left-0 z-40  w-64 h-screen transition-transform ${!isSidebarOpen? "translate-x-0  md:translate-x-0": " -translate-x-full  md:translate-x-0  "} `} aria-label="Sidebar">
+      <aside  id="cta-button-sidebar" className={`fixed top-0 left-0 z-40  w-80 h-screen transition-transform ${!isSidebarOpen? "translate-x-0  md:translate-x-0": " -translate-x-full  md:translate-x-0  "} `} aria-label="Sidebar">
          <div className="h-screen divide-y-[1px] divide-[#2d313f] flex justify-between  flex-col px-3 py-4 overflow-y-auto bg-[#14161D]">
            
             <div className="">
@@ -199,14 +196,14 @@ const authLogout = async () => {
                </li>
             ))}
 
-         {navLink_bottom.slice(1, 2).map((links) => (
-                        <li onClick={authLogout} key={links.title}>
-                        <Link to={links.path} title={links.title} className={`flex items-center ${!isSidebarOpen? 'py-3 pl-6  rounded-full':'p-3 flex rounded-lg justify-start'}   text-white hover:bg-[#262936] dark:hover:bg-gray-700 group`}>
-                        <div  className="flex-shrink-0  text-gray-500   dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" >
-                           {links.icon}</div>
-                           <span className={`    transition-left ease-in-out duration-500  ms-3`}>{links.title}</span>
-                        </Link>
-                        </li>
+            {navLink_bottom.slice(1, 2).map((links) => (
+               <li onClick={authLogout} key={links.title}>
+               <Link to={links.path} title={links.title} className={`flex items-center ${!isSidebarOpen? 'py-3 pl-6  rounded-full':'p-3 flex rounded-lg justify-start'}   text-white hover:bg-[#262936] dark:hover:bg-gray-700 group`}>
+               <div  className="flex-shrink-0  text-gray-500   dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" >
+                  {links.icon}</div>
+                  <span className={`    transition-left ease-in-out duration-500  ms-3`}>{links.title}</span>
+               </Link>
+               </li>
             ))}
                   
             </ul>
@@ -215,7 +212,11 @@ const authLogout = async () => {
             
          </div>
       </aside>
-      <span onClick={() => { setIsSidebarOpen(true); }} className={`fixed w-full  z-44 h-screen  ${!isSidebarOpen ? 'sm:hidden flex' : 'max-sm:hidden'}`}></span>
+
+     
+      
+
+      <span onClick={() => { setIsSidebarOpen(true); }} className={`fixed w-full  z-44 h-screen  md:hidden  ${!isSidebarOpen ? 'md:hidden flex bg-[#07010459]' : 'max-sm:hidden'}`}></span>
             <DialogBox 
                open={Dialogopen}
                setOpen={setDialogopenOpen} 
@@ -234,3 +235,6 @@ const authLogout = async () => {
 };
 
 export default SideBar;
+
+
+
