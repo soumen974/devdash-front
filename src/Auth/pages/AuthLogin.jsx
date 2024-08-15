@@ -70,7 +70,7 @@ export default function AuthLogin() {
 
   const handleOAuthGoogleLogin = () => {
     // setLoading(true);
-    window.location.href = `${process.env.REACT_APP_API}/auth/google`;
+    window.location.href = `https://foxdashapi.onrender.com/auth/google`;
   };
 
 
