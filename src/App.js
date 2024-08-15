@@ -12,7 +12,7 @@ import Portfolio from "./user/page/Portfolio";
 import Gemini from "./user/page/Gemini";
 import Login from "./Auth/pages/AuthLogin";
 import "./App.css"
-
+import LayoutAss from "./Assignment/Layout";
 
 function App() {
   return (
@@ -36,6 +36,11 @@ function App() {
             <Route path="/dashboard/gemini" element={<Gemini/>} />
 
           </Route>
+
+          <Route path="/ass" element={<LayoutAss/>}>
+          
+          </Route>
+
 
 
           <Route path="*" element={<Notfound/>} />

@@ -10,6 +10,11 @@ import google from "../assets/google-logo-9808.png";
 export default function Hero() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
+    const handleOAuthGoogleLogin = () => {
+        // setLoading(true);
+        window.location.href = `${process.env.REACT_APP_API}/auth/google`;
+      };
+
   return (
     <div className='bg-[#19191C] overflow-hidden  h-screen '>
       <div className=" z-20  relative mx-auto max-w-7xl  ">
@@ -61,7 +66,7 @@ export default function Hero() {
                                     </div>
 
                                     <div className="md:mt-10 mt-7 flex justify-center md:justify-start gap-5">
-                                        <button className='border sm:text-sm text-[3vw] items-center backdrop-blur-sm  border-[#5e5e5e7a] rounded-full px-2 py-2 sm:pr-5 flex gap-2'>
+                                        <button onClick={handleOAuthGoogleLogin} className='border sm:text-sm text-[3vw] items-center backdrop-blur-sm  border-[#5e5e5e7a] rounded-full px-2 py-2 sm:pr-5 flex gap-2'>
                                             <img className='w-6 h-6 ' src={google} alt="" />
                                         <h1 className=''>Sign in With Google</h1> 
                                         </button>

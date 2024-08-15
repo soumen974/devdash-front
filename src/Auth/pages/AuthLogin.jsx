@@ -1,10 +1,15 @@
-import React, {Fragment, useRef, useState } from 'react';
+import React, {Fragment, useRef, useState ,useEffect} from 'react';
 import { Dialog, Transition } from '@headlessui/react'
 import axios from 'axios';
 import MessageBox from '../../components/MessageBox';
 import { useNavigate } from 'react-router-dom';
 import login_svg from "../assets/login_svg.svg";
 import Logo from "../../components/assets/Logo.svg";
+import { Link } from 'react-router-dom';
+
+// import google from "../assets/google-logo-9808.png";
+import google from "../../user/assets/google-logo-9808.png";
+
 
 
 export default function AuthLogin() {
@@ -17,6 +22,26 @@ export default function AuthLogin() {
   const [responseMessage, setResponseMessage] = useState('');
   const [error, setError] = useState('');
   const navigate=useNavigate();
+
+  const [developerData, setDeveloperData] = useState({});
+
+
+ useEffect(() => {
+    const fetchData = async () => {
+      try {
+         await axios.get(`${process.env.REACT_APP_API}/auth/protected`, { withCredentials: true });
+        navigate('/dashboard');
+      } catch (error) {
+        // setLoading(true);
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  
 
   const loginAuth = async (e) => {
     e.preventDefault();
@@ -43,69 +68,112 @@ export default function AuthLogin() {
 
   const [SignInopen, setOpenSignIn] = useState(true)
 
+  const handleOAuthGoogleLogin = () => {
+    // setLoading(true);
+    window.location.href = `${process.env.REACT_APP_API}/auth/google`;
+  };
+
+
   return (
     <div className="bg-[#19191C] h-screen ">
              <MessageBox servermessage={responseMessage} error={error} />
 
 
-        <div className=" md:grid rounded  bg-[#19191C] grid-cols-[50%,50%] h-screen  ">
+        <div className=" md:grid rounded grid-cols-[50%,50%]   xl:grid-cols-[60%,40%] h-screen  ">
 
-           <div className=" overflow-hidden relative  hidden md:block  bg-[#FD356E]  p-40">
-            <h1 className='text-gray-900 text-5xl py-4 font-semibold'>Design for Developers</h1>
-            <h1 className='text-gray-800 text-xl font-light w-[30rem] '>See the analytics and access the features with no code,for anyone!</h1>
+           <div className=" overflow-hidden relative  hidden md:block  bg-[#FD356E]  p-20 lg:p-40">
 
-            <img className='rounded-xl absolute bottom-0  w-[95rem]' src="https://cdn.dribbble.com/users/402092/screenshots/16282144/media/6dcd7ea72e3ba67ea115527e0f267c40.png" alt="" />
+
+          
+
+           
+            <h1 className='text-gray-900 text-5xl py-4 font-semibold z-10'>Dashboard for Developers</h1>
+            <h1 className='text-gray-800 text-xl font-light xl:w-[30rem] '>See the analytics and access the features with no code,for anyone!</h1>
+
+            <img className='rounded-xl absolute -rotate-12 -bottom-20   h-[50rem]' src="https://cdn.dribbble.com/users/402092/screenshots/16282144/media/6dcd7ea72e3ba67ea115527e0f267c40.png" alt="" />
             <img src={Logo} className='bg-black rounded-full p-2 absolute top-5 left-5' alt="" />
             {/* <h1 className='text-[11rem] font-bold absolute -left-80 z-0 bottom-0  -rotate-90'>FOXDASH</h1> */}
+
           </div>
 
 
-          <div className="  bg-red-00 h-screen flex justify-center items-center p-4 md:p-8">
-              <form onSubmit={loginAuth} className=" border backdrop-blur-xl border-[#3C3C3C] p-8 md:p-14 rounded-2xl">
-               <h1 className="text-4xl font-bold tracking-tight text-gray-100 sm:text-5xl">
-                  Login to your account
-                </h1>
-                <div className="mt-6">
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-400">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    autoComplete="email"
-                    required
-                    className="mt-1 block w-full px-3 py-2 text-white bg-[#1E1E24] border border-transparent rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FD356E] focus:border-transparent focus:bg-transparent"
-                  />
-                </div>
+          <div className=" relative overflow-hidden  bg-red-00 h-screen flex justify-center items-center p-4 md:p-12">
+           <img src={Logo} className='hover:bg-[#3C3C3C] border-[#3C3C3C] border md:hidden rounded-full p-2 absolute top-5  right-5' alt="" />
 
-                <div className="mt-6">
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-400">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    autoComplete="current-password"
-                    required
-                    className="mt-1 block w-full px-3 py-2 text-white bg-[#1E1E24] border border-transparent rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FD356E] focus:border-transparent focus:bg-transparent"
-                  />
-                </div>
+              
 
-                <div className="mt-6">
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#FD356E] hover:bg-[#FD356E] focus:outline-none focus:ring-2 focus:ring-[#FD356E] focus:ring-offset-2 focus:ring-offset-gray-800 ${
-                      loading ? 'cursor-wait' : ''
-                    }`}
-                  >
-                    {loading ? 'Loading..' : 'Sign in'}
-                  </button>
-                </div>
+              <form onSubmit={loginAuth} className=" grid gap-10 z-10  backdrop-blur-4xl   p-8 md:p-[5vw] w-full rounded-2xl">
+               <h1 className="text-4xl font-semibold tracking-tight text-gray-100 sm:text-4xl">Sign in</h1>
+                 <div className="">
+                    <div className="mt-6">
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-400 after:text-red-400 after:ml-1 after:text-base after:content-['*']">
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        autoComplete="email"
+                        required
+                        className="mt-1 block w-full px-3 py-2 text-white bg-[#1E1E24] border border-[#3C3C3C] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FD356E] focus:border-transparent focus:bg-transparent"
+                      />
+                    </div>
+
+                    <div className="mt-6">
+                      <label htmlFor="password" className="block text-sm font-medium text-gray-400 after:text-red-400 after:ml-1 after:text-base after:content-['*']">
+                        Password
+                      </label>
+                      <input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        autoComplete="current-password"
+                        required
+                        className="mt-1 block w-full px-3 py-2 text-white bg-[#1E1E24] border border-[#3C3C3C] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FD356E] focus:border-transparent focus:bg-transparent"
+                      />
+                    </div>
+
+                    <div className="mt-6">
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className={`w-full flex justify-center py-3 font-bold px-4 border border-transparent rounded-md shadow-sm text-md text-white bg-[#ef205a] hover:bg-[#d73966] focus:outline-none focus:ring-2 focus:ring-[#FD356E] focus:ring-offset-2 focus:ring-offset-gray-800 ${
+                          loading ? 'cursor-wait' : ''
+                        }`}
+                      >
+                        {loading ? 'Loading..' : 'Sign in'}
+                      </button>
+                    </div>
+
+                    <div className="divide-y-[1px] relative  divide-[#2d313f] text-white ">
+                      <div className="p-4 after:-ml-5 after:content-['OR'] after:text-sm after:absolute after:left-1/2  after:top-3 after:bg-[#19191C] after:p-4 after:pb-2   after:text-[#5c5c5e] "></div>
+                      <div className=""></div>
+                    </div>
+
+                    <div className="mt-6">
+                    <div
+                      onClick={handleOAuthGoogleLogin}
+                      disabled={loading}
+                      className={`w-full flex gap-3 items-center text-sm justify-center py-3 cursor-pointer font-bold px-4 border border-transparent rounded-md shadow-sm text-md text-white bg-[#303030] hover:bg-[#474646] focus:outline-none focus:ring-2 focus:ring-[#FD356E] focus:ring-offset-2 focus:ring-offset-gray-800 ${
+                        loading ? 'cursor-wait' : ''
+                      }`}
+                    >
+                      <img src={google} className='w-5 h-5' alt="" />
+                      Sign in with Google
+                    </div>
+                   </div>
+
+                   <div className="mt-6 divide-x-[1px] divide-[#2d313f] flex justify-center text-base  text-[#5c5c5e] ">
+                    <Link className='px-5  text-sm' to='/register'>Forget Password?</Link>
+                    <Link className='px-5  text-sm' to='/auth/register'>SignUp</Link>
+
+
+                   </div>
+                  </div>
+                 
+                  
             </form> 
           </div>
           
