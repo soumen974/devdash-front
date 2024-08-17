@@ -98,12 +98,18 @@ export default function AuthLogin() {
 
 
           <div className=" relative overflow-hidden  bg-red-00 h-screen flex justify-center items-center p-4 md:p-12">
-           <img src={Logo} className='hover:bg-[#3C3C3C] border-[#3C3C3C] border md:hidden rounded-full p-2 absolute top-5  right-5' alt="" />
-
+            <div className="bg-[#FD356E] block md:hidden p-5 absolute w-full top-0  right-0"></div>
+            <img src={Logo} className='bg-[#3C3C3C] border-[#3C3C3C] border md:hidden rounded-full p-2 absolute top-5  right-5' alt="" />
               
-
-              <form onSubmit={loginAuth} className=" grid gap-10 z-10  backdrop-blur-4xl   p-8 md:p-[5vw] w-full rounded-2xl">
-               <h1 className="text-4xl font-semibold tracking-tight text-gray-100 sm:text-4xl">Sign in</h1>
+              <form onSubmit={loginAuth} className=" grid gap-10 z-10  backdrop-blur-4xl   p-8 md:p-[8vw] w-full rounded-2xl">
+                <div className="text-white">
+                      <h1 className="text-4xl  tracking-tight text-gray-00 ">
+                      Sign in
+                    </h1>
+                    <h1 className=" mt-2 font-thin tracking-tight text-gray-00 text-xl">
+                    Create your account
+                    </h1>
+                </div>
                  <div className="">
                     <div className="mt-6">
                       <label htmlFor="email" className="block text-sm font-medium text-gray-400 after:text-red-400 after:ml-1 after:text-base after:content-['*']">
@@ -136,15 +142,15 @@ export default function AuthLogin() {
                     </div>
 
                     <div className="mt-6">
+                      
                       <button
-                        type="submit"
-                        disabled={loading}
-                        className={`w-full flex justify-center py-3 font-bold px-4 border border-transparent rounded-md shadow-sm text-md text-white bg-[#ef205a] hover:bg-[#d73966] focus:outline-none focus:ring-2 focus:ring-[#FD356E] focus:ring-offset-2 focus:ring-offset-gray-800 ${
-                          loading ? 'cursor-wait' : ''
-                        }`}
-                      >
-                        {loading ? 'Loading..' : 'Sign in'}
-                      </button>
+                    type="submit"
+                    disabled={loading}
+                    className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-semibold text-white bg-[#FD356E] hover:bg-[#FD356E] focus:outline-none focus:ring-2 focus:ring-[#FD356E] focus:ring-offset-2 focus:ring-offset-gray-800 ${
+                        loading ? 'cursor-wait' : ''
+                    }`}
+>                         {loading ? 'Loading..' :"Create"}
+                        </button>
                     </div>
 
                     <div className="divide-y-[1px] relative  divide-[#2d313f] text-white ">
@@ -167,10 +173,11 @@ export default function AuthLogin() {
 
                    <div className="mt-6 divide-x-[1px] divide-[#2d313f] flex justify-center text-base  text-[#5c5c5e] ">
                     <Link className='px-5  text-sm' to='/register'>Forget Password?</Link>
-                    <Link className='px-5  text-sm' to='/auth/register'>SignUp</Link>
+                    <Link className='px-5 group text-sm' to='/auth/register'>Need an account?<span className='text-[#FD356E] group-hover:underline'> SignUp</span></Link>
 
 
                    </div>
+                   
                   </div>
                  
                   
