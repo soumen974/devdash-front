@@ -84,7 +84,7 @@ export default function VerifyMail({ email, setIsLoading,setMessagetoAuth, isCod
   return (
     <div className="z-10 px-10">
       
-      <div className="border border-[#3C3C3C] p-14 rounded-2xl">
+      <div className="max-md:border max-md:border-[#3C3C3C] p-14 rounded-2xl">
         <div className="text-4xl font-semibold flex gap-3">
           Enter Code <h1 className="text-sm font-normal flex items-center text-blue-600 ">{formatTime(time)}</h1> 
           {time === 0 && <button className="text-red-600 text-sm font-normal">Time out</button>}

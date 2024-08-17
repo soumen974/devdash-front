@@ -152,7 +152,7 @@ const authLogout = async () => {
                  
  
                {navLinks.map((link) => (
-               <li onClick={()=>{setIsSidebarOpen(!isSidebarOpen)}} key={link.title}>
+               <li  key={link.title}>
                   <NavLink
                   title={link.title}
                      to={link.path}
