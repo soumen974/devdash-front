@@ -22,9 +22,9 @@ const Notification=({className})=>{
 }
 
 
-export default function Head() {
+export default function Head({sideBar, setsideBar}) {
  
- const [sideBar, setsideBar] = useState(false);
+//  const [] = useState(false);
 
  const [message, setMessage] = useState('');
   const [developerData, setDeveloperData] = useState({});
@@ -51,7 +51,7 @@ export default function Head() {
   }, []);
 
   if (loading) {
-    return <div className='bg-[#19191C] fixed w-full h-full flex justify-center items-center'>
+    return <div className='bg-[#19191C] z-50 fixed w-full h-full flex justify-center items-center'>
       <div role="status">
       <svg aria-hidden="true" class="w-8 h-8  animate-spin text-gray-800 fill-[#FD356E]" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
@@ -68,21 +68,21 @@ export default function Head() {
       
   return (
     <>
-    <div className="flex">
-        <SideBar  isSidebarOpen={sideBar} setIsSidebarOpen={setsideBar}/>
-        <RightSideBar/>
+    <div className="">
+        {/* <SideBar  isSidebarOpen={sideBar} setIsSidebarOpen={setsideBar}/> */}
+        {/* <RightSideBar/> */}
 
        
         <div className="  ">
-          <div className=" bg-[#101219] pl-4  fixed w-full z-40">
+          <div className=" bg-[#101219]   fixed w-screen z-40">
             <div className="  ">
               
-              <nav aria-label="Top" className="pr-4 md:pr-7 h-16 items-center flex justify-between ">
+              <nav aria-label="Top" className=" h-16 items-center flex mr-[20rem] justify-between ">
               
                 <div className="flex justify-around gap-20 ">
                   
-                  <div className=" flex     gap-4 justify-start  ">
-                    <button   onClick={() => setsideBar(!sideBar)} className=" md:hidden  flex justify-center items-center  p-2   text-sm text-gray-300 rounded-lg  hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                  <div className=" flex md:hidden     gap-4 justify-start  ">
+                    <button   onClick={() => setsideBar(!sideBar)} className="  flex justify-center items-center  p-2   text-sm text-gray-300 rounded-lg  hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
                       <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                       <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
                       </svg>
@@ -144,13 +144,13 @@ export default function Head() {
 
                     <div className="text-white flex items-center   gap-2 relative">
                   
-                      <div className=" items-center flex rounded-full  before:w-2 before:h-2 h-full w-fit before:absolute before:left-7 before:opacity-75 before:animate-ping  before:top-0 before:bg-red-500 before:rounded-full     after:w-2 after:h-2 after:absolute after:left-7   after:top-0 after:bg-red-500 after:rounded-full ">
-                        <Notification className="w-12 h-12 bg-gray-700 rounded-full p-3 fill-white" />
+                      <div className=" items-center flex rounded-full p-2  before:w-2 before:h-2 h-full w-fit before:absolute before:left-7 before:opacity-75 before:animate-ping  before:top-0 before:bg-red-500 before:rounded-full     after:w-2 after:h-2 after:absolute after:left-7   after:top-0 after:bg-red-500 after:rounded-full ">
+                        <Notification className="w-6 h-6 p  fill-white" />
                       </div>
-                      <div className="md:flex  group hidden  items-center gap-1">
-                        <div className="  rounded-full p-2 ">
+                      <div className="flex  group   items-center gap-1">
+                        <div className="  rounded-full  ">
                           {/* <User/> */}
-                          <img className='w-12 h-12 rounded-full' src="https://www.befunky.com/images/wp/wp-2021-01-linkedin-profile-picture-focus-face.jpg?auto=avif,webp&format=jpg&width=950" alt="" />
+                          <img className='w-9 h-9 rounded-full' src="https://www.befunky.com/images/wp/wp-2021-01-linkedin-profile-picture-focus-face.jpg?auto=avif,webp&format=jpg&width=950" alt="" />
                         </div>
                         <div className="relative">
                           <ChevronDown className='h-4 w-4 ' />

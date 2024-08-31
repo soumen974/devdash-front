@@ -8,6 +8,8 @@ import AdData from "../components/AdData";
 import { Link } from 'react-router-dom';
 import google from "../../user/assets/google-logo-9808.png";
 import Logo from "../../components/assets/Logo.svg";
+import github from "../assets/github-mark-white.png";
+
 
 
 export default function Auth() {
@@ -47,7 +49,7 @@ export default function Auth() {
 
     const handleOAuthGoogleLogin = () => {
       // setLoading(true);
-      window.location.href = `https://foxdashapi.onrender.com/auth/google`;
+      window.location.href = `${process.env.REACT_APP_API}/auth/google`;
     };
 
   return (
@@ -109,17 +111,28 @@ export default function Auth() {
                     <div className=""></div>
                   </div>
 
-                  <div className=" mt-6">
-                  <div
-                    onClick={handleOAuthGoogleLogin}
-                    disabled={loading}
-                    className={`w-full flex gap-3 items-center text-sm justify-center py-3 cursor-pointer font-bold px-4 border border-transparent rounded-md shadow-sm text-md text-white bg-[#303030] hover:bg-[#474646] focus:outline-none focus:ring-2 focus:ring-[#FD356E] focus:ring-offset-2 focus:ring-offset-gray-800 ${
-                      loading ? 'cursor-wait' : ''
-                    }`}
-                  >
-                    <img src={google} className='w-5 h-5' alt="" />
-                    Register with Google
-                  </div>
+                  <div className=" mt-6 grid gap-2">
+                    <div
+                      onClick={handleOAuthGoogleLogin}
+                      disabled={loading}
+                      className={`w-full flex gap-3 items-center text-[0.8rem] rounded-md justify-center py-2 cursor-pointer  px-4 border border-transparent  shadow-sm  text-white bg-[#3030306d] hover:bg-[#303030] focus:outline-none focus:ring-2 focus:ring-[#FD356E] focus:ring-offset-2 focus:ring-offset-gray-800 ${
+                        loading ? 'cursor-wait' : ''
+                      }`}
+                    >
+                      <img src={google} className='w-5 h-5' alt="" />
+                      Register with Google
+                    </div>
+                    
+                    <div
+                        onClick={handleOAuthGoogleLogin}
+                        disabled={loading}
+                        className={`w-full flex gap-3 items-center text-[0.8rem] rounded-md justify-center py-2 cursor-pointer  px-4 border border-transparent  shadow-sm  text-white bg-[#3030306d] hover:bg-[#303030] focus:outline-none focus:ring-2 focus:ring-[#FD356E] focus:ring-offset-2 focus:ring-offset-gray-800 ${
+                          loading ? 'cursor-wait' : ''
+                        }`}
+                      >
+                        <img src={github} className='w-5 h-5' alt="" />
+                        Register with Github
+                      </div>
                   </div>
 
                 </div>
