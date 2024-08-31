@@ -12,7 +12,7 @@ export default function Hero() {
 
     const handleOAuthGoogleLogin = () => {
         // setLoading(true);
-        window.location.href = `https://foxdashapi.onrender.com/auth/google`;
+        window.location.href = `${process.env.REACT_APP_API}/auth/google`;
       };
 
   return (
