@@ -64,7 +64,7 @@ const StreaksTable = () => {
   return (
     <div className="bg-red-20">
       <div className="border overflow-auto border-gray-600 rounded-md p-3 gap-2 grid grid-cols-8">
-      {!username?
+      {username?
       contributions.map((day, index) => (
           <div
             key={day.date}
@@ -75,7 +75,7 @@ const StreaksTable = () => {
         ))
         :
         <div className="w-44 h-28 flex justify-center items-center">
-          <Trackgithub/>
+          {/* <Trackgithub/> */}
 
         </div>
         
