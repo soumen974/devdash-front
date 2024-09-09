@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom';
 import google from "../../user/assets/google-logo-9808.png";
 import Logo from "../../components/assets/Logo.svg";
 import github from "../assets/github-mark-white.png";
+import { useNavigate } from 'react-router-dom';
+
 
 
 
@@ -19,6 +21,25 @@ export default function Auth() {
     const[loading,setLoading] = useState(false);
     const[isCodeSend,setIsCodeSend] = useState(false);
     const [isoktoProceed, setIisoktoProceed] = useState(false);
+    const navigate=useNavigate();
+
+
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+           await axios.get(`${process.env.REACT_APP_API}/auth/protected`, { withCredentials: true });
+          navigate('/dashboard');
+        } catch (error) {
+          setLoading(true);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchData();
+    }, []);
+
 
   
     const handleSubmit = async (e) => {

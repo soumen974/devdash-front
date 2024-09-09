@@ -8,7 +8,7 @@ export default function DashHome() {
     <div className='  flex items-center justify-center  '>
       <div className="mx-auto group max-w-7xl overflow-auto">
         <StreaksTable/>
-        {/* <LeetCodestreeks/> */}
+        <LeetCodestreeks/>
         {/* <HackerRankBadges/> */}
         </div>
     

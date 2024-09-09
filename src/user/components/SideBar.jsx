@@ -135,7 +135,7 @@ const authLogout = async () => {
 
   return (
     <>
-      <aside  id="cta-button-sidebar" className={`h-screen  max-md:left-0 z-20  max-md:absolute max-md:h-full max-md:top-0    ${!isSidebarOpen? "  w-[18rem]  ": " w-0 md:w-[18rem] "} `} aria-label="Sidebar">
+      <aside  id="cta-button-sidebar" className={`h-screen   z-20  max-md:absolute  w-[18rem]   ${!isSidebarOpen? " ml-0   ": " -ml-80 md:ml-0 "} `} aria-label="Sidebar">
          <div className="h-full divide-y-[1px] divide-[#2d313f] flex justify-between  flex-col px-3 py-4 overflow-y-auto bg-[#14161D]">
            
             <div className="">

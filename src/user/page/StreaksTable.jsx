@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
+import Trackgithub from "../assets/undraw_developer_activity_re_39tg.svg";
 
 const token = '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';
 const username = 'soumen974';
@@ -62,15 +63,23 @@ const StreaksTable = () => {
 
   return (
     <div className="bg-red-20">
-      <div className="border overflow-auto border-gray-600 rounded-md p-3 gap-1 grid grid-cols-8">
-      {contributions.map((day, index) => (
+      <div className="border overflow-auto border-gray-600 rounded-md p-3 gap-2 grid grid-cols-8">
+      {!username?
+      contributions.map((day, index) => (
           <div
             key={day.date}
-            className="cursor-pointer w-[2vw] h-[2vw] sm:w-[1.2vw] sm:h-[1.2vw] md:w-[1vw] md:h-[1vw] lg:w-[0.54rem] lg:h-[0.5rem] rounded-sm"
+            className="cursor-pointer w-[2vw] h-[2vw] sm:w-[1.2vw] sm:h-[1.2vw] md:w-[0.6vw] md:h-[0.6vw]  rounded-sm"
             style={{ backgroundColor: getColorClass(day.color), gridColumn: `${Math.floor(index / 7) + 1}`, gridRow: `${(index % 7) + 1}` }}
             title={`${day.contributionCount} contribution${day.contributionCount !== 1 ? 's' : ''} on ${formatDate(day.date)}`}
           ></div>
-        ))}
+        ))
+        :
+        <div className="w-44 h-28 flex justify-center items-center">
+          <Trackgithub/>
+
+        </div>
+        
+        }
       </div>
     </div>
   );
