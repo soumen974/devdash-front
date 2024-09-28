@@ -6,7 +6,7 @@ import DialogBox from '../../components/DialogBox';
 import SideBar from './SideBar';
 import RightSideBar from "./RightSideBar";
 import { Search } from 'lucide-react';
-import {User ,ChevronDown  } from 'lucide-react';
+import {User ,ChevronDown ,Mail ,SunMoon } from 'lucide-react';
 
 
 
@@ -95,7 +95,7 @@ export default function Head({sideBar, setsideBar}) {
                     </div>
                   </div>
 
-                  <form  className={`  transition-all ease-in-out duration-500 flex items-center`}>
+                  <form  className={` ml-5 transition-all ease-in-out duration-500 flex items-center`}>
                   
                   <div className="relative ">
                     <input
@@ -110,7 +110,7 @@ export default function Head({sideBar, setsideBar}) {
                     />
                     <button
                       // onClick={handleSearch}
-                      className="sm:absolute max-sm:hidden  bg-gray-00 left-0 bottom-2 pr-2 font-medium text-sm text-gray-400"
+                      className="sm:absolute max-sm:hidden  bg-gray-00 left-0 bottom-2 pr-2 font-medium text-sm text-gray-400 hover:text-gray-300"
                     >
                       <Search className=" size-5" />
                     </button>
@@ -123,7 +123,7 @@ export default function Head({sideBar, setsideBar}) {
 
                 </div>
                 
-                <div className="text-white flex gap-2 relative">
+                <div className="text-white flex gap-2 relative ">
 
                   <button
                       // onClick={handleSearch}
@@ -137,18 +137,18 @@ export default function Head({sideBar, setsideBar}) {
                       <div className=" items-center flex rounded-full p-2  before:w-2 before:h-2 h-full w-fit before:absolute before:left-7 before:opacity-75 before:animate-ping  before:top-0 before:bg-red-500 before:rounded-full     after:w-2 after:h-2 after:absolute after:left-7   after:top-0 after:bg-red-500 after:rounded-full ">
                         <Notification className="w-6 h-6 p  fill-white" />
                       </div>
-                      <div className="flex  group   items-center gap-1">
+                      <div className="flex  group    items-center gap-1">
                         <div className="  rounded-full  ">
                           {/* <User/> */}
                           <img className='w-9 h-9 rounded-full' src="https://www.befunky.com/images/wp/wp-2021-01-linkedin-profile-picture-focus-face.jpg?auto=avif,webp&format=jpg&width=950" alt="" />
                         </div>
                         <div className="relative">
                           <ChevronDown className='h-4 w-4 ' />
-                          <div className="absolute group-hover:block hidden top-10 bg-gray-500 p-5  -right-5">
-                          <p className='text-white'><strong>Username:</strong> {developerData.username}</p>
-                          <p className='text-white'><strong>ID:</strong> {developerData.id}</p>
-                          <p className='text-white'><strong>Email:</strong> {developerData.email}</p>
-
+                          <div className="absolute   group-hover:grid hidden items-center gap-1  shadow-md  top-8 bg-[#1A1B21] rounded-md p-5  -right-5">
+                            <p className='text-white flex gap-2 text-md'><User className='h-5 w-5'/> {developerData.username}</p>
+                            <p className='text-white flex gap-2  '><Mail className='h-5 w-5' /> {developerData.email}</p>
+                            {/* <p className='text-white'>{developerData.id}</p> */}
+                            <p className='text-white flex gap-2'><SunMoon className='h-5 w-5' />Appearance</p>
                           </div>
                         </div>
                       </div>
