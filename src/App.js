@@ -10,6 +10,7 @@ import Reminderading from "./user/page/Reminderading";
 import Classtimetable from "./user/page/Classtimetable";
 import Portfolio from "./user/page/Portfolio";
 import Gemini from "./user/page/Gemini";
+import Resume from "./user/page/Resume";
 import Login from "./Auth/pages/AuthLogin";
 import "./App.css"
 import LayoutAss from "./Assignment/Layout";
@@ -34,6 +35,8 @@ function App() {
             <Route path="/dashboard/classtimetable" element={<Classtimetable/>} />
             <Route path="/dashboard/portfolio" element={<Portfolio/>} />
             <Route path="/dashboard/gemini" element={<Gemini/>} />
+            <Route path="/dashboard/resume" element={<Resume/>} />
+
 
           </Route>
 
