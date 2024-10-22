@@ -97,11 +97,16 @@ const SideBar = (Props) => {
 
 //  ----
 
+
 const authLogout = async () => {
    try {
-     // Make a request to the backend to clear the cookie and log out
      await axios.post(`${process.env.REACT_APP_API}/auth/logout`,{}, { withCredentials: true });
-   //   alert('Logout successful');
+     
+   window.history.pushState(null, null, window.location.href);
+      window.onpopstate = function () {
+         window.history.go(1); 
+      };
+
    setTimeout(() => {
       // navigate('/');
       window.location.reload();
@@ -242,7 +247,7 @@ const authLogout = async () => {
                ActionButtonName={"Logout"}
                ActionButtonColorRed={true}
                IconName={false}
-               handleLogic={handleLogout}
+               handleLogic={authLogout}
                Loading={Loading}
                />
 
