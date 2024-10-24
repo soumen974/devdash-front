@@ -13,7 +13,7 @@ import Gemini from "./user/page/Gemini";
 import Resume from "./user/page/Resume";
 import Login from "./Auth/pages/AuthLogin";
 import "./App.css"
-import LayoutAss from "./Assignment/Layout";
+// import LayoutAss from "./Assignment/Layout";
 
 function App() {
   return (
@@ -40,9 +40,7 @@ function App() {
 
           </Route>
 
-          <Route path="/ass" element={<LayoutAss/>}>
           
-          </Route>
 
 
 

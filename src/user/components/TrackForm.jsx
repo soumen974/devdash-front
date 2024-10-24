@@ -5,9 +5,6 @@ import axios from 'axios';
 export default function TrackForm(Props) {
 
     const cancelButtonRef1 = useRef(null);
-
-  const  settrackFormShow=Props.settrackFormShow;
-  const trackFormShow=Props.trackFormShow;
   const [formData, setFormData] = useState({
     github_id: '',
     github_token: '',
