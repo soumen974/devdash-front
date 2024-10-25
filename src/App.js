@@ -13,6 +13,7 @@ import Gemini from "./user/page/Gemini";
 import Resume from "./user/page/Resume";
 import Login from "./Auth/pages/AuthLogin";
 import "./App.css"
+import Chatpage from './user/components/Chatpage';
 // import LayoutAss from "./Assignment/Layout";
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
             <Route path="/dashboard/classtimetable" element={<Classtimetable/>} />
             <Route path="/dashboard/portfolio" element={<Portfolio/>} />
             <Route path="/dashboard/gemini" element={<Gemini/>} />
+            <Route path="/dashboard/gemini/chats/:id" element={<Chatpage/>} />
             <Route path="/dashboard/resume" element={<Resume/>} />
 
 
