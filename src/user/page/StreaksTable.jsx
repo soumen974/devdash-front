@@ -35,11 +35,11 @@ export default function StreaksTable(Props) {
     const fetchTrackInfo = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API}/dev/track`, {
-          withCredentials: true, // To send cookies for authentication
+          withCredentials: true, 
         });
         setTrackData(response.data.track);
       } catch (error) {
-        if (error.response && error.response.status === 404) {
+        if (axios.isAxiosError(error) && error.response && error.response.status === 404) {
           setMessage('Track information not found');
         } else {
           setError('Error fetching track information');
@@ -51,11 +51,13 @@ export default function StreaksTable(Props) {
   }, []);
 
 
-  const token = trackData?.github?.token || 'N/A';
-const username = trackData?.github?.github_id || 'N/A';
+  const token = trackData?.github_token || '';
+const username = trackData?.github_id || '';
 
-// trackData.github.github_id}
-//    Token: {trackData.github.token}
+console.log(username);
+console.log(token);
+
+
 
 
 
@@ -97,6 +99,7 @@ const username = trackData?.github?.github_id || 'N/A';
 
   return (
     <div className="">
+      
       {username?
       <div className="border overflow-auto border-gray-600 rounded-md p-3 gap-2 grid grid-cols-8">
       
@@ -125,38 +128,3 @@ const username = trackData?.github?.github_id || 'N/A';
 };
 
 
-// {trackData ? (
-//   <div className='text-white'>
-//     <div className="mb-4">
-//       <h2 className="font-bold">GitHub</h2>
-//       <p>ID: {trackData.github.github_id}</p>
-//       <p>Token: {trackData.github.token}</p>
-//     </div>
-
-//     <div className="mb-4">
-//       <h2 className="font-bold">Codeforces</h2>
-//       <p>ID: {trackData.codeforces.codeforces_id}</p>
-//       <p>Token: {trackData.codeforces.token}</p>
-//     </div>
-
-//     <div className="mb-4">
-//       <h2 className="font-bold">CodeChef</h2>
-//       <p>ID: {trackData.codechef.codechef_id}</p>
-//       <p>Token: {trackData.codechef.token}</p>
-//     </div>
-
-//     <div className="mb-4">
-//       <h2 className="font-bold">HackerRank</h2>
-//       <p>ID: {trackData.hackerrank.hackerrank_id}</p>
-//       <p>Token: {trackData.hackerrank.token}</p>
-//     </div>
-
-//     <div className="mb-4">
-//       <h2 className="font-bold">LeetCode</h2>
-//       <p>ID: {trackData.leetcode.leetcode_id}</p>
-//       <p>Token: {trackData.leetcode.token}</p>
-//     </div>
-//   </div>
-// ) : (
-//   <p>Loading...</p>
-// )}
