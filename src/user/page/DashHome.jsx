@@ -11,7 +11,7 @@ export default function DashHome() {
     <div className='  flex items-center justify-center  '>
       <div className="mx-auto group max-w-7xl overflow-auto">
         <StreaksTable settrackFormShow={settrackFormShow} trackFormShow={trackFormShow} />
-        <LeetCodestreeks/>
+        {/* <LeetCodestreeks/> */}
         {/* <HackerRankBadges/> */}
         <TrackForm settrackFormShow={settrackFormShow} trackFormShow={trackFormShow}/>
 

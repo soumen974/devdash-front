@@ -137,7 +137,7 @@ const Home = () => {
           <h1 className='text-2xl md:text-4xl flex gap-1 pb-5'>GitHub Contributions
             {/* <KnowMore link={'https://github.com/soumen974'} /> */}
             </h1>
-          <GithubStreaks />
+          {/* <GithubStreaks /> */}
         </div>
 
         {/* recent experience */}
