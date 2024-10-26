@@ -4,16 +4,35 @@ import Chat from '../assets/chat.png'
 import Code from '../assets/code.png'
 import Arrow from '../assets/arrow.png'
 import pagelogo from "../assets/Logo.svg";
-// import NewPrompt from "../components/NewPrompt";
+import axios from "axios"
 
 export default function Gemini() {
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const text = e.target.text.value;
+  if(!text) return;
+
+  await axios.post(
+  "http://localhost:5000/api/chats",
+  { text },
+  {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    withCredentials: true,
+  }
+);
+
+}
+
   return (
     <div className="h-[100%] flex flex-col items-center text-white">
       <div className="flex-1 flex flex-col mt-[15%] items-center justify-center w-1/2 gap-12">
         <div className="flex items-center gap-5 opacity-20 ">
           <img src={pagelogo} alt="" className="size-16" />
           <h1 className="text-[64px] font-medium bg-gradient-to-r from-[#217bfe] to-[#e55571] bg-clip-text text-transparent max-xl:text-6xl">
-          FoxDash
+          FoxDash          
           </h1>
         </div>
       </div>
@@ -32,7 +51,7 @@ export default function Gemini() {
         </div>
       </div>
       <div className="flex mt-auto w-1/2 h-[4vw] bg-[#2c2937] rounded-2xl">
-        <form  className="w-[100%] h-[100%] flex items-center justify-between gap-5 mb-2">
+        <form onSubmit={handleSubmit} className="w-[100%] h-[100%] flex items-center justify-between gap-5 mb-2">
           <input type="text" name="text" placeholder="Ask me Anything" className="flex-1 p-4 bg-transparent border-none outline-none"/>
           <button className="bg-[#605e68] rounded-full border-none cursor-pointer p-3 flex items-center justify-center mr-4">
             <img src={Arrow} alt="" className="size-4"/>

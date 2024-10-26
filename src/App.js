@@ -14,11 +14,14 @@ import Resume from "./user/page/Resume";
 import Login from "./Auth/pages/AuthLogin";
 import "./App.css"
 import Chatpage from './user/components/Chatpage';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // import LayoutAss from "./Assignment/Layout";
 
+const queryClient = new QueryClient()
 function App() {
   return (
     <>
+    <QueryClientProvider client={queryClient}>
       <Router>
         <Routes>
 
@@ -49,6 +52,7 @@ function App() {
           <Route path="*" element={<Notfound/>} />
         </Routes>
       </Router>
+      </QueryClientProvider>
     </>
   );
 }

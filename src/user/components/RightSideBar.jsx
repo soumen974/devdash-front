@@ -1,10 +1,20 @@
 import React, { useState } from 'react'
 import { PanelRightOpen  } from "lucide-react";
 import { Link } from 'react-router-dom';
-import Logo  from "../assets/Logo.svg"
+import Logo  from "../assets/Logo.svg";
+import { useQuery } from "@tanstack/react-query";
 
 
 export default function RightSideBar(props) {
+
+  const { isPending, error, data } = useQuery({
+    queryKey: ["userChats"],
+    queryFn: () =>
+      fetch(`${process.env.REACT_APP_API}/api/userchats`, {
+        credentials: "include",
+      }).then((res) => res.json()),
+  });
+
   // const [issidebar, setissidebar] = useState(true);
   const setissidebar=props.setissidebar;
   const issidebar=props.issidebar;
@@ -15,10 +25,22 @@ export default function RightSideBar(props) {
           <span>DASHBOARD</span>
           <Link to="/dashboard/gemini" >Create a new Chat</Link>
          <div className=' relative'>
-          <Link to="/" className='flex flex-col hover:bg-[#262936] rounded-lg p-3'>Soumen Bhunia</Link>
-          <Link to="/" className='flex flex-col hover:bg-[#262936] rounded-lg p-3'>Soumen Bhunia</Link>
-          <Link to="/" className='flex flex-col hover:bg-[#262936] rounded-lg p-3'>Soumen Bhunia</Link>
-          <Link to="/" className='flex flex-col hover:bg-[#262936] rounded-lg p-3'>Soumen Bhunia</Link>
+         {isPending
+              ? "Loading.."
+              : error
+              ? "Something went wrong"
+              : data?.map((chat) => (
+                  <Link
+                  key={chat._id}
+                    to={`/dashboard/gemini/chats/${chat._id}`}
+                    className='flex flex-col hover:bg-[#262936] rounded-lg p-3'
+                  >
+                    {chat.title}
+                  </Link>
+                ))}
+
+
+          {/* <Link to="/" className='flex flex-col hover:bg-[#262936] rounded-lg p-3'>Soumen Bhunia</Link> */}
           
 
          </div>
