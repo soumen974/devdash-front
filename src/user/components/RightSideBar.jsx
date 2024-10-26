@@ -41,10 +41,7 @@ export default function RightSideBar(props) {
 
 
           {/* <Link to="/" className='flex flex-col hover:bg-[#262936] rounded-lg p-3'>Soumen Bhunia</Link> */}
-          {/* <Link to="/" className='flex flex-col hover:bg-[#262936] rounded-lg p-3'>Soumen Bhunia</Link>
-          <Link to="/" className='flex flex-col hover:bg-[#262936] rounded-lg p-3'>Soumen Bhunia</Link>
-          <Link to="/" className='flex flex-col hover:bg-[#262936] rounded-lg p-3'>Soumen Bhunia</Link>
-           */}
+          
 
          </div>
 
