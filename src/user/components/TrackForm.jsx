@@ -4,53 +4,54 @@ import axios from 'axios';
 
 export default function TrackForm(Props) {
 
-    const cancelButtonRef1 = useRef(null);
+  const cancelButtonRef1 = useRef(null);
+  
   const [formData, setFormData] = useState({
     github_id: '',
     github_token: '',
-    codeforces_id: '',
-    codeforces_token: '',
-    codechef_id: '',
-    codechef_token: '',
-    hackerrank_id: '',
-    hackerrank_token: '',
-    leetcode_id: '',
-    leetcode_token: '',
+    // Add other platform fields as necessary
   });
 
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prevData) => ({
+      ...prevData,
       [name]: value,
-    });
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
     setError('');
+    setLoading(true);
 
     try {
       const response = await axios.post(
-       ` ${process.env.REACT_APP_API}/dev/track`,
+        `${process.env.REACT_APP_API}/dev/track`, // Adjust endpoint as needed
         formData,
         {
-          withCredentials: true,
+          withCredentials: true, // Include credentials for authentication
         }
       );
       setMessage(response.data.message);
+      Props.settrackFormShow( false);
     } catch (error) {
       if (error.response) {
         setError(error.response.data.message || 'Server error');
       } else {
         setError('Error submitting the form');
       }
+    } finally {
+      setLoading(false);
     }
   };
+
+
 
   
 
@@ -121,117 +122,7 @@ export default function TrackForm(Props) {
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="codeforces_id">
-            Codeforces ID
-          </label>
-          <input
-            id="codeforces_id"
-            name="codeforces_id"
-            type="text"
-            value={formData.codeforces_id}
-            onChange={handleChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="codeforces_token">
-            Codeforces Token
-          </label>
-          <input
-            id="codeforces_token"
-            name="codeforces_token"
-            type="text"
-            value={formData.codeforces_token}
-            onChange={handleChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="codechef_id">
-            CodeChef ID
-          </label>
-          <input
-            id="codechef_id"
-            name="codechef_id"
-            type="text"
-            value={formData.codechef_id}
-            onChange={handleChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="codechef_token">
-            CodeChef Token
-          </label>
-          <input
-            id="codechef_token"
-            name="codechef_token"
-            type="text"
-            value={formData.codechef_token}
-            onChange={handleChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="hackerrank_id">
-            HackerRank ID
-          </label>
-          <input
-            id="hackerrank_id"
-            name="hackerrank_id"
-            type="text"
-            value={formData.hackerrank_id}
-            onChange={handleChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="hackerrank_token">
-            HackerRank Token
-          </label>
-          <input
-            id="hackerrank_token"
-            name="hackerrank_token"
-            type="text"
-            value={formData.hackerrank_token}
-            onChange={handleChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="leetcode_id">
-            LeetCode ID
-          </label>
-          <input
-            id="leetcode_id"
-            name="leetcode_id"
-            type="text"
-            value={formData.leetcode_id}
-            onChange={handleChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="leetcode_token">
-            LeetCode Token
-          </label>
-          <input
-            id="leetcode_token"
-            name="leetcode_token"
-            type="text"
-            value={formData.leetcode_token}
-            onChange={handleChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
+      
 
         <div className="flex items-center justify-between">
           <button

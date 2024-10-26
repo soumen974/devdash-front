@@ -1,7 +1,10 @@
 import React from 'react'
+import ResumePdfMaker from "../components/ResumePdfMaker";
 
 export default function Resume() {
   return (
-    <div>Resume</div>
+    <div>
+      <ResumePdfMaker />  
+    </div>
   )
 }
