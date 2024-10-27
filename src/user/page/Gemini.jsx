@@ -5,24 +5,52 @@ import Code from '../assets/code.png'
 import Arrow from '../assets/arrow.png'
 import pagelogo from "../assets/Logo.svg";
 import axios from "axios"
+import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function Gemini() {
+
+  const queryClient = useQueryClient();
+
+  const navigate = useNavigate();
+
+const mutation = useMutation({
+  mutationFn: (text) => {
+    return axios.post(
+      `${process.env.REACT_APP_API}/api/chats`,
+      { text },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true, // equivalent to credentials: "include"
+      }
+    ).then((res) => res.data);
+  },
+  onSuccess: (id) => {
+    // Invalidate and refetch
+    queryClient.invalidateQueries({ queryKey: ['userChats'] });
+    navigate(`/dashboard/gemini/chats/${id}`);
+  },
+});
 
 const handleSubmit = async (e) => {
   e.preventDefault();
   const text = e.target.text.value;
   if(!text) return;
 
-  await axios.post(
-  "http://localhost:5000/api/chats",
-  { text },
-  {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    withCredentials: true,
-  }
-);
+  mutation.mutate(text);
+
+//   await axios.post(
+//   "http://localhost:5000/api/chats",
+//   { text },
+//   {
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     withCredentials: true,
+//   }
+// );
 
 }
 
