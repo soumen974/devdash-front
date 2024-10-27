@@ -30,7 +30,7 @@ const Chatpage = () => {
             <>
               {message.img && (
                 <IKImage
-                  urlEndpoint={import.meta.env.VITE_IMAGE_KIT_ENDPOINT}
+                  urlEndpoint={process.env.REACT_APP_IMAGE_KIT_ENDPOINT}
                   path={message.img}
                   height="300"
                   width="400"
@@ -52,7 +52,7 @@ const Chatpage = () => {
               </div>
             </>
           ))}
-      <NewPrompt data={data}/>
+      {data && <NewPrompt data={data}/>}
     </div>
   );
 };
