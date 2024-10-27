@@ -1,12 +1,12 @@
 import React, { useRef } from 'react'
-import { IKContext, IKImage, IKUpload } from 'imagekitio-react';
+import { IKContext, IKUpload } from 'imagekitio-react';
 import Attachment from '../assets/attachment.png'
 
 const urlEndpoint = process.env.REACT_APP_IMAGE_KIT_ENDPOINT;
 const publicKey = process.env.REACT_APP_IMAGE_KIT_PUBLICKEY; 
 const authenticator =  async () => {
     try {
-        const response = await fetch('http://localhost:5000/api/upload');
+        const response = await fetch(`${process.env.REACT_APP_API}/api/upload`);
 
         if (!response.ok) {
             const errorText = await response.text();
