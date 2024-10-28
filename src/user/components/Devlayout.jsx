@@ -66,7 +66,7 @@ export default function Devlayout() {
         </div>
       </main>
     </div>
-    <RightSideBar issidebar={issidebar} setissidebar={setissidebar} />
+    <RightSideBar  issidebar={issidebar} setissidebar={setissidebar} />
   </div>
  
   </div>
