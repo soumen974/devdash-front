@@ -42,7 +42,6 @@ function App() {
             <Route path="/dashboard/gemini/chats/:id" element={<Chatpage/>} />
             <Route path="/dashboard/resume" element={<Resume/>} />
 
-
           </Route>
 
           
