@@ -68,9 +68,10 @@ export default function Auth() {
       }
     };
 
-    const handleOAuthGoogleLogin = () => {
-      // setLoading(true);
+    const handleOAuthGoogleLogin = async () => {
+      setLoading(true);
       window.location.href = `${process.env.REACT_APP_API}/auth/google`;
+      // await window.open(`${process.env.REACT_APP_API}/auth/google`,"_self");
     };
 
   return (
@@ -185,10 +186,6 @@ export default function Auth() {
         }
            </div>
         </div>
-
-        
-
-
         </div>
     </div>
   )

@@ -73,6 +73,7 @@ export default function AuthLogin() {
   const handleOAuthGoogleLogin = () => {
     // setLoading(true);
     window.location.href = `${process.env.REACT_APP_API}/auth/google`;
+    // window.open(`${process.env.REACT_APP_API}/auth/google`,"_self");
   };
 
 
