@@ -32,6 +32,7 @@ export default function RightSideBar(props) {
                 ? "Something went wrong"
                 : data?.map((chat) => (
                     <Link
+                    onClick={() => { setissidebar(false); }}
                     key={chat._id}
                       to={`/dashboard/gemini/chats/${chat._id}`}
                       className='flex flex-col hover:bg-[#262936] rounded-lg p-3'

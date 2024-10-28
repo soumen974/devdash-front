@@ -135,14 +135,14 @@ const authLogout = async () => {
   ]
 
   const navLink_bottom=[
-   { title: 'Settings', path: '/', icon: <Settings2 className=' w-5 h-5' /> },
+   { title: 'Settings', path: '/dashboard/settings', icon: <Settings2 className=' w-5 h-5' /> },
    { title: 'Logout', path: '/', icon: <LogOut className=' w-5 h-5' /> }
 
   ]
 
   return (
     <>
-      <aside  id="cta-button-sidebar" className={`h-screen   z-20  max-md:absolute  w-[18rem]   ${!isSidebarOpen? " ml-0   ": " -ml-80 md:ml-0 "} `} aria-label="Sidebar">
+      <aside  id="cta-button-sidebar" className={`h-screen   z-20  max-md:absolute  w-[18rem]   ${isSidebarOpen? " ml-0   ": " -ml-80 md:ml-0 "} `} aria-label="Sidebar">
          <div className="h-full divide-y-[1px] divide-[#2d313f] flex justify-between  flex-col px-3 py-4 overflow-y-auto bg-[#14161D]">
            
             <div className="">
@@ -174,6 +174,7 @@ const authLogout = async () => {
                {navLinks.map((link) => (
                <li  key={link.title}>
                   <NavLink
+                  onClick={() => { setIsSidebarOpen(false); }}
                   title={link.title}
                      to={link.path}
                      end={link.path === '/dashboard'}
@@ -183,7 +184,7 @@ const authLogout = async () => {
                      hover:bg-[#262936] dark:hover:bg-gray-700 group`
                      }
                   >
-                     <div className={({ isActive }) =>`flex-shrink-0  text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white `}>
+                     <div  className={({ isActive }) =>`flex-shrink-0  text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white `}>
                      {link.title==='Dashboard' ? <House className={({ isActive }) =>`${isActive ? 'text-[#FD356E]' : 'text-white'} transition-all ease-in-out duration-500   w-5 h-5`}/>
                       : link.title==='Add to work list' ? <Worklist className={({ isActive }) =>`${isActive ?'fill-[#FD356E]':'fill-white'} transition-all ease-in-out duration-500  w-5 h-5`} /> 
                       : link.title==='Add Reminder' ? <Addreminder className={({ isActive }) =>`${isActive ?'fill-[#FD356E]':'fill-white'} transition-all ease-in-out duration-500  w-5 h-5`} />
@@ -194,7 +195,7 @@ const authLogout = async () => {
 
                       : null}
                      </div>
-                     <span className={`${!isSidebarOpen ? "" : ""} text-start transition-left ease-in-out duration-500 ms-3`}>
+                     <span  className={`${!isSidebarOpen ? "" : ""} text-start transition-left ease-in-out duration-500 ms-3`}>
                      {link.title}
                      </span>
                   </NavLink>
@@ -209,7 +210,7 @@ const authLogout = async () => {
             <ul className="space-y-2 pt-2 font-medium">
             {/* navigation.categories.slice(0, 1) */}
             {navLink_bottom.slice(0, 1).map((links) => (
-               <li onClick={()=>{setIsSidebarOpen(!isSidebarOpen)}} key={links.title}>
+               <li  onClick={() => { setIsSidebarOpen(false); }} key={links.title}>
                <Link to={links.path} title={links.title} className={`flex items-center ${!isSidebarOpen? 'py-3 pl-6  rounded-full':'p-3 flex rounded-lg justify-start'}   text-white hover:bg-[#262936] dark:hover:bg-gray-700 group`}>
                <div  className="flex-shrink-0  text-gray-500   dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" >
                   {links.icon}</div>
@@ -238,7 +239,7 @@ const authLogout = async () => {
      
       
 
-      <span onClick={() => { setIsSidebarOpen(true); }} className={`fixed w-full  z-10 h-screen  md:hidden  ${!isSidebarOpen ? 'md:hidden flex bg-[#07010459]' : 'max-sm:hidden'}`}></span>
+      <span onClick={() => { setIsSidebarOpen(false); }} className={`fixed w-full  z-10 h-screen  md:hidden  ${isSidebarOpen ? 'md:hidden flex bg-[#07010459]' : 'max-sm:hidden'}`}></span>
             <DialogBox 
                open={Dialogopen}
                setOpen={setDialogopenOpen} 
