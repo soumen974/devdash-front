@@ -68,11 +68,11 @@ export default function Hero() {
                                     <div className="md:mt-10 mt-7 flex justify-center md:justify-start gap-5">
                                         <button onClick={handleOAuthGoogleLogin} className='border sm:text-sm text-[3vw] items-center backdrop-blur-sm  border-[#5e5e5e7a] rounded-full px-2 py-2 sm:pr-5 flex gap-2'>
                                             <img className='w-6 h-6 ' src={google} alt="" />
-                                        <h1 className=''>Sign in With Google</h1> 
+                                        <h1 className=''>Continue With Google</h1> 
                                         </button>
                                         <button className='border sm:text-sm text-[3vw] items-center backdrop-blur-sm  border-[#5e5e5e7a] rounded-full px-2 py-2 sm:pr-5 flex gap-2'>
                                         <Github className='h-6 w-6' />
-                                            <h1 className=''>Sign in Github </h1>
+                                            <h1 className=''>Continue with Github </h1>
                                         </button>
                                     </div>
 
