@@ -107,9 +107,9 @@ function ResumePdfMaker() {
 
         <div className="border border-gray-600 rounded-lg p-4">
           <h2 className="text-center font-bold text-xl mb-2">PDF Review</h2>
-          {pdfUrl ? (
+          {!pdfUrl ? (
             <iframe
-              src={pdfUrl}
+              src={'https://soumenbhunia.vercel.app/doc/soumensResume.pdf'}
               title="PDF Preview"
               className="w-full h-[80vh] border rounded-md"
             ></iframe>
