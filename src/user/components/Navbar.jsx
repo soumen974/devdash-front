@@ -47,7 +47,6 @@ export default function Navbar() {
 
  
 
-
   return (
     <>
     <div className="text-white items-center px-3 lg:px-9 py-3 border-b border-[#5e5e5e7a]   backdrop-blur-sm    ">
