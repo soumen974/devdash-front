@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { Mail} from 'lucide-react';
 
 import google from "../../user/assets/google-logo-9808.png";
 import github from "../assets/github-mark-white.png";
@@ -106,18 +107,25 @@ const AuthLogin = () => {
           </div>
 
           <form onSubmit={loginAuth} className="space-y-6">
-            <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-400 after:text-red-400 after:ml-1 after:text-base after:content-['*']">
-                        Email
-                      </label>
+           
+
+            <div className="space-y-1">
+                    <label className="block text-sm font-medium text-gray-300">
+                      Email
+                      <span className="text-red-400 ml-1">*</span>
+                    </label>
+                    <div className="relative">
                       <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full px-4 py-3 text-white bg-[#1E1E24] border border-[#3C3C3C] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FD356E] focus:border-transparent focus:bg-transparent"
-                required
-              />
-            </div>
+                        type="email"
+                        id='email'
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="mt-1 block w-full px-4 py-3 text-white bg-[#1E1E24] border border-[#3C3C3C] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FD356E] focus:border-transparent focus:bg-transparent"
+                        required
+                      />
+                      <Mail className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+                    </div>
+                  </div>
 
             <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-400 after:text-red-400 after:ml-1 after:text-base after:content-['*']">
