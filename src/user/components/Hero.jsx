@@ -21,12 +21,12 @@ export default function Hero() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Mobile Menu Button */}
-        <button 
+        {/* <button 
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="lg:hidden absolute right-4 top-4 p-2 text-gray-400 hover:text-white z-50"
         >
           {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        </button> */}
 
         {/* Mobile Menu Overlay */}
         {mobileMenuOpen && (
