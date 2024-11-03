@@ -1,75 +1,135 @@
-import React, { useState ,useEffect} from 'react'
+import React, { useState, useEffect } from 'react';
 import axios from "axios";
-import Logo from "../assets/Logo.svg";
-import { Menu } from 'lucide-react';
+import { Menu, X, ChevronDown, Bell, User, BarChart2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import Logo from "../assets/Logo.svg";
+
 export default function Navbar() {
-  const [sideBar, setsideBar] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [developerData, setDeveloperData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const [message, setMessage] = useState('');
-   const [developerData, setDeveloperData] = useState({});
-   const [error, setError] = useState('');
-   const [loading, setLoading] = useState(true);
-   const navigate=useNavigate();
- 
   useEffect(() => {
-     const fetchData = async () => {
-       try {
-         const response = await axios.get(`${process.env.REACT_APP_API}/auth/protected`, { withCredentials: true });
-         setMessage(response.data.message);
-         setDeveloperData(response.data.developer_data);
-         setError('');
-         navigate('/dashboard');
-       } catch (error) {
-         setError(error.response?.data?.error || 'Error fetching data');
-         setLoading(true);
-       } finally {
-         setLoading(false);
-       }
-     };
- 
-     fetchData();
-   }, []);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API}/auth/protected`, { withCredentials: true });
+        setDeveloperData(response.data.developer_data);
+        navigate('/dashboard');
+      } catch (error) {
+        setError(error.response?.data?.error || 'Error fetching data');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
-
-   if (loading) {
-    return <div className='bg-[#19191C] fixed w-full h-full flex justify-center items-center'>
-      <div role="status">
-      <svg aria-hidden="true" class="w-8 h-8  animate-spin text-gray-800 fill-[#FD356E]" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-          <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-      </svg>
-      <span class="sr-only">Loading...</span>
-    </div>
-    </div>;
+  if (loading) {
+    return (
+      <div className="fixed inset-0 bg-zinc-900 flex items-center justify-center">
+        <div className="relative w-16 h-16">
+          <div className="absolute inset-0 rounded-full border-4 border-pink-500/20 animate-ping" />
+          <div className="absolute inset-2 rounded-full border-4 border-t-pink-500 animate-spin" />
+        </div>
+      </div>
+    );
   }
 
- 
-
   return (
-    <>
-    <div className="text-white items-center px-3 lg:px-9 py-3 border-b border-[#5e5e5e7a]   backdrop-blur-sm    ">
-      <div className="mx-auto max-w-7xl ">
-
-          <div className="text-white flex justify-between items-center  ">
-            <div className="flex  items-center">
-              <img src={Logo} className=' h-8 w-8' alt="" />
-              <h1 className='text-xl '>FoxDash</h1>
-
-            </div>
-              <div className=" flex justify-center items-center gap-3 max-lg:pr-2">
-                  {["Product", "Features","Sign in"].map((item, index) => (<a key={index} href="/auth/register" className={`text-md font-semibold   ${index==2? ' lg:text-[#fd356e] hover:shadow-md max-lg:bg-[#fd356e] max-lg:hover:shadow-[#fd356e52] py-2 px-4  rounded-md ':'ml-0 text-gray-300 hidden lg:block'}`}>{item}</a>))}
-                 
-                  <div className="  hover:bg-[#6e6e6e53] px-3 py-2     rounded-md   lg:hidden ">
-                    <div className="w-5 p-[1px]  bg-transparent border-b-[1px] border-[#ffffff7d] my-[6px]  "></div>
-                    <div className="w-5 p-px bg-transparent border-b-[1px] border-[#ffffff7d]  my-[6px] "></div>
-                  </div>
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${
+      isScrolled ? 'bg-zinc-900/95 shadow-lg backdrop-blur-lg' : 'bg-transparent'
+    }`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo and Brand */}
+          <div className="flex items-center space-x-3">
+            <div className="flex-shrink-0">
+              <div className="h-8 w-8 bg-white from-pink-500 to-purple-500 rounded-lg flex items-center justify-center">
+                <img src={Logo} className="h-5 w-5 text-white" />
               </div>
-              
+            </div>
+            <span className="text-white font-bold text-xl">FoxDash</span>
           </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center space-x-8">
+            <div className="flex space-x-6">
+              <NavLink href="#" text="Product" />
+              <NavLink href="#" text="Features" hasDropdown />
+              <NavLink href="#" text="Analytics" />
+              <NavLink href="#" text="Support" />
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex items-center space-x-4">
+              <button className="text-gray-300 hover:text-white relative">
+                <Bell className="h-5 w-5" />
+                <span className="absolute -top-1 -right-1 h-3 w-3 bg-pink-500 rounded-full" />
+              </button>
+              <a href='/auth/login' className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                Sign In
+              </a>
+            </div>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button 
+            className="lg:hidden p-2 rounded-lg text-gray-400 hover:text-white hover:bg-zinc-800"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden bg-zinc-900/95 shadow-lg backdrop-blur-lg p-2 rounded-lg">
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              <MobileNavLink href="#" text="Product" />
+              <MobileNavLink href="#" text="Features" />
+              <MobileNavLink href="#" text="Analytics" />
+              <MobileNavLink href="#" text="Support" />
+              <button className="w-full mt-4 bg-pink-500 hover:bg-pink-600 text-white px-4 py-2  rounded-lg transition-colors duration-200">
+                Sign In
+              </button>
+            </div>
+          </div>
+        )}
       </div>
-    </div>
-    </>
-  )
+
+      {/* Bottom Border */}
+      <div className="h-px bg-gradient-to-r from-transparent via-gray-700/50 to-transparent" />
+    </nav>
+  );
 }
+
+// Helper Components
+const NavLink = ({ href, text, hasDropdown }) => (
+  <a 
+    href={href}
+    className="text-gray-300 hover:text-white flex items-center space-x-1 transition-colors duration-200"
+  >
+    <span>{text}</span>
+    {hasDropdown && <ChevronDown className="h-4 w-4" />}
+  </a>
+);
+
+const MobileNavLink = ({ href, text }) => (
+  <a 
+    href={href}
+    className="block px-3 py-2 rounded-lg text-base text-gray-300 hover:text-white hover:bg-zinc-800 transition-colors duration-200"
+  >
+    {text}
+  </a>
+);
