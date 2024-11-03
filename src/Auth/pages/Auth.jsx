@@ -113,6 +113,7 @@ export default function Auth() {
                     <div className="relative">
                       <input
                         type="email"
+                        id='email'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         className="mt-1 block w-full px-4 py-3 text-white bg-[#1E1E24] border border-[#3C3C3C] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FD356E] focus:border-transparent focus:bg-transparent"
