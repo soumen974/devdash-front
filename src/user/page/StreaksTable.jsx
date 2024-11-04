@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
-import Trackgithub from "../assets/undraw_developer_activity_re_39tg.svg";
 
-const token = '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';
-const username = 'soumen974';
+
 
 const query = `
   query ($username: String!) {
@@ -24,9 +22,47 @@ const query = `
   }
 `;
 
-const StreaksTable = () => {
+export default function StreaksTable(Props) {
   const [contributions, setContributions] = useState([]);
+  // const[trackFormShow,settrackFormShow]=useState(false);
 
+
+  const [trackData, setTrackData] = useState(null);
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchTrackInfo = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API}/dev/track`, {
+          withCredentials: true, 
+        });
+        setTrackData(response.data.track);
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response && error.response.status === 404) {
+          setMessage('Track information not found');
+        } else {
+          setError('Error fetching track information');
+        }
+      }
+    };
+
+    fetchTrackInfo();
+  }, []);
+
+
+  const token = trackData?.github_token || '';
+const username = trackData?.github_id || '';
+
+console.log(username);
+console.log(token);
+
+
+
+
+
+
+// github axios 
   useEffect(() => {
     axios.post(
       'https://api.github.com/graphql',
@@ -62,27 +98,33 @@ const StreaksTable = () => {
   };
 
   return (
-    <div className="bg-red-20">
-      <div className="border overflow-auto border-gray-600 rounded-md p-3 gap-2 grid grid-cols-8">
+    <div className="">
+      
       {username?
-      contributions.map((day, index) => (
+      <div className="border overflow-auto border-gray-600 rounded-md p-3 gap-2 grid grid-cols-8">
+      
+      {contributions.map((day, index) => (
           <div
             key={day.date}
             className="cursor-pointer w-[2vw] h-[2vw] sm:w-[1.2vw] sm:h-[1.2vw] md:w-[0.6vw] md:h-[0.6vw]  rounded-sm"
             style={{ backgroundColor: getColorClass(day.color), gridColumn: `${Math.floor(index / 7) + 1}`, gridRow: `${(index % 7) + 1}` }}
             title={`${day.contributionCount} contribution${day.contributionCount !== 1 ? 's' : ''} on ${formatDate(day.date)}`}
           ></div>
-        ))
-        :
-        <div className="w-44 h-28 flex justify-center items-center">
-          {/* <Trackgithub/> */}
-
+        ))}
+       
+        
+      </div>
+       :
+       <div className="border  border-gray-600 rounded-md p-3  grid  ">
+         <div className=' w-[55vw] h-28  flex justify-center items-center text-black  '>
+          <h1 onClick={()=>{Props.settrackFormShow(true)}} className='bg-green-200 p-2 rounded-sm'>Track github</h1>
+          </div>
         </div>
         
         }
-      </div>
+       
     </div>
   );
 };
 
-export default StreaksTable;
+

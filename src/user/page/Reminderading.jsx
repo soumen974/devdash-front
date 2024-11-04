@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+import Calendar from '../components/Calendar';
+import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 
 export default function ReminderAdding() {
     const [eventname, setEventName] = useState('');
@@ -8,25 +10,8 @@ export default function ReminderAdding() {
     const [enddate, setEndDate] = useState('');
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
-    const [calendarEvents, setCalendarEvents] = useState([]);
-
-   
-    const fetchCalendarEvents = async () => {
-        try {
-            const response = await axios.get(
-                `${process.env.REACT_APP_API}/calendar/show`, 
-                { withCredentials: true }
-            );
-            setCalendarEvents(response.data.events); 
-        } catch (error) {
-            console.error('Error fetching calendar events:', error);
-            setError('Failed to fetch calendar events. Please try again.');
-        }
-    };
-
-    useEffect(() => {
-        fetchCalendarEvents();
-    }, []);
+    
+    const queryClient = useQueryClient();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -60,8 +45,9 @@ export default function ReminderAdding() {
             setEndDate('');
             setError('');
 
-            // Fetch updated calendar events after adding a new one
-            fetchCalendarEvents();
+            setTimeout(() => {
+                queryClient.invalidateQueries(['events']);
+            }, 2000);
 
         } catch (error) {
             console.error('Error adding event:', error);
@@ -71,29 +57,17 @@ export default function ReminderAdding() {
 
     return (
         <>
-            <div className='p-10 flex items-center justify-center bg-blue-400'>
-            <div className="mt-8">
-                <h2 className="text-white">Your Google Calendar Events</h2>
-                {calendarEvents.length > 0 ? (
-                    <ul className="mt-4">
-                        {calendarEvents.map((event, index) => (
-                            <li key={index} className="bg-white p-2 mb-2 rounded-md">
-                                <strong>{event.summary}</strong><br />
-                                <span>{new Date(event.start.dateTime).toLocaleString()}</span> - 
-                                <span>{new Date(event.end.dateTime).toLocaleString()}</span>
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <div className="text-white mt-4">No events found.</div>
-                )}
-            </div>
+            <div className='flex items-center justify-center bg-white'>
+                <QueryClientProvider client={queryClient}>
+                    <Calendar />
+                </QueryClientProvider>
             </div>
 
             <form onSubmit={handleSubmit} className='reminder-form flex flex-col space-y-4'>
                 {error && <div className="text-red-500">{error}</div>}
                 {successMessage && <div className="text-green-500">{successMessage}</div>}
-
+                
+                
                 <div className='form-group mb-4'>
                     <label htmlFor="eventName" className="text-white">Event Name</label>
                     <input 
@@ -106,6 +80,7 @@ export default function ReminderAdding() {
                     />
                 </div>
 
+                
                 <div className='form-group mb-4'>
                     <label htmlFor="eventDescription" className="text-white">Event Description</label>
                     <input 
@@ -118,6 +93,7 @@ export default function ReminderAdding() {
                     />
                 </div>
 
+               
                 <div className='form-group mb-4'>
                     <label htmlFor="startTime" className="text-white">Start Time</label>
                     <input 
@@ -129,6 +105,7 @@ export default function ReminderAdding() {
                     />
                 </div>
 
+                
                 <div className='form-group mb-4'>
                     <label htmlFor="endTime" className="text-white">End Time</label>
                     <input 
@@ -141,7 +118,7 @@ export default function ReminderAdding() {
                 </div>
 
                 <button type="submit" className="bg-white text-blue-500 p-2 rounded-md mt-4 w-[28rem]">
-                    Submit
+                   Add Event
                 </button>
             </form>
         </>

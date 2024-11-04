@@ -9,6 +9,8 @@ import axios from "axios";
 export default function Devlayout() {
   const [sideBar, setsideBar] = useState(false);
 
+  const [issidebar, setissidebar] = useState(false);
+
 
 
   const [message, setMessage] = useState('');
@@ -52,7 +54,7 @@ export default function Devlayout() {
   return (
     <>
     <div className="dark:bg-boxdark-2 dark:text-bodydark">
-  <div className="flex h-screen overflow-hidden">
+  <div className="flex h-screen overflow-hidden ">
     <SideBar  isSidebarOpen={sideBar} setIsSidebarOpen={setsideBar}/>
 
     <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
@@ -64,6 +66,7 @@ export default function Devlayout() {
         </div>
       </main>
     </div>
+    <RightSideBar issidebar={issidebar} setissidebar={setissidebar} />
   </div>
  
   </div>

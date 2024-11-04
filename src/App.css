@@ -3,7 +3,7 @@
 
   /* Webkit browsers (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
-  width: 12px; /* width of the entire scrollbar */
+  width: 7px; /* width of the entire scrollbar */
 }
 
 ::-webkit-scrollbar-track {
@@ -11,7 +11,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: black; /* black thumb */
+  background-color: rgb(11, 11, 11); /* black thumb */
   border-radius: 10px; /* roundness of the thumb */
   border: 3px solid transparent; /* creates padding around thumb */
 }
@@ -23,9 +23,6 @@
 /* Firefox */
 html {
   background-color: #101219;
-  scrollbar-width: thin; /* "auto" or "thin" */
-  
-  scrollbar-color: gray black ; 
-   /* font-family: "Krona One", sans-serif; */
+  scrollbar-width: thin; 
 }
  

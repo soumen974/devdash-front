@@ -63,7 +63,7 @@ export default function AuthLogin() {
       setError(error.response?.data?.error || 'An unexpected error occurred'); // Improved error handling
       setResponseMessage('');
     } finally {
-      setLoading(false); // Ensures loading is turned off no matter what
+      setLoading(false); 
     }
   };
   

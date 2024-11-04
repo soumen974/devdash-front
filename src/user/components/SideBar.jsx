@@ -4,7 +4,7 @@ import DialogBox from '../../components/DialogBox';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import pagelogo from "../assets/Logo.svg";
 
-import { Settings2,LogOut ,House  } from 'lucide-react';
+import { Settings2,LogOut ,House ,FileText  } from 'lucide-react';
 
 
 
@@ -97,11 +97,16 @@ const SideBar = (Props) => {
 
 //  ----
 
+
 const authLogout = async () => {
    try {
-     // Make a request to the backend to clear the cookie and log out
      await axios.post(`${process.env.REACT_APP_API}/auth/logout`,{}, { withCredentials: true });
-   //   alert('Logout successful');
+     
+   window.history.pushState(null, null, window.location.href);
+      window.onpopstate = function () {
+         window.history.go(1); 
+      };
+
    setTimeout(() => {
       // navigate('/');
       window.location.reload();
@@ -124,7 +129,9 @@ const authLogout = async () => {
    { title: 'Add Reminder', path: '/dashboard/reminder' },
    { title: 'Add class Time table', path: '/dashboard/classtimetable' },
    { title: 'Your Portfolio', path: '/dashboard/portfolio' },
-   { title: 'Try Gemini', path: '/dashboard/gemini'}
+   { title: 'Try Gemini', path: '/dashboard/gemini'},
+   { title: 'Resume', path: '/dashboard/resume'}
+    
   ]
 
   const navLink_bottom=[
@@ -183,7 +190,9 @@ const authLogout = async () => {
                       : link.title==='Add class Time table' ? <Classtimetable className={({ isActive }) =>`${isActive ?'fill-[#FD356E]':'fill-white'} transition-all ease-in-out duration-500  w-5 h-5`}/> 
                        : link.title==='Your Portfolio' ? <Pageicon className={({ isActive }) =>`${isActive ?'fill-[#FD356E]':'fill-white'} transition-all ease-in-out duration-500  w-5 h-5`}/>
                        : link.title==='Try Gemini' ? <Aicontent className={({ isActive }) =>`${isActive ?'fill-[#FD356E]':'fill-white'} transition-all ease-in-out duration-1000   w-5 h-5`}/>  
-                       : null}
+                       : link.title==='Resume' ? <FileText className={({ isActive }) =>`${isActive ?'fill-[#FD356E]':'fill-white'} transition-all ease-in-out duration-1000   w-5 h-5`}/>  
+
+                      : null}
                      </div>
                      <span className={`${!isSidebarOpen ? "" : ""} text-start transition-left ease-in-out duration-500 ms-3`}>
                      {link.title}
@@ -238,7 +247,7 @@ const authLogout = async () => {
                ActionButtonName={"Logout"}
                ActionButtonColorRed={true}
                IconName={false}
-               handleLogic={handleLogout}
+               handleLogic={authLogout}
                Loading={Loading}
                />
 
