@@ -1,6 +1,8 @@
-import { useState } from 'react';
-import { Menu, X, Github, ArrowRight, ChevronRight } from 'lucide-react';
+import { useState ,useEffect } from 'react';
+import {  Github, ArrowRight, ChevronRight } from 'lucide-react';
 import google from "../assets/google-logo-9808.png";
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Hero() {
@@ -12,6 +14,31 @@ export default function Hero() {
   const handleOAuthGithubLogin = () => {
     window.location.href = `${process.env.REACT_APP_API}/auth/github`;
   };
+
+  const [developerData, setDeveloperData] = useState({});
+  const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+
+    const checkAuthntication = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API}/auth/protected`, { withCredentials: true });
+        setDeveloperData(response.data.developer_data);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        setError(error.response?.data?.error || 'Error fetching data');
+        if (error.response?.status === 403){
+          navigate('/auth/login');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+
 
 
   return (
@@ -51,13 +78,13 @@ export default function Hero() {
 
             {/* CTA Buttons */}
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a
-                href="/dashboard"
-                className="rounded-full bg-pink-600 px-8 py-3 text-base font-semibold text-white shadow-lg hover:bg-pink-500 transition-all duration-300 hover:scale-105 flex items-center"
+              <div
+                onClick={checkAuthntication}
+                className={`${loading? ' cursor-wait ':'cursor-pointer'} rounded-full  bg-pink-600 px-8 py-3 text-base font-semibold text-white shadow-lg hover:bg-pink-500 transition-all duration-300 hover:scale-105 flex items-center`}
               >
                 Get started
                 <ArrowRight className="ml-2 w-5 h-5" />
-              </a>
+              </div>
               <a
                 href="#"
                 className="text-base font-semibold text-gray-300 hover:text-white transition-colors duration-300"

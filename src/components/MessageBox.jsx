@@ -5,7 +5,7 @@ export default function MessageBox({servermessage,error}) {
 
 
   return (
-    <div className={` ${error ||servermessage ? 'top-2 ':'-top-14'} w-fit max-md:left-5  right-5 transition-all duration-300 ease-out absolute  `}>
+    <div className={` ${error ||servermessage ? 'md:top-2 max-md:bottom-5':'-top-14  '}   w-fit max-md:left-5  right-5 transition-all duration-300 ease-out absolute  `}>
         <div className=" bg-[#1E1E24] border border-[#3C3C3C] rounded-md divide-[#3C3C3C] divide-x-[1px] px-5 py-2 flex items-center  gap-2 ">
           
           <div className={` rounded-full p-1 ${error? 'bg-[#ff1414]':'bg-[#54ff3d]'} `}>
