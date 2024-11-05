@@ -55,11 +55,9 @@ export default function Gemini() {
   };
 
   return (
-    <div className="min-h-[91.8vh] bg-[#1E1E24] flex flex-col items-center px-6 relative overflow-hidden">
+    <div className="min-h-[91.8vh]  flex flex-col items-center px-6 relative overflow-hidden">
       {/* Background Decorations */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#FD356E]/5 rounded-full blur-3xl -mr-48 -mt-48"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#FD356E]/5 rounded-full blur-3xl -ml-48 -mb-48"></div>
-
+     
       {/* Logo Section */}
       <div className="flex-1 flex flex-col items-center justify-center mt-20 relative">
         <div className="flex items-center gap-5 opacity-90 hover:opacity-100 transition-all duration-300 transform hover:scale-105">
