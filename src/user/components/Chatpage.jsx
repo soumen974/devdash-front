@@ -31,8 +31,6 @@ const MessageBubble = ({ message, isUser }) => {
             />
           </div>
         )}
-        <div className=" flex">
-          {!isUser&& <Sparkles className="  w-5 h-5 text-[#FD356E] opacity-100 transition-opacity" />}
 
           <div
             className={`rounded-xl px-6 py-4 backdrop-blur-lg transition-all duration-300 hover:scale-[1.02] ${
@@ -41,13 +39,15 @@ const MessageBubble = ({ message, isUser }) => {
                 : 'bg-[#2A2A32]/90 border-2 border-gray-700/30 text-gray-100'
             }`}
           >
+                      {!isUser&& <Sparkles className=" absolute -left-10  w-5 h-5 text-[#FD356E] opacity-100 transition-opacity" />}
+
             <Markdown 
               className="prose prose-invert max-w-none"
             >
               {message.parts[0].text}
             </Markdown>
           </div>
-        </div>
+        
       </div>
     </div>
   );
