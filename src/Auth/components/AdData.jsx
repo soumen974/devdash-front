@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const AdData = ({ email, setMessagetoAuth }) => {
@@ -75,6 +75,23 @@ const AdData = ({ email, setMessagetoAuth }) => {
       }, 2000);
     }
   };
+
+  useEffect(() => {
+    const confirmExit = (e) => {
+      e.preventDefault();
+      e.returnValue = ''; 
+
+      const confirmationMessage = 'Are you sure you want to leave this page?';
+      e.returnValue = confirmationMessage;
+      return confirmationMessage;
+    };
+
+    window.addEventListener('beforeunload', confirmExit);
+
+    return () => {
+      window.removeEventListener('beforeunload', confirmExit);
+    };
+  }, []);
 
   return (
     <div className="min-h-[400px] flex items-center justify-center w-full p-4">

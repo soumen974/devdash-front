@@ -101,8 +101,8 @@ export default function Auth() {
                   {/* Form Header */}
                   
 
-                  <div className="relative px-6 pt-8 pb-6 bg-gradient-to-r from-[#1E1E24] to-[#2A2A32]">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-[#FD356E]/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
+                  <div className="relative ]">
+                    
                     <h2 className="text-3xl font-bold text-white mb-3 relative">
                     Register
                     </h2>

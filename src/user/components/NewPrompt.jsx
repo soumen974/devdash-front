@@ -1,38 +1,42 @@
 import React, { useEffect, useRef, useState } from "react";
-import Arrow from "../assets/arrow.png";
-import Upload from "./Upload";
+import { Loader2, ArrowRight, Sparkles, Image as ImageIcon, X } from "lucide-react";
 import { IKImage } from "imagekitio-react";
-import model from "../lib/gemini";
 import Markdown from "react-markdown";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import model from "../lib/gemini";
+import Upload from "./Upload";
 
-const NewPrompt = ({ data }) => {
+const NewPrompt = ({ data, className }) => {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [img, setImg] = useState({
     isLoading: false,
     error: "",
-    dbData: {}, //img stored
-    aiData: {}, //img details stored
+    dbData: {},
+    aiData: {},
   });
+  const [isTyping, setIsTyping] = useState(false);
 
   const chat = model.startChat({
-    history:  data?.history.map(({ role, parts }) => ({
-		role: role || 'user',  
-		parts: [{ text: parts[0].text }],
-	  })),
-    generationConfig: {
-      // maxOutputTokens: 1000,
-      // temperature: 0.1,
-    },
+    history: data?.history.map(({ role, parts }) => ({
+      role: role || 'user',
+      parts: [{ text: parts[0].text }],
+    })),
   });
 
   const endRef = useRef(null);
   const formRef = useRef();
+  const inputRef = useRef();
 
+  // Auto-scroll effect
   useEffect(() => {
-    endRef.current.scrollIntoView({ behavior: "smooth" });
+    const smoothScroll = () => {
+      endRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+    // Small delay to ensure content is rendered
+    const timeoutId = setTimeout(smoothScroll, 100);
+    return () => clearTimeout(timeoutId);
   }, [data, question, answer, img.dbData]);
 
   const queryClient = useQueryClient();
@@ -57,7 +61,6 @@ const NewPrompt = ({ data }) => {
         .then((res) => res.data);
     },
     onSuccess: () => {
-      // Invalidate and refetch
       queryClient
         .invalidateQueries({ queryKey: ["chat", data._id] })
         .then(() => {
@@ -70,16 +73,21 @@ const NewPrompt = ({ data }) => {
             dbData: {},
             aiData: {},
           });
+          // Focus input after successful submission
+          inputRef.current?.focus();
         });
     },
     onError: (error) => {
-      console.log(error);
+      console.error("Error updating chat:", error);
+      // Show error state briefly
+      setAnswer("Sorry, something went wrong. Please try again.");
+      setTimeout(() => setAnswer(""), 3000);
     },
   });
 
-  //FOR TEXT RESPONSE
   const add = async (text, isInitial) => {
     if (!isInitial) setQuestion(text);
+    setIsTyping(true);
 
     try {
       const result = await chat.sendMessageStream(
@@ -88,89 +96,166 @@ const NewPrompt = ({ data }) => {
       let accumulatedText = "";
       for await (const chunk of result.stream) {
         const chunkText = chunk.text();
-        //   console.log(chunkText);
         accumulatedText += chunkText;
         setAnswer(accumulatedText);
       }
       mutation.mutate();
     } catch (err) {
-      console.log(err);
+      console.error("Error processing message:", err);
+      setAnswer("Sorry, I encountered an error. Please try again.");
+    } finally {
+      setIsTyping(false);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const text = e.target.text.value;
+    const text = e.target.text.value.trim();
     if (!text) return;
-
     add(text, false);
   };
 
-  //IN PRODUCTION WE DID NT NEED THIS
+  const clearImage = () => {
+    setImg({
+      isLoading: false,
+      error: "",
+      dbData: {},
+      aiData: {},
+    });
+  };
+
+  // Initial message handling
   const hasRun = useRef(false);
   useEffect(() => {
-    if (!hasRun.current) {
-      if (data?.history?.length === 1) {
-        add(data.history[0].parts[0].text, true);
-      }
+    if (!hasRun.current && data?.history?.length === 1) {
+      add(data.history[0].parts[0].text, true);
     }
     hasRun.current = true;
   }, []);
 
   return (
-    <>
-      {/* ADD NEW CHAT */}
-      {img.isLoading && <div>Loading....</div>}
+    <div className="relative">
+      {/* Image Preview */}
+      {img.isLoading && (
+        <div className="mt-4 p-4 rounded-xl bg-[#FD356E]/10 border border-[#FD356E]/20 
+                       backdrop-blur-md animate-fadeIn">
+          <div className="flex items-center gap-2 text-[#FD356E]">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            Uploading image...
+          </div>
+        </div>
+      )}
+      
       {img.dbData?.filePath && (
-        <IKImage
-          urlEndpoint={process.env.REACT_APP_IMAGE_KIT_ENDPOINT}
-          path={img.dbData?.filePath}
-          transformation={[{ width: 400 }]}
-          loading="lazy"
-          lqip={{ active: true }}
-          width="400"
-        />
+        <div className="relative mb-4 rounded-xl overflow-hidden group">
+          <IKImage
+            urlEndpoint={process.env.REACT_APP_IMAGE_KIT_ENDPOINT}
+            path={img.dbData?.filePath}
+            transformation={[{ width: 400 }]}
+            loading="lazy"
+            lqip={{ active: true }}
+            width="400"
+            className="rounded-xl"
+          />
+          <button
+            onClick={clearImage}
+            className="absolute top-2 right-2 p-1 rounded-full bg-black/50 text-white
+                     opacity-0 group-hover:opacity-100 transition-opacity duration-200
+                     hover:bg-black/70"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
       )}
+
+      {/* Messages */}
       {question && (
-        <div className="bg-[#2c2937] p-3 rounded-[20px] max-w-[80%] self-end">
-          {question}
+        <div className="bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white p-4 rounded-xl mb-4 self-end
+                      transform transition-all duration-300 hover:scale-[1.02]">
+          <Markdown className="prose prose-invert max-w-none">
+            {question}
+          </Markdown>
         </div>
       )}
+      
       {answer && (
-        <div className="p-5 w-[90%]">
-          <Markdown className="list-disc">{answer}</Markdown>
+        <div className="bg-[#2A2A32]/90 border-2 border-gray-700/30 text-gray-100 p-4 rounded-xl mb-4
+                      transform transition-all duration-300 hover:scale-[1.02]">
+          <Markdown className="prose prose-invert max-w-none">
+            {answer}
+          </Markdown>
         </div>
       )}
-      <div className="pb-24" ref={endRef}></div>
+
+      <div className="h-24" ref={endRef}></div>
+
+      {/* Input Form */}
       <form
-        action=""
         onSubmit={handleSubmit}
         ref={formRef}
-        className="w-[60%] absolute right-24 bottom-3 bg-[#2c2937] rounded-2xl flex items-center gap-5 py-0 px-5"
+        className={`relative group ${className}`}
       >
-        {/* <label htmlFor="file" className="rounded-[50%] bg-[#605e68] p-2 cursor-pointer border-none flex items-center justify-center" >
-				<img src={Attachment} alt="" className="size-4 cursor-pointer"/>
-			</label> */}
-        <Upload setImg={setImg} />
-        <input
-          id="file"
-          type="file"
-          multiple={false}
-          hidden
-          className="flex-1 p-5 border-none outline-none bg-transparent text-[#ececec]"
-        />
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+          <div className="relative group/upload">
+            <Upload setImg={setImg}>
+              <button
+                type="button"
+                className="p-2 rounded-xl bg-[#FD356E]/10 hover:bg-[#FD356E]/20
+                         transition-colors duration-200"
+              >
+                <ImageIcon className="w-5 h-5 text-[#FD356E]" />
+              </button>
+            </Upload>
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1
+                          bg-black/75 text-white text-sm rounded-lg whitespace-nowrap
+                          opacity-0 group-hover/upload:opacity-100 transition-opacity duration-200">
+              Upload image
+            </div>
+          </div>
+          <Sparkles className="w-5 h-5 text-[#FD356E] opacity-50 group-hover:opacity-100 transition-opacity" />
+        </div>
+        
         <input
           type="text"
           name="text"
-          placeholder="Ask anything....."
-          className="flex-1 p-5 border-none outline-none bg-transparent text-[#ececec]"
+          ref={inputRef}
+          placeholder="Ask anything..."
+          autoComplete="off"
+          className="w-full h-14 pl-24 pr-16 bg-transparent text-white placeholder-gray-400 
+                   border-none outline-none focus:ring-2 focus:ring-[#FD356E]/20 rounded-xl
+                   transition-all duration-200"
+          disabled={img.isLoading || mutation.isPending || isTyping}
         />
-        <button className="rounded-[50%] bg-[#605e68] p-2 cursor-pointer border-none flex items-center justify-center">
-          <img src={Arrow} alt="" className="size-4" />
+        
+        <button 
+          type="submit"
+          className="absolute right-3 top-1/2 -translate-y-1/2 p-3
+                   bg-gradient-to-r from-[#FD356E] to-[#FF5F85] 
+                   hover:from-[#FF5F85] hover:to-[#FD356E] 
+                   rounded-xl transition-all duration-200 transform 
+                   hover:scale-105 active:scale-95 disabled:opacity-50 
+                   disabled:cursor-not-allowed"
+          disabled={img.isLoading || mutation.isPending || isTyping}
+        >
+          {img.isLoading || mutation.isPending || isTyping ? (
+            <Loader2 className="w-4 h-4 text-white animate-spin" />
+          ) : (
+            <ArrowRight className="w-4 h-4 text-white" />
+          )}
         </button>
       </form>
-    </>
+
+      {/* Status Messages */}
+      {(mutation.isPending || isTyping) && (
+        <div className="mt-4 p-4 rounded-xl bg-[#FD356E]/10 border border-[#FD356E]/20 
+                      backdrop-blur-md animate-fadeIn">
+          <div className="flex items-center gap-2 text-[#FD356E]">
+            <div className="w-2 h-2 rounded-full bg-[#FD356E] animate-pulse"></div>
+            {isTyping ? "Generating response..." : "Processing your request..."}
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
