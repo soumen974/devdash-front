@@ -84,11 +84,9 @@ const Chatpage = () => {
   });
 
   return (
-    <div className="min-h-[91.8vh] bg-[#1E1E24] relative overflow-hidden">
+    <div className="min-h-[91.8vh]  relative overflow-hidden">
       {/* Background Decorations */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#FD356E]/5 rounded-full blur-3xl -mr-48 -mt-48"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#FD356E]/5 rounded-full blur-3xl -ml-48 -mb-48"></div>
-
+     
       <div className="max-w-4xl mx-auto px-4 py-6 relative">
         <div className="space-y-4 mb-24">
           {isPending ? (

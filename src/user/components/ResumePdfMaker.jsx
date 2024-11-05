@@ -31,14 +31,12 @@ function ResumePdfMaker() {
   };
 
   return (
-    <div className="min-h-screen bg-[#1E1E24] text-white p-6 relative overflow-hidden">
+    <div className="min-h-screen  text-white p-6 relative overflow-hidden">
       {/* Background Decorations */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#FD356E]/5 rounded-full blur-3xl -mr-48 -mt-48"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#FD356E]/5 rounded-full blur-3xl -ml-48 -mb-48"></div>
-
+      
       <div className="max-w-7xl mx-auto relative">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className=" mb-8">
           <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] bg-clip-text text-transparent">
             Resume PDF Maker
           </h1>
@@ -46,6 +44,8 @@ function ResumePdfMaker() {
             Create professional resumes with LaTeX templates
           </p>
         </div>
+
+        
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

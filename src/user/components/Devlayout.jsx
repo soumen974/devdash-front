@@ -60,8 +60,12 @@ export default function Devlayout() {
     <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
       <Head sideBar={sideBar} setsideBar={setsideBar}/>
 
-      <main>
-        <div className="mx-auto max-w-screen-2xl mt-20">
+      <main className=' '>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#FD356E]/5 rounded-full blur-3xl -mr-48 -mt-48"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#FD356E]/5 rounded-full blur-3xl -ml-48 -mb-48"></div>
+
+        <div className="mx-auto max-w-screen-2xl  mt-20">
+          
         <Outlet />
         </div>
       </main>

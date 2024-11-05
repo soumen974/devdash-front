@@ -1,6 +1,6 @@
-// import { SiAltiumdesigner } from "react-icons/si";
-// import { TbCodeDots } from "react-icons/tb";
-// import { PiCodeBold } from "react-icons/pi";
+import { SiAltiumdesigner } from "react-icons/si";
+import { TbCodeDots } from "react-icons/tb";
+import { PiCodeBold } from "react-icons/pi";
 // import { GlobeDemo } from "../components/GlobeDemo";
 // import { IoIosArrowDown } from "react-icons/io";
 // import { MdOutlineArrowOutward } from "react-icons/md";
@@ -54,17 +54,17 @@ const Home = () => {
     {
       title: "Frontend development",
       description: "Smooth API Integration.",
-      icon: "PiCodeBold",
+      icon: <PiCodeBold className='w-full h-full object-cover object-center  font-thin text-white  '/>,
     },
     {
       title: "Fullstack development",
       description: "Optimized System Architecture.",
-      icon: "TbCodeDots",
+      icon: <TbCodeDots className='w-full h-full object-cover object-center  font-thin text-white   '/>,
     },
     {
       title: "Designing",
       description: "UI/UX, Elegant Digital Experiences",
-      icon: "SiAltiumdesigner" ,
+      icon: <SiAltiumdesigner className='w-full h-full object-cover object-center  font-thin  text-white   '/>,
     },
   ];
 
@@ -84,6 +84,8 @@ const Home = () => {
     {
       image: <img src="/images/meta_logo.jpeg" className="max-w-min-24 sm:h-24 sm:w-24 max-h-min-24 rounded-md" alt="Meta" width={64} height={64} />,
       company: "Meta",
+      logo: <img src="/images/infosys_logo.jpeg" className="max-w-min-24 sm:h-24 sm:w-24 max-h-min-24 rounded-md" alt="Infosys" width={64} height={64} />,
+
       title: "React Basics",
       time: "- Oct 2023",
       Skills: [
@@ -103,6 +105,7 @@ const Home = () => {
     {
       image: <img src="/images/mongodbinc_logo.jpeg" className="max-w-min-24 sm:h-24 sm:w-24 max-h-min-24 rounded-md" alt="MongoDB" width={64} height={64} />,
       company: "MongoDB",
+      logo: <img src="/images/infosys_logo.jpeg" className="max-w-min-24 sm:h-24 sm:w-24 max-h-min-24 rounded-md" alt="Infosys" width={64} height={64} />,
       title: "MongoDB for SQL Professionals",
       time: "- Jun 2024",
       Skills: [
@@ -113,7 +116,7 @@ const Home = () => {
 
   return (
     <>
-      <div>
+      <div className='text-white'>
         {/* intro */}
         <div className="flex-col-1 gap-y-2 flex flex-wrap-reverse justify-between">
           <div>
@@ -168,6 +171,11 @@ const Home = () => {
             {projects.map((project) => (
               <div key={project.title} className="">
                 <div className="border backdrop-blur-2xl bg-gradient-to-b border-neutral-700 from-inherit bg-zinc-800/30 flex flex-col gap-4 items-start w-fit mx-auto p-4 relative z-0">
+                    <Icon className="absolute h-6 w-6 -top-3 -left-3 dark:text-white text-black" />
+                    <Icon className="absolute h-6 w-6 -bottom-3 -left-3 dark:text-white text-black" />
+                    <Icon className="absolute h-6 w-6 -top-3 -right-3 dark:text-white text-black" />
+                    <Icon className="absolute h-6 w-6 -bottom-3 -right-3 dark:text-white text-black" />
+                 
                   <div className="grid gap-2">
                     <h2>{project.title}</h2>
                     <h2 className="dark:text-white text-black font-thin">
@@ -194,61 +202,58 @@ const Home = () => {
         </div>
 
         {/* services */}
-        <div className="py-5">
-          <h1 className='text-2xl md:text-4xl'>Services</h1>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 justify-between py-8">
-            {services.map((service) => (
-              <div key={service.title} className="bg-white/10 border border-neutral-800/30 py-6 px-8 rounded-2xl">
-                <div className='p-2 flex justify-center w-full h-full text-neutral-900 bg-neutral-100 rounded-xl dark:text-white dark:bg-neutral-900'>
-                  {service.icon}
+        <div className="py-5 group">
+          <h1 className='text-2xl md:text-4xl flex gap-1 '>Services
+            </h1>
+          <div className="py-5 grid grid-cols-3 gap-3 md:grid-cols-3  justify-between ">
+            {services.map((services) => (
+              <div key={services.title} className=" group/service flex justify-center sm:grid max-sm:hover:bg-none   bg-gradient-to-br from-violet-500 via-purple-500 to-blue-500  p-2 md:p-4 rounded-xl">
+                <div className=" py-4 h-20 w-20 flex justify-center  group-hover/service:hidden sm:group-hover/service:block">
+                  {services.icon}
                 </div>
-                <div className="pt-4">
-                  <h1 className='text-2xl md:text-3xl'>{service.title}</h1>
-                  <h2 className="text-sm font-light pt-2 text-neutral-500">
-                    {service.description}
-                  </h2>
-                </div>
+                <h1 className=' text-[0.8rem] sm:text-xl text-white sm:font-bold sm:w-fit sm:group-hover/service:block   hidden group-hover/service:flex items-center justify-center sm:block w-20 '>{services.title}</h1>
+                <p className='font-normal text-base text-slate-100 hidden sm:block'>{services.discription} </p>
               </div>
             ))}
+
+            </div>
           </div>
-        </div>
 
         {/* licenses and certifications */}
-        <div className="py-5">
-          <h1 className='text-2xl md:text-4xl'>Licenses & Certification</h1>
-          <div className="pt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 justify-between">
-            {Licenses_and_certification.map((license) => (
-              <div key={license.company} className="border backdrop-blur-2xl bg-gradient-to-b border-neutral-700 from-inherit bg-zinc-800/30 flex flex-col gap-4 items-start w-fit mx-auto p-4 relative z-0">
-                <div className="grid gap-2">
-                  <div className="overflow-hidden w-full h-full flex justify-center items-center">
-                    {license.image}
-                  </div>
-                  <div className="flex gap-x-2">
-                    {license.logo}
-                    <div className="py-1">
-                      <h2 className='text-white'>{license.title}</h2>
-                      <h2 className="text-sm font-light text-neutral-500 dark:text-neutral-400">
-                        {license.company}
-                      </h2>
-                      <h3 className="text-sm font-light text-neutral-500 dark:text-neutral-400">
-                        {license.time}
-                      </h3>
-                    </div>
-                  </div>
-                  <div className="pt-3">
-                    <h2 className="text-sm font-light text-neutral-500 dark:text-neutral-400">Skills</h2>
-                    <div className="text-xs flex flex-wrap gap-2 pt-1">
-                      {license.Skills.map((skill) => (
-                        <span key={skill.name} className="bg-neutral-900 border border-neutral-800 py-1.5 px-2.5 rounded-full dark:bg-gray-100 dark:text-neutral-900 text-white">
-                          {skill.name}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+        <div className="py-">
+          <h1 className='text-2xl md:text-4xl '>Licenses & certifications</h1>
+          <div className="py-3 flex-col-reverse flex">
+          {Licenses_and_certification.map((LnC)=>(
+              <div key={LnC.title} className=" py-5 flex shrink-0 gap-5">
+
+                <div className="flex items-center">
+                  {LnC.logo}
                 </div>
-                <div className='flex justify-center mx-auto items-center pt-2'>
-                  {/* <MdOutlineArrowOutward className='hover:animate-spin text-center w-fit text-gray-100 h-8 w-8' /> */}
+
+                <div className=" grid">
+                  <h1 className="font-bold truncate ">
+                    {LnC.title}
+                  </h1>
+
+                  <h1 className="">
+                  { LnC.company}
+                  </h1>
+
+                  <h1 className='text-gray-100 font-thin text-sm'>
+                    {LnC.time} 
+                  </h1>
+                  {/* Skills */}
+
+                  <div className="w-fit py-2 flex gap-1 overflow-x-hidden">
+                    {LnC.Skills.map((skill)=>(
+                      <h1 key={skill.name} className='bg-green-400 text-black font-bold flex items-center text-[0.6rem] px-2 rounded-full'>
+                        {skill.name}
+                      </h1>
+                    ))}
+                  </div>
+
                 </div>
+
               </div>
             ))}
           </div>
@@ -260,3 +265,21 @@ const Home = () => {
 }
 
 export default Home;
+
+const Icon = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth="1.5"
+      stroke="currentColor"
+      className={className}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+    </svg>
+  );
+};
+
+
+
