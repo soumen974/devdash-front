@@ -24,7 +24,7 @@ export default function RightSideBar(props) {
          <div className="h-[88vh] divide-y-[1px] divide-[#2d313f] flex gap-3 flex-col px-3 py-4  ">
             <Link to="/dashboard/gemini" className='hover:bg-[#262936] rounded-lg p-3' >Create a new Chat</Link>
 
-          <div className=' relative overflow-y-scroll py-2'>
+          <div className=' relative flex flex-col-reverse overflow-y-scroll py-2'>
             
                 {isPending
                 ? "Loading.."
