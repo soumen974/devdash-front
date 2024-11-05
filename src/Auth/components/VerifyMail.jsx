@@ -112,6 +112,23 @@ export default function VerifyMail({ email, setIsLoading, setMessagetoAuth, isCo
     setIsLoading(false);
   };
 
+  useEffect(() => {
+    const confirmExit = (e) => {
+      e.preventDefault();
+      e.returnValue = ''; 
+
+      const confirmationMessage = 'Are you sure you want to leave this page?';
+      e.returnValue = confirmationMessage;
+      return confirmationMessage;
+    };
+
+    window.addEventListener('beforeunload', confirmExit);
+
+    return () => {
+      window.removeEventListener('beforeunload', confirmExit);
+    };
+  }, []);
+
   return (
     <div className="min-h-[400px] flex items-center justify-center w-full  from-[#1E1E24] to-[#2A2A32] ">
       <div className="w-full max-w-md backdrop-blur-lg bg-[#1E1E24]/90 rounded-2xl shadow-2xl border border-[#FD356E]/10 overflow-hidden">
@@ -122,9 +139,9 @@ export default function VerifyMail({ email, setIsLoading, setMessagetoAuth, isCo
             Verify Your Email
           </h2>
           <div className="flex items-center gap-3 relative">
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#2A2A32]/50 border border-gray-700/30">
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#2A2A32]/50 border border-gray-700/30">
               <span className="text-gray-400 text-sm">Time remaining:</span>
-              <span className={`font-mono font-medium ${time < 60 ? 'text-red-400' : 'text-[#FD356E]'}`}>
+              <span className={`font-mono font-medium pt-1 ${time < 60 ? 'text-red-400' : 'text-[#FD356E]'}`}>
                 {formatTime(time)}
               </span>
             </div>
