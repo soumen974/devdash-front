@@ -1,59 +1,40 @@
-// ExperienceForm.jsx
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: process.env.REACT_APP_API,
-    withCredentials: true
-  });
+  baseURL: process.env.REACT_APP_API,
+  withCredentials: true
+});
 
 const ExperienceForm = ({ experience, onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
+    username: '',
     position: '',
     companyName: '',
     location: '',
     time: '',
-    learnings: [],
-    skills: [],
-    ...experience
+    companyLogoUrl: null,
+    relatedPDFUrl: null,
+    learnings: experience?.learnings || [],
+    skills: experience?.skills || [],
   });
   const [newLearning, setNewLearning] = useState('');
   const [newSkill, setNewSkill] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formDataObj = new FormData();
-    
-    // Append basic fields
-    formDataObj.append('position', formData.position);
-    formDataObj.append('companyName', formData.companyName);
-    formDataObj.append('location', formData.location);
-    formDataObj.append('time', formData.time);
-    
-    // Handle array fields
-    formDataObj.append('learnings', JSON.stringify(formData.learnings));
-    formDataObj.append('skills', JSON.stringify(formData.skills));
-    
-    // Handle file fields only if they exist
-    if (formData.companyLogoUrl instanceof File) {
-      formDataObj.append('companyLogoUrl', formData.companyLogoUrl);
-    }
-    if (formData.relatedPDFUrl instanceof File) {
-      formDataObj.append('relatedPDFUrl', formData.relatedPDFUrl);
-    }
 
     try {
       if (experience) {
-        await api.put(`/dev/${experience._id}`, formDataObj);
+        await api.put(`/dev/${experience._id}`, formData);
       } else {
-        await api.post('/dev', formDataObj);
+        await api.post('/dev', formData);
       }
-      
       onSubmit();
       onClose();
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Error submitting form:', error.response?.data);
     }
   };
 
@@ -65,79 +46,40 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
     }));
   };
 
-  const addLearning = async () => {
+  const addLearning = () => {
     if (!newLearning.trim()) return;
 
-    try {
-      if (experience) {
-        const { data } = await api.post(`/dev/${experience._id}/learnings`, {
-          name: newLearning.trim()
-        });
-        setFormData(prev => ({ ...prev, learnings: data.learnings }));
-      } else {
-        setFormData(prev => ({
-          ...prev,
-          learnings: [...prev.learnings, { name: newLearning.trim() }]
-        }));
-      }
-      setNewLearning('');
-    } catch (error) {
-      console.error('Error adding learning:', error);
-    }
+    setFormData(prev => ({
+      ...prev,
+      learnings: [...prev.learnings, { name: newLearning.trim() }]
+    }));
+    setNewLearning('');
   };
 
-  const addSkill = async () => {
+  const addSkill = () => {
     if (!newSkill.trim()) return;
 
-    try {
-      if (experience) {
-        const { data } = await api.post(`/dev/${experience._id}/skills`, {
-          name: newSkill.trim()
-        });
-        setFormData(prev => ({ ...prev, skills: data.skills }));
-      } else {
-        setFormData(prev => ({
-          ...prev,
-          skills: [...prev.skills, { name: newSkill.trim() }]
-        }));
-      }
-      setNewSkill('');
-    } catch (error) {
-      console.error('Error adding skill:', error);
-    }
+    setFormData(prev => ({
+      ...prev,
+      skills: [...prev.skills, { name: newSkill.trim() }]
+    }));
+    setNewSkill('');
   };
 
-  const removeLearning = async (index, learningId) => {
-    try {
-      if (experience && learningId) {
-        const { data } = await api.delete(`/dev/${experience._id}/learnings/${learningId}`);
-        setFormData(prev => ({ ...prev, learnings: data.learnings }));
-      } else {
-        setFormData(prev => ({
-          ...prev,
-          learnings: prev.learnings.filter((_, i) => i !== index)
-        }));
-      }
-    } catch (error) {
-      console.error('Error removing learning:', error);
-    }
+  const removeLearning = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      learnings: prev.learnings.filter((_, i) => i !== index)
+    }));
   };
 
-  const removeSkill = async (index, skillId) => {
-    try {
-      if (experience && skillId) {
-        const { data } = await api.delete(`/dev/${experience._id}/skills/${skillId}`);
-        setFormData(prev => ({ ...prev, skills: data.skills }));
-      } else {
-        setFormData(prev => ({
-          ...prev,
-          skills: prev.skills.filter((_, i) => i !== index)
-        }));
-      }
-    } catch (error) {
-      console.error('Error removing skill:', error);
-    }
+  const removeSkill = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      skills: prev.skills.filter((_, i) => i !== index)
+    }));
   };
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
