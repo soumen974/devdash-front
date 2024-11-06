@@ -166,37 +166,41 @@ const Home = () => {
 
         {/* projects */}
         <div className="py-5">
-          <h1 className='text-2xl md:text-4xl'>Projects</h1>
-          <div className="pt-8 grid grid-cols-1 sm:grid-cols-2 gap-5 md:grid-cols-2 justify-between">
-            {projects.map((project) => (
-              <div key={project.title} className="">
-                <div className="border backdrop-blur-2xl bg-gradient-to-b border-neutral-700 from-inherit bg-zinc-800/30 flex flex-col gap-4 items-start w-fit mx-auto p-4 relative z-0">
+          <h1 className='text-2xl md:text-4xl '>Projects</h1>
+          <div className="pt-8 grid grid-cols-1 sm:grid-cols-2 gap-5 md:grid-cols-2  justify-between   ">
+            {projects.map((project)=>(
+              <div key={project.title} className=" ">
+                <div className="border backdrop-blur-2xl bg-gradient-to-b border-neutral-700 from-inherit bg-zinc-800/30 flex flex-col gap-4 items-start w-fit mx-auto p-4 relative z-0    ">
                     <Icon className="absolute h-6 w-6 -top-3 -left-3 dark:text-white text-black" />
                     <Icon className="absolute h-6 w-6 -bottom-3 -left-3 dark:text-white text-black" />
                     <Icon className="absolute h-6 w-6 -top-3 -right-3 dark:text-white text-black" />
                     <Icon className="absolute h-6 w-6 -bottom-3 -right-3 dark:text-white text-black" />
-                 
-                  <div className="grid gap-2">
-                    <h2>{project.title}</h2>
-                    <h2 className="dark:text-white text-black font-thin">
-                      {project.description}
-                    </h2>
-                    <div className="py-3">
-                      <h2 className="dark:text-white text-black">Skills</h2>
-                      <div className="text-white text-xs flex flex-wrap gap-2 pt-1">
-                        {project.Skills.map((skill) => (
-                          <span key={skill.name} className="bg-neutral-900 border border-neutral-800 py-1.5 px-2.5 rounded-full dark:bg-gray-100 dark:text-neutral-900 text-white">
-                            {skill.name}
-                          </span>
-                        ))}
-                      </div>
+
+                    
+
+                    <div className="grid gap-2">
+                        <div className="">
+                          <h2></h2>
+                          <h1>{project.title}</h1>
+                        </div>
+
+                        <h2 className="dark:text-white text-black  text-sm font-light">
+                          {project.description}
+                        </h2>
                     </div>
-                  </div>
-                  <div className='flex justify-center mx-auto items-center pt-2'>
-                    {/* <MdOutlineArrowOutward className='hover:animate-spin text-center w-fit text-gray-100 h-8 w-8' /> */}
-                  </div>
+                    
+                    <div className=" flex flex-wrap gap-2 w-[90%]">
+                      {project.Skills.map((skill)=>(
+                        <h1 key={skill.name} className=' w-fit text-[0.7rem] border  border-neutral-700 rounded-full   shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]  p-1 px-4 items-center justify-center '>{skill.name}</h1>
+                      ))}
+                    </div>
+
+
                 </div>
+
+              
               </div>
+
             ))}
           </div>
         </div>
