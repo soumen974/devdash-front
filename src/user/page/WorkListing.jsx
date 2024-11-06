@@ -7,7 +7,7 @@ export default function WorkListing() {
     <div className='  flex items-center justify-center min-h-[92vh]  '>
       <div className="">
       
-      {/* <CreateWorkListingForm /> */}
+      <CreateWorkListingForm />
       <WorkListings />
       </div>
      

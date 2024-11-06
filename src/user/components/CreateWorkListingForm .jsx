@@ -25,6 +25,13 @@ const CreateWorkListingForm = () => {
         withCredentials: true,
       });
       setMessage(response.data.message);
+      setTimeout(() => {
+        setMessage('')
+        formData.task_name = '';
+        formData.task_description = '';
+        formData.completion_time = '';
+      }, 1500);
+      
     } catch (error) {
       if (error.response) {
         setError(error.response.data.message || 'Server error');
@@ -90,8 +97,8 @@ const CreateWorkListingForm = () => {
               <AnalogDateInput
                 name="completion_date"
                 value={formData.completion_time}
-                onChange={(value) => handleChange('completion_date', value)}
-                className="w-full max-w-xs"
+                onChange={(value) => handleChange('completion_time', value)}
+                className=" "
               />
             </div>
 
