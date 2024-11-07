@@ -105,7 +105,7 @@ const NewPrompt = ({ data, className }) => {
       setAnswer("Sorry, I encountered an error. Please try again.");
     } finally {
       setIsTyping(false);
-    }
+    } 
   };
 
   const handleSubmit = async (e) => {
