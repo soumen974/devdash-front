@@ -10,7 +10,7 @@ const api = axios.create({
   withCredentials: true
 });
 
-const ExperienceList = () => {
+const ExperienceList = ({UseForShow}) => {
   const [experiences, setExperiences] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingExperience, setEditingExperience] = useState(null);
@@ -60,7 +60,8 @@ const ExperienceList = () => {
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
+    <div className=" max-w-6xl mx-auto">
+     {!UseForShow? 
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Recent Experiences</h1>
         <button 
@@ -70,6 +71,7 @@ const ExperienceList = () => {
           <Plus size={20} /> Add Experience
         </button>
       </div>
+      :null}
 
       {showForm && (
         <ExperienceForm 
@@ -82,6 +84,10 @@ const ExperienceList = () => {
         />
       )}
 
+      {!UseForShow? 
+
+      /* editable compoent */
+      (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {experiences.map((experience) => (
           <div key={experience._id} className="bg-white rounded-lg shadow-md p-6">
@@ -95,7 +101,7 @@ const ExperienceList = () => {
                   />
                 )}
                 <div>
-                  <h2 className="text-xl font-bold">{experience.position}</h2>
+                  <h2 className="text-xl  font-bold">{experience.position}</h2>
                   <p className="text-gray-600">{experience.companyName}</p>
                 </div>
               </div>
@@ -168,6 +174,29 @@ const ExperienceList = () => {
           </div>
         ))}
       </div>
+      ):
+
+      /* portfoio showing component */
+
+      (
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 md:grid-cols-2 justify-between">
+        {experiences.map((experience) => (
+          <div key={experience._id} className="border backdrop-blur-2xl bg-gradient-to-b border-neutral-800 from-inherit bg-zinc-800/30 sm:grid flex gap-x-5 gap-y-2 mt-4 p-3 w-full rounded-xl sm:rounded-md">
+            <div>
+            {experience.companyLogoUrl && (
+              <img src={experience.companyLogoUrl} className="w-16 h-16 rounded-md" alt="SoumenBhunia" width={64} height={64} />
+            )}
+              </div>
+            <div>
+              <h1 className='text-white'>{experience.position}</h1>
+              <h2 className='text-white text-sm font-light'>{experience.companyName}</h2>
+              <h3 className='text-gray-100 font-thin text-sm'>{experience.time}</h3>
+            </div>
+          </div>
+        ))}
+      </div>
+      )}
+
     </div>
   );
 };

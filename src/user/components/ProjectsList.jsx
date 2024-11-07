@@ -9,7 +9,7 @@ const api = axios.create({
   withCredentials: true
 });
 
-const ProjectsList = () => {
+const ProjectsList = ({UseForShow}) => {
   const [projects, setProjects] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
@@ -59,7 +59,9 @@ const ProjectsList = () => {
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto">
+       {!UseForShow?
+       (
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Recent Projects</h1>
         <button 
@@ -69,6 +71,7 @@ const ProjectsList = () => {
           <Plus size={20} /> Add Project
         </button>
       </div>
+       ):(null)}
 
       {showForm && (
         <ProjectsForm 
@@ -81,6 +84,8 @@ const ProjectsList = () => {
         />
       )}
 
+      {!UseForShow?
+      (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {projects.map((project) => (
           <div key={project._id} className="bg-white rounded-lg shadow-md p-6">
@@ -183,9 +188,65 @@ const ProjectsList = () => {
           </div>
         ))}
       </div>
+      )
+      :(
+
+      <div className="pt-8 grid grid-cols-1 sm:grid-cols-2 gap-5 md:grid-cols-2  justify-between   ">
+       {projects.map((project) => (
+              <div key={project._id} className=" ">
+                <div className="border backdrop-blur-2xl bg-gradient-to-b border-neutral-700 from-inherit bg-zinc-800/30 flex flex-col gap-4 items-start w-fit mx-auto p-4 relative z-0    ">
+                    <Icon className="absolute h-6 w-6 -top-3 -left-3 dark:text-white text-black" />
+                    <Icon className="absolute h-6 w-6 -bottom-3 -left-3 dark:text-white text-black" />
+                    <Icon className="absolute h-6 w-6 -top-3 -right-3 dark:text-white text-black" />
+                    <Icon className="absolute h-6 w-6 -bottom-3 -right-3 dark:text-white text-black" />
+
+                    
+
+                    <div className="grid gap-2">
+                        <div className="">
+                          <h1 className='text-white'>{project.title}</h1>
+                        </div>
+
+                        <h2 className="dark:text-white text-black  text-sm font-light">
+                          {project.description}
+                        </h2>
+                    </div>
+                    
+                    {project.skills?.length > 0 && (
+                    <div className=" flex flex-wrap gap-2 w-[90%]">
+                      {project.skills.map((skill) => (
+                        <h1 key={skill._id} className=' w-fit text-[0.7rem] border  border-neutral-700 rounded-full   shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]  p-1 px-4 items-center justify-center text-white'> {skill.name}</h1>
+                      ))}
+                    </div>
+                  )}
+
+                </div>
+
+              
+              </div>
+
+        ))}
+      </div>
+      )}
+      
 
     </div>
   );
 };
 
 export default ProjectsList;
+
+const Icon = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth="1.5"
+      stroke="currentColor"
+      className={className}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+    </svg>
+  );
+};

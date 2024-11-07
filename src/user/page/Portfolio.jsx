@@ -13,8 +13,8 @@ export default function Portfolio() {
           <div className="max-w-2xl mx-auto mt-20 z-0  ">
            
             <PortfolioBody/>
-            <ExperienceList/>
-            <ProjectsList/>
+            <ExperienceList UseForShow={true}/>
+            <ProjectsList UseForShow={true} />
 
               <div className="">
                 {/* Footer */}
