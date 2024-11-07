@@ -254,7 +254,7 @@ const PersonalDataForm = () => {
                         <button
                           type="button"
                           onClick={() => setFiles(prev => ({ ...prev, imageUrl: null }))}
-                          className="absolute -top-2 -right-2 bg-[#FD356E] rounded-full p-1 hover:bg-[#FF5F85] transition-colors"
+                          className="absolute -top-2 -right-2 bg-[#31313b]   rounded-full p-1 hover:bg-[#FD356E] transition-colors"
                         >
                           <X className="h-4 w-4 text-white" />
                         </button>

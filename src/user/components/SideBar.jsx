@@ -239,7 +239,7 @@ const authLogout = async () => {
      
       
 
-      <span onClick={() => { setIsSidebarOpen(false); }} className={`fixed w-full  z-10 h-screen  md:hidden  ${isSidebarOpen ? 'md:hidden flex bg-[#07010459]' : 'max-sm:hidden'}`}></span>
+      <span onClick={() => { setIsSidebarOpen(false); }} className={`fixed w-full  z-10 h-screen  md:hidden  ${isSidebarOpen ? 'md:hidden flex bg-[#07010459]' : 'max-md:hidden'}`}></span>
             <DialogBox 
                open={Dialogopen}
                setOpen={setDialogopenOpen} 
