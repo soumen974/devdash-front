@@ -1,206 +1,152 @@
-import React from "react";
-import Image from '../assets/image.png'
-import Chat from '../assets/chat.png'
-import Code from '../assets/code.png'
-import Arrow from '../assets/arrow.png'
-import pagelogo from "../assets/Logo.svg";
-import axios from "axios"
+import React, { useState } from 'react';
+import { MessageSquare, Camera, Code, ArrowRight } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import pagelogo from "../assets/Logo.svg";
 
 export default function Gemini() {
-
+  const [inputText, setInputText] = useState('');
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const navigate = useNavigate();
+  const mutation = useMutation({
+    mutationFn: (text) => {
+      return axios.post(
+        `${process.env.REACT_APP_API}/api/chats`,
+        { text },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      ).then((res) => res.data);
+    },
+    onSuccess: (id) => {
+      queryClient.invalidateQueries({ queryKey: ['userChats'] });
+      navigate(`/dashboard/gemini/chats/${id}`);
+    },
+  });
 
-const mutation = useMutation({
-  mutationFn: (text) => {
-    return axios.post(
-      `${process.env.REACT_APP_API}/api/chats`,
-      { text },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true, // equivalent to credentials: "include"
-      }
-    ).then((res) => res.data);
-  },
-  onSuccess: (id) => {
-    // Invalidate and refetch
-    queryClient.invalidateQueries({ queryKey: ['userChats'] });
-    navigate(`/dashboard/gemini/chats/${id}`);
-  },
-});
+  const features = [
+    { 
+      icon: <MessageSquare className="w-8 h-8 text-[#FD356E]" />, 
+      title: "Create a New Chat",
+      description: "Start a new conversation" 
+    },
+    { 
+      icon: <Camera className="w-8 h-8 text-[#FD356E]" />, 
+      title: "Analyze Images",
+      description: "Get insights from images" 
+    },
+    { 
+      icon: <Code className="w-8 h-8 text-[#FD356E]" />, 
+      title: "Help me with my Code",
+      description: "Code assistance and review" 
+    }
+  ];
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const text = e.target.text.value;
-  if(!text) return;
-
-  mutation.mutate(text);
-
-//   await axios.post(
-//   "http://localhost:5000/api/chats",
-//   { text },
-//   {
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     withCredentials: true,
-//   }
-// );
-
-}
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!inputText) return;
+    mutation.mutate(inputText);
+    setInputText('');
+  };
 
   return (
-    <div className="h-[100%] flex flex-col items-center text-white">
-      <div className="flex-1 flex flex-col mt-[15%] items-center justify-center w-1/2 gap-12">
-        <div className="flex items-center gap-5 opacity-20 ">
-          <img src={pagelogo} alt="" className="size-16" />
-          <h1 className="text-[64px] font-medium bg-gradient-to-r from-[#217bfe] to-[#e55571] bg-clip-text text-transparent max-xl:text-6xl">
-          FoxDash          
+    <div className="min-h-[91.8vh]  flex flex-col items-center px-6 relative overflow-hidden">
+      {/* Background Decorations */}
+     
+      {/* Logo Section */}
+      <div className="flex-1 flex flex-col items-center justify-center mt-20 relative">
+        <div className="flex items-center gap-5 opacity-90 hover:opacity-100 transition-all duration-300 transform hover:scale-105">
+          <div className="relative bg-white p-2 rounded-xl">
+            <div className="absolute inset-0 bg-gradient-to-r from-[#FD356E]/20 to-[#FF5F85]/20 blur-xl rounded-full"></div>
+            <img src={pagelogo} alt="FoxDash Logo" className="w-16 h-16 relative"/>
+          </div>
+          <h1 className="text-6xl font-bold bg-gradient-to-r from-[#FD356E] to-[#FF5F85] bg-clip-text text-transparent">
+            FoxDash
           </h1>
         </div>
       </div>
-      <div className="w-[70%] pb-20 flex items-center justify-between gap-12">
-        <div className="flex-1 flex flex-col gap-2 font-medium text-lg p-5 border-[1px] border-solid border-[#555] rounded-lg">
-          <img src={Chat} alt="" className="size-16 object-cover"/>
-          <span>Create a New Chat</span>
-        </div>
-        <div className="flex-1 flex flex-col gap-2 font-medium text-lg p-5 border-[1px] border-solid border-[#555] rounded-lg">
-          <img src={Image} alt=""  className="size-16 object-cover"/>
-          <span>Analyze Images</span>
-        </div>
-        <div className="flex-1 flex flex-col gap-2 font-medium text-lg p-5 border-[1px] border-solid border-[#555] rounded-lg">
-          <img src={Code} alt=""  className="size-16 object-cover"/>
-          <span>Help me with my Code</span>
-        </div>
+
+      {/* Features Grid */}
+      <div className="w-[80%] max-w-6xl grid grid-cols-1 md:grid-cols-3 gap-8 mb-44">
+        {features.map((feature, index) => (
+          <div
+            key={index}
+            className="group flex flex-col gap-4 p-6 backdrop-blur-lg bg-[#2A2A32]/90 
+                     rounded-2xl border-2 border-gray-700/30 hover:border-[#FD356E]/30
+                     transition-all duration-300 cursor-pointer transform hover:scale-[1.02]
+                     hover:shadow-lg hover:shadow-[#FD356E]/10"
+          >
+            <div className="relative w-16 h-16 group-hover:scale-110 transition-transform duration-300">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#FD356E]/10 to-[#FF5F85]/10 blur-xl rounded-full"></div>
+              <div className="relative flex items-center justify-center">
+                {feature.icon}
+              </div>
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-lg font-medium text-white">{feature.title}</h3>
+              <p className="text-sm text-gray-400">{feature.description}</p>
+            </div>
+          </div>
+        ))}
       </div>
-      <div className="flex mt-auto w-1/2 h-[4vw] bg-[#2c2937] rounded-2xl">
-        <form onSubmit={handleSubmit} className="w-[100%] h-[100%] flex items-center justify-between gap-5 mb-2">
-          <input type="text" name="text" placeholder="Ask me Anything" className="flex-1 p-4 bg-transparent border-none outline-none"/>
-          <button className="bg-[#605e68] rounded-full border-none cursor-pointer p-3 flex items-center justify-center mr-4">
-            <img src={Arrow} alt="" className="size-4"/>
+
+      {/* Input Section */}
+      <div className="fixed bottom-8 w-full max-w-2xl px-4">
+        <form 
+          onSubmit={handleSubmit} 
+          className="relative backdrop-blur-lg bg-[#2A2A32]/90 rounded-2xl border-2 border-gray-700/30
+                   shadow-lg hover:shadow-[#FD356E]/10 transition-all duration-300"
+        >
+          <input
+            type="text"
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+            placeholder="Ask me anything..."
+            className="w-full h-14 px-6 bg-transparent text-white placeholder-gray-400 
+                     border-none outline-none focus:ring-2 focus:ring-[#FD356E]/20 rounded-xl
+                     transition-all duration-200"
+            disabled={mutation.isPending}
+          />
+          <button 
+            type="submit"
+            className="absolute right-3 top-1/2 -translate-y-1/2 p-3
+                     bg-gradient-to-r from-[#FD356E] to-[#FF5F85] 
+                     hover:from-[#FF5F85] hover:to-[#FD356E] 
+                     rounded-xl transition-all duration-200 transform 
+                     hover:scale-105 active:scale-95 disabled:opacity-50 
+                     disabled:cursor-not-allowed"
+            disabled={mutation.isPending}
+          >
+            <ArrowRight className="w-4 h-4 text-white" />
           </button>
         </form>
+
+        {/* Status Messages */}
+        {mutation.isPending && (
+          <div className="mt-4 p-4 rounded-xl bg-[#FD356E]/10 border border-[#FD356E]/20 
+                        backdrop-blur-md animate-fadeIn">
+            <div className="flex items-center gap-2 text-[#FD356E]">
+              <div className="w-2 h-2 rounded-full bg-[#FD356E] animate-pulse"></div>
+              Processing your request...
+            </div>
+          </div>
+        )}
+        
+        {mutation.error && (
+          <div className="mt-4 p-4 rounded-xl bg-red-500/10 border border-red-500/20 
+                        backdrop-blur-md animate-fadeIn">
+            <div className="flex items-center gap-2 text-red-400">
+              <div className="w-2 h-2 rounded-full bg-red-500"></div>
+              Error: {mutation.error.message}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
-
-
-
-
-// <div className="relative right-44 flex flex-col items-center justify-center text-white ">
-//   <div className="bg-[#2c2937] p-3 rounded-[20px] max-w-[60%] self-end">
-//     Text message from User Lorem ipsum, dolor sit amet consectetur
-//     adipisicing elit. Expedita, nostrum consequuntur amet optio iste sequi,
-//     dolorem asperiores itaque quasi, totam illo distinctio laborum. Autem,
-//     dolores possimus provident unde similique modi!
-//   </div>
-//   <div className="p-5 w-[60%]">
-//     Text message from Ai Lorem ipsum dolor sit amet consectetur, adipisicing
-//     elit. Consectetur eum deleniti ad odio praesentium fugiat sit, in
-//     voluptatum assumenda iure, nisi voluptatem id voluptate porro sed,
-//     possimus voluptates ab aperiam!
-//   </div>
-//   <div className="bg-[#2c2937] p-3 rounded-[20px] max-w-[60%] self-end">
-//     Text message from User Lorem ipsum, dolor sit amet consectetur
-//     adipisicing elit. Expedita, nostrum consequuntur amet optio iste sequi,
-//     dolorem asperiores itaque quasi, totam illo distinctio laborum. Autem,
-//     dolores possimus provident unde similique modi!
-//   </div>
-//   <div className="p-5 w-[60%]">
-//     Text message from Ai Lorem ipsum dolor sit amet consectetur, adipisicing
-//     elit. Consectetur eum deleniti ad odio praesentium fugiat sit, in
-//     voluptatum assumenda iure, nisi voluptatem id voluptate porro sed,
-//     possimus voluptates ab aperiam!
-//   </div>
-//   <div className="bg-[#2c2937] p-3 rounded-[20px] max-w-[60%] self-end">
-//     Text message from User Lorem ipsum, dolor sit amet consectetur
-//     adipisicing elit. Expedita, nostrum consequuntur amet optio iste sequi,
-//     dolorem asperiores itaque quasi, totam illo distinctio laborum. Autem,
-//     dolores possimus provident unde similique modi!
-//   </div>
-//   <div className="p-5 w-[60%]">
-//     Text message from Ai Lorem ipsum dolor sit amet consectetur, adipisicing
-//     elit. Consectetur eum deleniti ad odio praesentium fugiat sit, in
-//     voluptatum assumenda iure, nisi voluptatem id voluptate porro sed,
-//     possimus voluptates ab aperiam!
-//   </div>
-//   <div className="bg-[#2c2937] p-3 rounded-[20px] max-w-[60%] self-end">
-//     Text message from User Lorem ipsum, dolor sit amet consectetur
-//     adipisicing elit. Expedita, nostrum consequuntur amet optio iste sequi,
-//     dolorem asperiores itaque quasi, totam illo distinctio laborum. Autem,
-//     dolores possimus provident unde similique modi!
-//   </div>
-//   <div className="p-5 w-[60%]">
-//     Text message from Ai Lorem ipsum dolor sit amet consectetur, adipisicing
-//     elit. Consectetur eum deleniti ad odio praesentium fugiat sit, in
-//     voluptatum assumenda iure, nisi voluptatem id voluptate porro sed,
-//     possimus voluptates ab aperiam!
-//   </div>
-//   <div className="bg-[#2c2937] p-3 rounded-[20px] max-w-[60%] self-end">
-//     Text message from User Lorem ipsum, dolor sit amet consectetur
-//     adipisicing elit. Expedita, nostrum consequuntur amet optio iste sequi,
-//     dolorem asperiores itaque quasi, totam illo distinctio laborum. Autem,
-//     dolores possimus provident unde similique modi!
-//   </div>
-//   <div className="p-5 w-[60%]">
-//     Text message from Ai Lorem ipsum dolor sit amet consectetur, adipisicing
-//     elit. Consectetur eum deleniti ad odio praesentium fugiat sit, in
-//     voluptatum assumenda iure, nisi voluptatem id voluptate porro sed,
-//     possimus voluptates ab aperiam!
-//   </div>
-//   <div className="bg-[#2c2937] p-3 rounded-[20px] max-w-[60%] self-end">
-//     Text message from User Lorem ipsum, dolor sit amet consectetur
-//     adipisicing elit. Expedita, nostrum consequuntur amet optio iste sequi,
-//     dolorem asperiores itaque quasi, totam illo distinctio laborum. Autem,
-//     dolores possimus provident unde similique modi!
-//   </div>
-//   <div className="p-5 w-[60%]">
-//     Text message from Ai Lorem ipsum dolor sit amet consectetur, adipisicing
-//     elit. Consectetur eum deleniti ad odio praesentium fugiat sit, in
-//     voluptatum assumenda iure, nisi voluptatem id voluptate porro sed,
-//     possimus voluptates ab aperiam!
-//   </div>
-// <div className="bg-[#2c2937] p-3 rounded-[20px] max-w-[60%] self-end">
-//     Text message from User Lorem ipsum, dolor sit amet consectetur
-//     adipisicing elit. Expedita, nostrum consequuntur amet optio iste sequi,
-//     dolorem asperiores itaque quasi, totam illo distinctio laborum. Autem,
-//     dolores possimus provident unde similique modi!
-//   </div>
-//   <div className="p-5 w-[60%]">
-//     Text message from Ai Lorem ipsum dolor sit amet consectetur, adipisicing
-//     elit. Consectetur eum deleniti ad odio praesentium fugiat sit, in
-//     voluptatum assumenda iure, nisi voluptatem id voluptate porro sed,
-//     possimus voluptates ab aperiam!
-//   </div>
-// <div className="bg-[#2c2937] p-3 rounded-[20px] max-w-[60%] self-end">
-//     Text message from User Lorem ipsum, dolor sit amet consectetur
-//     adipisicing elit. Expedita, nostrum consequuntur amet optio iste sequi,
-//     dolorem asperiores itaque quasi, totam illo distinctio laborum. Autem,
-//     dolores possimus provident unde similique modi!
-//   </div>
-//   <div className="p-5 w-[60%]">
-//     Text message from Ai Lorem ipsum dolor sit amet consectetur, adipisicing
-//     elit. Consectetur eum deleniti ad odio praesentium fugiat sit, in
-//     voluptatum assumenda iure, nisi voluptatem id voluptate porro sed,
-//     possimus voluptates ab aperiam!
-//   </div>
-// <div className="bg-[#2c2937] p-3 rounded-[20px] max-w-[60%] self-end">
-//     Text message from User Lorem ipsum, dolor sit amet consectetur
-//     adipisicing elit. Expedita, nostrum consequuntur amet optio iste sequi,
-//     dolorem asperiores itaque quasi, totam illo distinctio laborum. Autem,
-//     dolores possimus provident unde similique modi!
-//   </div>
-//   <div className="p-5 w-[60%]">
-//     Text message from Ai Lorem ipsum dolor sit amet consectetur, adipisicing
-//     elit. Consectetur eum deleniti ad odio praesentium fugiat sit, in
-//     voluptatum assumenda iure, nisi voluptatem id voluptate porro sed,
-//     possimus voluptates ab aperiam!
-//   </div>
-//   <NewPrompt />
-// </div>

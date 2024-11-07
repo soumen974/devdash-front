@@ -15,7 +15,7 @@ import Login from "./Auth/pages/AuthLogin";
 import "./App.css"
 import Chatpage from './user/components/Chatpage';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-// import LayoutAss from "./Assignment/Layout";
+import Settings from "./user/page/Settings";
 
 const queryClient = new QueryClient()
 function App() {
@@ -39,8 +39,10 @@ function App() {
             <Route path="/dashboard/classtimetable" element={<Classtimetable/>} />
             <Route path="/dashboard/portfolio" element={<Portfolio/>} />
             <Route path="/dashboard/gemini" element={<Gemini/>} />
+            <Route path="/dashboard/gemini/chats" element={<Gemini/>} />
             <Route path="/dashboard/gemini/chats/:id" element={<Chatpage/>} />
             <Route path="/dashboard/resume" element={<Resume/>} />
+            <Route path="/dashboard/settings" element={<Settings/>} />
 
 
           </Route>

@@ -1,124 +1,132 @@
-import { useState } from 'react'
-import { Dialog, DialogPanel } from '@headlessui/react'
-// import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import Logo from "../assets/Logo.svg";
-import { Menu,X ,Github  } from 'lucide-react';
+import { useState ,useEffect } from 'react';
+import {  Github, ArrowRight, ChevronRight } from 'lucide-react';
 import google from "../assets/google-logo-9808.png";
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 
-  
 export default function Hero() {
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-    const handleOAuthGoogleLogin = () => {
-        // setLoading(true);
-        window.location.href = `${process.env.REACT_APP_API}/auth/google`;
-      };
+  const handleOAuthGoogleLogin = () => {
+    window.location.href = `${process.env.REACT_APP_API}/auth/google`;
+  };
+
+  const handleOAuthGithubLogin = () => {
+    window.location.href = `${process.env.REACT_APP_API}/auth/github`;
+  };
+
+  const [developerData, setDeveloperData] = useState({});
+  const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+
+    const checkAuthntication = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API}/auth/protected`, { withCredentials: true });
+        setDeveloperData(response.data.developer_data);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        setError(error.response?.data?.error || 'Error fetching data');
+        if (error.response?.status === 403){
+          navigate('/auth/login');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+
+
 
   return (
-    <div className='bg-[#19191C] overflow-hidden  h-screen '>
-      <div className=" z-20  relative mx-auto max-w-7xl  ">
-            <div className="text-white  relative lg:pt-40 md:pt-32 pt-24 ">
+    <div className="min-h-screen bg-gradient-to-b from-zinc-900 to-black overflow-hidden relative">
+      {/* Gradient Orbs */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" />
+        <div className="absolute top-0 -right-40 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" />
+        <div className="absolute -bottom-40 left-20 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" />
+      </div>
 
-                <div
-                className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
-                aria-hidden="true"
-                >
-                <div
-                    className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-r from-[#fd356e] to-[#5f56d2] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
-                    style={{
-                    clipPath:
-                        'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-                    }}
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        
+        
+
+        <div className="pt-20 pb-24 text-center lg:pt-32">
+          {/* Announcement Banner */}
+          <div className="mb-8 flex justify-center">
+            <div className="relative rounded-full px-4 py-2 text-sm leading-6 text-gray-300 ring-1 ring-gray-700/10 hover:ring-gray-700 bg-gray-800/40 backdrop-blur-sm transition-all duration-300 hover:scale-105">
+              <span className="hidden md:inline">Get your free portfolio page upon deployment</span>
+              <span className="md:hidden">Free portfolio page!</span>
+              <a href="#" className="font-semibold text-pink-400 ml-2 inline-flex items-center">
+                Grab now
+                <ChevronRight className="w-4 h-4 ml-1" />
+              </a>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="mx-auto max-w-4xl">
+            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 pb-1">
+              A developer dashboard for all your needs
+            </h1>
+            <p className="mt-6 text-lg leading-8 text-gray-300">
+              An all-encompassing solution for incident notifications, secure document archiving, intuitive portfolio creation, effortless no-code deployment, and additional advanced features.
+            </p>
+
+            {/* CTA Buttons */}
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <div
+                onClick={checkAuthntication}
+                className={`${loading? ' cursor-wait ':'cursor-pointer'} rounded-full  bg-pink-600 px-8 py-3 text-base font-semibold text-white shadow-lg hover:bg-pink-500 transition-all duration-300 hover:scale-105 flex items-center`}
+              >
+                Get started
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </div>
+              <a
+                href="#"
+                className="text-base font-semibold text-gray-300 hover:text-white transition-colors duration-300"
+              >
+                Learn more →
+              </a>
+            </div>
+
+            {/* OAuth Buttons */}
+            <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+              <button
+                onClick={handleOAuthGoogleLogin}
+                className="flex items-center justify-center gap-3 px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/10 transition-all duration-300 hover:scale-105"
+              >
+                <img
+                  src={google}
+                  alt="Google"
+                  className="w-6 h-6 rounded-full"
                 />
-                </div>
-                <div className="text-white px-5   ">
-                    <div className="  isolate   ">
-                        <div className="lg:flex  ">
-                            <div className="mx-auto  ">
-                                <div className="mb-6 md:mb-8 flex max-md:justify-center  ">
-                                    <div className="relative rounded-full px-2 sm:px-3 sm:py-1 text-[2.8vw] sm:text-sm leading-6 text-gray-200 ring-1 ring-[#FD356E] bg-[#e7507b33] hover:shadow-md hover:shadow-[#fd356e5d]">
-                                    Get your free portfolio page upon deployment  &nbsp;
-                                    <a href="#" className="font-semibold text-[#fd356e]">
-                                        <span aria-hidden="true" className="absolute inset-0" />
-                                        Grab now <span aria-hidden="true">&rarr;</span>
-                                    </a>
-                                    </div>
-                                </div>
-                                
-                                <div className="md:text-start text-center  pb-6">
-                                    <h1 className="text-4xl font-bold tracking-tight text-gray-00 sm:text-6xl">
-                                    A developer dashboard for all your needs
-                                    </h1>
-                                    <p className="mt-6 text-lg leading-8 text-gray-600">
-                                    An all-encompassing solution for incident notifications, secure document archiving, intuitive portfolio creation, effortless no-code deployment, and additional advanced features.                           
-                                    </p>
-                                    <div className="mt-10 flex items-center justify-center md:justify-start gap-x-6">
-                                    <a
-                                        href="/dashboard"
-                                        className="rounded-md bg-[#fd356e] px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                    >
-                                        Get started
-                                    </a>
-                                    <a href="#" className="text-sm font-semibold leading-6 text-gray-300">
-                                        Learn more <span aria-hidden="true">→</span>
-                                    </a>
-                                    </div>
-
-                                    <div className="md:mt-10 mt-7 flex justify-center md:justify-start gap-5">
-                                        <button onClick={handleOAuthGoogleLogin} className='border sm:text-sm text-[3vw] items-center backdrop-blur-sm  border-[#5e5e5e7a] rounded-full px-2 py-2 sm:pr-5 flex gap-2'>
-                                            <img className='w-6 h-6 ' src={google} alt="" />
-                                        <h1 className=''>Sign in With Google</h1> 
-                                        </button>
-                                        <button className='border sm:text-sm text-[3vw] items-center backdrop-blur-sm  border-[#5e5e5e7a] rounded-full px-2 py-2 sm:pr-5 flex gap-2'>
-                                        <Github className='h-6 w-6' />
-                                            <h1 className=''>Sign in Github </h1>
-                                        </button>
-                                    </div>
-
-                                    
-                                </div>
-                            </div>
-                            <div className="relative hidden  lg:block bg-red-20 ">
-                                <div className="    max-md:absolute max-md:top-1/2 max-md:right-20 ">
-                                    <div className=" overflow-hidden  w-[25rem] md:w-[30rem] h-[35rem]   ">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="lg:relative  ">
-                                <div className="w-[92vw]  md:w-[38rem] md:h-[55rem]  lg:absolute md:top-30 md:-right-40 ">
-                                    <div className=" overflow-hidden p-2 md:p-3 border-[0.41px] md:w-[86rem]  rounded-[1.2rem] md:rounded-[1.4rem] backdrop-blur-2xl bg-gradient-to-b border-[#5e5e5e7a] from-inherit bg-zinc-800/30 ">
-                                    <img className='rounded-xl' src="https://cdn.dribbble.com/users/402092/screenshots/16282144/media/6dcd7ea72e3ba67ea115527e0f267c40.png" alt="" />
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                            
-                        
-                    </div>
-                    
-                </div>
-
-                <div
-                        aria-hidden="true"
-                        className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
-                        >
-                        <div
-                            style={{
-                            clipPath:
-                                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-                            }}
-                            className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#fd356e] to-[#5f56d2] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
-                        />
+                <span className="text-white text-sm font-medium">Continue with Google</span>
+              </button>
+              <button onClick={handleOAuthGithubLogin} className="flex items-center justify-center gap-3 px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/10 transition-all duration-300 hover:scale-105">
+                <Github className="w-6 h-6 text-white" />
+                <span className="text-white text-sm font-medium">Continue with Github</span>
+              </button>
             </div>
+          </div>
 
-            
-            
+          {/* Dashboard Preview */}
+          <div className="mt-16 flow-root sm:mt-24">
+            <div className="relative -m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
+              
+              <img
+                src="https://cdn.dribbble.com/users/402092/screenshots/16282144/media/6dcd7ea72e3ba67ea115527e0f267c40.png"
+                alt="Dashboard preview"
+                className="rounded-md shadow-2xl ring-1 ring-gray-900/10 transition-all duration-700 hover:scale-[1.02]"
+              />
+              <div className="absolute inset-0 rounded-md bg-gradient-to-tr from-pink-500/20 to-purple-500/20 opacity-0 hover:opacity-100 transition-opacity duration-700" />
             </div>
-     </div>
+          </div>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
