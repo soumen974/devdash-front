@@ -96,93 +96,117 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
 
   return (
     <div className="fixed z-30 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b">
+      <div className="bg-[#2A2A32] rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-lg">
+        <div className="p-6 border-b border-gray-700">
           <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold">
-              {experience ? 'Edit' : 'Add'} Experience
+            <h2 className="text-2xl font-bold text-white">
+              {formData.position ? 'Edit' : 'Add'} Experience
             </h2>
-            <button 
+            <button
               onClick={onClose}
-              className="p-2 text-gray-600 hover:text-gray-800 transition-colors"
+              className="p-2 text-gray-400 hover:text-gray-300 transition-colors"
             >
               <X size={20} />
             </button>
           </div>
         </div>
-        
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Form fields */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium mb-1">Position</label>
+              <label className="block text-sm font-medium mb-1 text-gray-400">Position</label>
               <input
                 type="text"
                 name="position"
                 value={formData.position}
                 onChange={handleChange}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full p-3 border border-gray-700 rounded-md focus:ring-2 focus:ring-[#FD356E] focus:border-[#FD356E] bg-[#1E1E24] text-white"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Company Name</label>
+              <label className="block text-sm font-medium mb-1 text-gray-400">Company Name</label>
               <input
                 type="text"
                 name="companyName"
                 value={formData.companyName}
                 onChange={handleChange}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full p-3 border border-gray-700 rounded-md focus:ring-2 focus:ring-[#FD356E] focus:border-[#FD356E] bg-[#1E1E24] text-white"
                 required
               />
             </div>
           </div>
 
           {/* Location and Time */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium mb-1">Location</label>
+              <label className="block text-sm font-medium mb-1 text-gray-400">Location</label>
               <input
                 type="text"
                 name="location"
                 value={formData.location}
                 onChange={handleChange}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full p-3 border border-gray-700 rounded-md focus:ring-2 focus:ring-[#FD356E] focus:border-[#FD356E] bg-[#1E1E24] text-white"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Time Period</label>
+              <label className="block text-sm font-medium mb-1 text-gray-400">Time Period</label>
               <input
                 type="text"
                 name="time"
                 value={formData.time}
                 onChange={handleChange}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full p-3 border border-gray-700 rounded-md focus:ring-2 focus:ring-[#FD356E] focus:border-[#FD356E] bg-[#1E1E24] text-white"
                 required
               />
             </div>
           </div>
 
           {/* File uploads */}
-          <div className="space-y-4">
+          <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium mb-1">Company Logo</label>
+              <label className="block text-sm font-medium mb-1 text-gray-400">Company Logo</label>
+              <div className="flex items-center gap-3">
+                <label
+                  htmlFor="companyLogoUrl"
+                  className="cursor-pointer bg-[#FD356E] text-white rounded-md px-4 py-2 text-sm font-medium hover:bg-[#FF5F85] transition-colors"
+                >
+                  Choose File
+                </label>
+                <span className="text-gray-400 text-sm">
+                  {formData.companyLogoUrl ? formData.companyLogoUrl.name : 'No file chosen'}
+                </span>
+              </div>
               <input
                 type="file"
                 name="companyLogoUrl"
+                id="companyLogoUrl"
                 onChange={handleChange}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="hidden"
                 accept="image/*"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Related PDF</label>
+              <label className="block text-sm font-medium mb-1 text-gray-400">Related PDF</label>
+              <div className="flex items-center gap-3">
+                <label
+                  htmlFor="relatedPDFUrl"
+                  className="cursor-pointer bg-[#FD356E] text-white rounded-md px-4 py-2 text-sm font-medium hover:bg-[#FF5F85] transition-colors"
+                >
+                  Choose File
+                </label>
+                <span className="text-gray-400 text-sm">
+                  {formData.relatedPDFUrl ? formData.relatedPDFUrl.name : 'No file chosen'}
+                </span>
+              </div>
               <input
                 type="file"
                 name="relatedPDFUrl"
+                id="relatedPDFUrl"
                 onChange={handleChange}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="hidden"
                 accept=".pdf"
               />
             </div>
@@ -190,34 +214,34 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
 
           {/* Learnings */}
           <div>
-            <label className="block text-sm font-medium mb-1">Learnings</label>
-            <div className="flex gap-2 mb-2">
+            <label className="block text-sm font-medium mb-1 text-gray-400">Learnings</label>
+            <div className="flex gap-3 mb-4">
               <input
                 type="text"
                 value={newLearning}
                 onChange={(e) => setNewLearning(e.target.value)}
-                className="flex-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="flex-1 p-3 border border-gray-700 rounded-md focus:ring-2 focus:ring-[#FD356E] focus:border-[#FD356E] bg-[#1E1E24] text-white"
                 placeholder="Add a learning..."
               />
               <button
                 type="button"
                 onClick={addLearning}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                className="px-4 py-2 bg-[#FD356E] text-white rounded-md hover:bg-[#FF5F85] transition-colors"
               >
                 Add
               </button>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-3">
               {formData.learnings.map((learning, idx) => (
-                <span 
+                <span
                   key={idx}
-                  className="px-3 py-1 bg-gray-100 rounded-full text-sm flex items-center gap-2"
+                  className="px-3 py-1 bg-gray-700 rounded-full text-sm flex items-center gap-2 text-white"
                 >
                   {learning.name}
                   <button
                     type="button"
                     onClick={() => removeLearning(idx)}
-                    className="text-red-500 hover:text-red-700"
+                    className="text-red-400 hover:text-red-300 transition-colors"
                   >
                     <X size={14} />
                   </button>
@@ -228,34 +252,34 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
 
           {/* Skills */}
           <div>
-            <label className="block text-sm font-medium mb-1">Skills</label>
-            <div className="flex gap-2 mb-2">
+            <label className="block text-sm font-medium mb-1 text-gray-400">Skills</label>
+            <div className="flex gap-3 mb-4">
               <input
                 type="text"
                 value={newSkill}
                 onChange={(e) => setNewSkill(e.target.value)}
-                className="flex-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="flex-1 p-3 border border-gray-700 rounded-md focus:ring-2 focus:ring-[#FD356E] focus:border-[#FD356E] bg-[#1E1E24] text-white"
                 placeholder="Add a skill..."
               />
               <button
                 type="button"
                 onClick={addSkill}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                className="px-4 py-2 bg-[#FD356E] text-white rounded-md hover:bg-[#FF5F85] transition-colors"
               >
                 Add
               </button>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-3">
               {formData.skills.map((skill, idx) => (
-                <span 
+                <span
                   key={idx}
-                  className="px-3 py-1 bg-gray-100 rounded-full text-sm flex items-center gap-2"
+                  className="px-3 py-1 bg-gray-700 rounded-full text-sm flex items-center gap-2 text-white"
                 >
                   {skill.name}
                   <button
                     type="button"
                     onClick={() => removeSkill(idx)}
-                    className="text-red-500 hover:text-red-700"
+                    className="text-red-400 hover:text-red-300 transition-colors"
                   >
                     <X size={14} />
                   </button>
@@ -265,19 +289,19 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
           </div>
 
           {/* Form actions */}
-          <div className="flex justify-end gap-4 pt-4 border-t">
+          <div className="flex justify-end gap-4 pt-6 border-t border-gray-700">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 border rounded hover:bg-gray-50 transition-colors"
+              className="px-4 py-2 border border-gray-700 rounded-md hover:bg-gray-700 transition-colors text-white"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+              className="px-4 py-2 bg-[#FD356E] text-white rounded-md hover:bg-[#FF5F85] transition-colors"
             >
-              {experience ? 'Update' : 'Create'} Experience
+              {formData.position ? 'Update' : 'Create'} Experience
             </button>
           </div>
         </form>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { X, Upload, User, Mail, Phone, FileText, Image,Loader } from 'lucide-react';
+import ExperienceList from "../components/ExperienceList";
+import ProjectsList from "../components/ProjectsList";
 
 const PersonalDataForm = () => {
   const [formData, setFormData] = useState({
@@ -367,6 +369,8 @@ const PersonalDataForm = () => {
           </div>
         )}
       </div>
+      <ExperienceList UseForShow={false}/>
+      <ProjectsList UseForShow={false} />
     </div>
   );
 };
