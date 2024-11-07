@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Plus, Trash } from 'lucide-react';
 import axios from 'axios';
 
+
 const api = axios.create({
   baseURL: process.env.REACT_APP_API,
   withCredentials: true,
@@ -24,52 +25,59 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
     companyLogoUrl: null,
     relatedPDFUrl: null,
   });
-
   const [newLearning, setNewLearning] = useState('');
   const [newSkill, setNewSkill] = useState('');
 
   useEffect(() => {
     if (experience) {
       setFormData({
-        ...experience,
+        ...experience
       });
       setFiles({
-        companyLogoUrl: experience.companyLogoUrl || null,
-        relatedPDFUrl: experience.relatedPDFUrl || null,
-      });
+        ...experience,
+        companyLogoUrl: null,
+        relatedPDFUrl: null
+      })
     }
   }, [experience]);
 
   const handleInputChange = (e) => {
-    const { name, value, files } = e.target;
-    setFormData((prev) => ({
+    const { name, value } = e.target;
+    setFormData(prev => ({
       ...prev,
-      [name]: files ? files[0] : value,
+      [name]: value
     }));
+  };
+
+  // const handleChange = (e) => {
+  //   const { name, value, files } = e.target;
+  //   setFormData(prev => ({
+  //     ...prev,
+  //     [name]: files ? files[0] : value
+  //   }));
+  // };
+
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    if (files.length > 0) {
+      setFiles(prev => ({
+        ...prev,
+        [name]: files[0]
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formDataToSend = new FormData();
-  
-    // Convert learnings and skills to JSON before appending to FormData
-    const formDataWithArrays = {
-      ...formData,
-      learnings: JSON.stringify(formData.learnings),
-      skills: JSON.stringify(formData.skills),
-    };
-  
-    Object.keys(formDataWithArrays).forEach((key) => {
-      formDataToSend.append(key, formDataWithArrays[key]);
+    Object.keys(formData).forEach(key => {
+      formDataToSend.append(key, formData[key]);
     });
-  
-    if (files.companyLogoUrl) {
-      formDataToSend.append('companyLogoUrl', files.companyLogoUrl);
-    }
-    if (files.relatedPDFUrl) {
-      formDataToSend.append('relatedPDFUrl', files.relatedPDFUrl);
-    }
-  
+
+    if (files.companyLogoUrl) formDataToSend.append('companyLogoUrl', files.companyLogoUrl);
+    if (files.relatedPDFUrl) formDataToSend.append('relatedPDFUrl', files.relatedPDFUrl);
+
+
     try {
       if (experience) {
         await api.put(`/dev/${experience._id}`, formDataToSend);
@@ -85,33 +93,35 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
 
   const addLearning = () => {
     if (!newLearning.trim()) return;
-    setFormData((prev) => ({
+
+    setFormData(prev => ({
       ...prev,
-      learnings: [...prev.learnings, { name: newLearning.trim() }],
+      learnings: [...prev.learnings, { name: newLearning.trim() }]
     }));
     setNewLearning('');
   };
 
   const addSkill = () => {
     if (!newSkill.trim()) return;
-    setFormData((prev) => ({
+
+    setFormData(prev => ({
       ...prev,
-      skills: [...prev.skills, { name: newSkill.trim() }],
+      skills: [...prev.skills, { name: newSkill.trim() }]
     }));
     setNewSkill('');
   };
 
   const removeLearning = (index) => {
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      learnings: prev.learnings.filter((_, i) => i !== index),
+      learnings: prev.learnings.filter((_, i) => i !== index)
     }));
   };
 
   const removeSkill = (index) => {
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      skills: prev.skills.filter((_, i) => i !== index),
+      skills: prev.skills.filter((_, i) => i !== index)
     }));
   };
 
@@ -123,7 +133,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
             <h2 className="text-2xl font-bold">
               {experience ? 'Edit' : 'Add'} Experience
             </h2>
-            <button
+            <button 
               onClick={onClose}
               className="p-2 text-gray-600 hover:text-gray-800 transition-colors"
             >
@@ -131,8 +141,9 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
             </button>
           </div>
         </div>
-
+        
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {/* Form fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium mb-1">Position</label>
@@ -158,6 +169,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
             </div>
           </div>
 
+          {/* Location and Time */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium mb-1">Location</label>
@@ -183,13 +195,14 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
             </div>
           </div>
 
+          {/* File uploads */}
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-1">Company Logo</label>
               <input
                 type="file"
                 name="companyLogoUrl"
-                onChange={handleInputChange}
+                onChange={handleFileChange}
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 accept="image/*"
               />
@@ -199,13 +212,14 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
               <input
                 type="file"
                 name="relatedPDFUrl"
-                onChange={handleInputChange}
+                onChange={handleFileChange}
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 accept=".pdf"
               />
             </div>
           </div>
 
+          {/* Learnings */}
           <div>
             <label className="block text-sm font-medium mb-1">Learnings</label>
             <div className="flex gap-2 mb-2">
@@ -226,7 +240,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
             </div>
             <div className="flex flex-wrap gap-2">
               {formData.learnings.map((learning, idx) => (
-                <span
+                <span 
                   key={idx}
                   className="px-3 py-1 bg-gray-100 rounded-full text-sm flex items-center gap-2"
                 >
@@ -243,6 +257,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
             </div>
           </div>
 
+          {/* Skills */}
           <div>
             <label className="block text-sm font-medium mb-1">Skills</label>
             <div className="flex gap-2 mb-2">
@@ -263,7 +278,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
             </div>
             <div className="flex flex-wrap gap-2">
               {formData.skills.map((skill, idx) => (
-                <span
+                <span 
                   key={idx}
                   className="px-3 py-1 bg-gray-100 rounded-full text-sm flex items-center gap-2"
                 >
@@ -280,6 +295,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
             </div>
           </div>
 
+          {/* Form actions */}
           <div className="flex justify-end gap-4 pt-4 border-t">
             <button
               type="button"
