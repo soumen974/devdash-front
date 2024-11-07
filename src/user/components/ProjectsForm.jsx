@@ -1,48 +1,48 @@
-import React, { useState ,useEffect} from 'react';
-import { X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { X } from 'lucide-react';
+
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API,
-  withCredentials: true,
-  headers: {
-    'Content-Type': 'multipart/form-data',
-  },
-});
-
-const ExperienceForm = ({ experience, onClose, onSubmit }) => {
-  const [formData, setFormData] = useState({
-    position: '',
-    companyName: '',
-    location: '',
-    time: '',
-    companyLogoUrl: null,
-    relatedPDFUrl: null,
-    learnings: experience?.learnings || [],
-    skills: experience?.skills || [],
+    baseURL: process.env.REACT_APP_API,
+    withCredentials: true,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   });
+
+
+const ProjectForm = ({ project, onClose, onSubmit }) => {
+  const [formData, setFormData] = useState({
+    title: project?.title || '',
+    github_link: project?.github_link || '',
+    website_link: project?.website_link || '',
+    description: project?.description || '',
+    learning: project?.learning || [],
+    skills: project?.skills || [],
+    thumbNailImage: null,
+  });
+
   const [newLearning, setNewLearning] = useState('');
   const [newSkill, setNewSkill] = useState('');
 
   useEffect(() => {
-    if (experience) {
+    if (project) {
       setFormData({
-        ...experience,
-        companyLogoUrl: null,
-        relatedPDFUrl: null,
+        ...project,
+        thumbNailImage: null,
       });
-      
     }
-  }, [experience]);
+  }, [project]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      if (experience) {
-        await api.put(`/dev/${experience._id}`, formData);
+      if (project) {
+        await api.put(`/devs/project/${project._id}`, formData);
       } else {
-        await api.post('/dev', formData);
+        await api.post('/devs/project', formData);
       }
       onSubmit();
       onClose();
@@ -53,9 +53,27 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: files ? files[0] : value
+      [name]: files ? files[0] : value,
+    }));
+  };
+
+  const handleLearningChange = (index, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      learning: prev.learning.map((item, i) =>
+        i === index ? { ...item, [field]: value } : item
+      ),
+    }));
+  };
+
+  const handleSkillsChange = (index, field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      skills: prev.skills.map((item, i) =>
+        i === index ? { ...item, [field]: value } : item
+      ),
     }));
   };
 
@@ -64,7 +82,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
 
     setFormData(prev => ({
       ...prev,
-      learnings: [...prev.learnings, { name: newLearning.trim() }]
+      learning: [...prev.learning, { name: newLearning.trim() }]
     }));
     setNewLearning('');
   };
@@ -80,19 +98,18 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
   };
 
   const removeLearning = (index) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      learnings: prev.learnings.filter((_, i) => i !== index)
+      learning: prev.learning.filter((_, i) => i !== index),
     }));
   };
 
   const removeSkill = (index) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      skills: prev.skills.filter((_, i) => i !== index)
+      skills: prev.skills.filter((_, i) => i !== index),
     }));
   };
-
 
   return (
     <div className="fixed z-30 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
@@ -100,9 +117,9 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
         <div className="p-6 border-b">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold">
-              {experience ? 'Edit' : 'Add'} Experience
+              {project ? 'Edit' : 'Add'} Project
             </h2>
-            <button 
+            <button
               onClick={onClose}
               className="p-2 text-gray-600 hover:text-gray-800 transition-colors"
             >
@@ -110,27 +127,25 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
             </button>
           </div>
         </div>
-        
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          {/* Form fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Position</label>
+              <label className="block text-sm font-medium mb-1">Title</label>
               <input
                 type="text"
-                name="position"
-                value={formData.position}
+                name="title"
+                value={formData.title}
                 onChange={handleChange}
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Company Name</label>
+              <label className="block text-sm font-medium mb-1">GitHub Link</label>
               <input
                 type="text"
-                name="companyName"
-                value={formData.companyName}
+                name="github_link"
+                value={formData.github_link}
                 onChange={handleChange}
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
@@ -138,96 +153,90 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
             </div>
           </div>
 
-          {/* Location and Time */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Location</label>
+              <label className="block text-sm font-medium mb-1">Website Link</label>
               <input
                 type="text"
-                name="location"
-                value={formData.location}
+                name="website_link"
+                value={formData.website_link}
                 onChange={handleChange}
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Time Period</label>
-              <input
-                type="text"
-                name="time"
-                value={formData.time}
-                onChange={handleChange}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                required
-              />
-            </div>
-          </div>
-
-          {/* File uploads */}
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">Company Logo</label>
+              <label className="block text-sm font-medium mb-1">Thumbnail Image</label>
               <input
                 type="file"
-                name="companyLogoUrl"
+                name="thumbNailImage"
                 onChange={handleChange}
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 accept="image/*"
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Related PDF</label>
-              <input
-                type="file"
-                name="relatedPDFUrl"
-                onChange={handleChange}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                accept=".pdf"
-              />
-            </div>
           </div>
 
-          {/* Learnings */}
           <div>
-            <label className="block text-sm font-medium mb-1">Learnings</label>
-            <div className="flex gap-2 mb-2">
-              <input
-                type="text"
-                value={newLearning}
-                onChange={(e) => setNewLearning(e.target.value)}
-                className="flex-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Add a learning..."
-              />
-              <button
-                type="button"
-                onClick={addLearning}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-              >
-                Add
-              </button>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {formData.learnings.map((learning, idx) => (
-                <span 
-                  key={idx}
-                  className="px-3 py-1 bg-gray-100 rounded-full text-sm flex items-center gap-2"
-                >
-                  {learning.name}
+            <label className="block text-sm font-medium mb-1">description</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              rows={4}
+              required
+            ></textarea>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Learning</label>
+           
+              <div className="flex gap-2 mb-2">
+                <input
+                  type="text"
+                  value={newLearning}
+                  onChange={(e) => setNewLearning(e.target.value)}
+                  className="flex-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  
+                  placeholder="Add a learning..."
+                />
+                <div className="flex items-center justify-between">
                   <button
                     type="button"
-                    onClick={() => removeLearning(idx)}
-                    className="text-red-500 hover:text-red-700"
+                    onClick={addLearning}
+                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
                   >
-                    <X size={14} />
+                    Add
                   </button>
-                </span>
-              ))}
-            </div>
+                </div>
+
+                
+
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                  {formData.learning.map((learning, idx) => (
+                    <span 
+                      key={idx}
+                      className="px-3 py-1 bg-gray-100 rounded-full text-sm flex items-center gap-2"
+                    >
+                      {learning.name}
+                      <button
+                        type="button"
+                        onClick={() => removeLearning(idx)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <X size={14} />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+          
           </div>
 
-          {/* Skills */}
-          <div>
+         {/* Skills */}
+         <div>
             <label className="block text-sm font-medium mb-1">Skills</label>
             <div className="flex gap-2 mb-2">
               <input
@@ -264,7 +273,6 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
             </div>
           </div>
 
-          {/* Form actions */}
           <div className="flex justify-end gap-4 pt-4 border-t">
             <button
               type="button"
@@ -277,7 +285,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
             >
-              {experience ? 'Update' : 'Create'} Experience
+              {project ? 'Update' : 'Create'} Project
             </button>
           </div>
         </form>
@@ -286,4 +294,4 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
   );
 };
 
-export default ExperienceForm;
+export default ProjectForm;

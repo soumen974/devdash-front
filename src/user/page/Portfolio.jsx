@@ -1,6 +1,7 @@
 import React from 'react'
 import PortfolioBody from "../components/PortfolioBody";
 import ExperienceList from "../components/ExperienceList";
+import ProjectsList from "../components/ProjectsList";
 
 export default function Portfolio() {
   return (
@@ -13,6 +14,8 @@ export default function Portfolio() {
            
             <PortfolioBody/>
             <ExperienceList/>
+            <ProjectsList/>
+
               <div className="">
                 {/* Footer */}
               </div>
