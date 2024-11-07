@@ -107,7 +107,7 @@ const Chatpage = () => {
         </div>
 
         {data && (
-          <div className="fixed bottom-8 left-0 right-0 px-4">
+          <div className="bottom-8 left-0 right-0 px-4">
             <div className="max-w-2xl mx-auto">
               <NewPrompt 
                 data={data}
