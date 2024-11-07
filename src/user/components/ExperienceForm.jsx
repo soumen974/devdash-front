@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Plus, Trash } from 'lucide-react';
 import axios from 'axios';
+
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_API,
@@ -9,18 +10,27 @@ const api = axios.create({
 
 const ExperienceForm = ({ experience, onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
-    username: '',
     position: '',
     companyName: '',
-    location: '',
-    time: '',
     companyLogoUrl: null,
     relatedPDFUrl: null,
+    location: '',
+    time: '',
     learnings: experience?.learnings || [],
     skills: experience?.skills || [],
   });
   const [newLearning, setNewLearning] = useState('');
   const [newSkill, setNewSkill] = useState('');
+
+  useEffect(() => {
+    if (experience) {
+      setFormData({
+        ...experience,
+        companyLogoUrl: null,
+        relatedPDFUrl: null,
+      });
+    }
+  }, [experience]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -79,7 +89,6 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
       skills: prev.skills.filter((_, i) => i !== index)
     }));
   };
-
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
@@ -191,7 +200,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
                 onClick={addLearning}
                 className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
               >
-                Add
+                <Plus size={16} />
               </button>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -206,7 +215,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
                     onClick={() => removeLearning(idx)}
                     className="text-red-500 hover:text-red-700"
                   >
-                    <X size={14} />
+                    <Trash size={14} />
                   </button>
                 </span>
               ))}
@@ -229,7 +238,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
                 onClick={addSkill}
                 className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
               >
-                Add
+                <Plus size={16} />
               </button>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -244,7 +253,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
                     onClick={() => removeSkill(idx)}
                     className="text-red-500 hover:text-red-700"
                   >
-                    <X size={14} />
+                    <Trash size={14} />
                   </button>
                 </span>
               ))}
