@@ -171,7 +171,7 @@ const NewPrompt = ({ data, className }) => {
       {/* Messages */}
      <div className={`flex flex-col ${!answer && "items-end"}`}>
        {question && (
-        <div className="max-w-[80%] bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white p-4 rounded-xl mb-4 self-end
+        <div className="max-w-[80%] relative left-24 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white p-4 rounded-xl mb-4 self-end
                       transform transition-all duration-300 hover:scale-[1.02]">
           <Markdown className="prose prose-invert max-w-none">
             {question}
@@ -180,7 +180,7 @@ const NewPrompt = ({ data, className }) => {
       )}
       
       {answer && (
-        <div className="max-w-[80%] bg-[#2A2A32]/90 border-2 border-gray-700/30 text-gray-100 p-4 rounded-xl mb-4
+        <div className="max-w-[80%] relative right-24 bg-[#2A2A32]/90 border-2 border-gray-700/30 text-gray-100 p-4 rounded-xl mb-4
                       transform transition-all duration-300 hover:scale-[1.02]">
           <Markdown className="prose prose-invert max-w-none">
             {answer}
