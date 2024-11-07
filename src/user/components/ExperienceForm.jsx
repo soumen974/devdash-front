@@ -1,5 +1,5 @@
 import React, { useState ,useEffect} from 'react';
-import { X } from 'lucide-react';
+import { X ,Upload } from 'lucide-react';
 import axios from 'axios';
 
 const api = axios.create({
@@ -28,12 +28,12 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
     if (experience) {
       setFormData({
         ...experience,
-        companyLogoUrl: null,
-        relatedPDFUrl: null,
+        companyLogoUrl: experience.companyLogoUrl || null,
+        relatedPDFUrl: experience.relatedPDFUrl || null,
       });
-      
     }
   }, [experience]);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -165,29 +165,53 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
           </div>
 
           {/* File uploads */}
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* image */}
             <div>
-              <label className="block text-sm font-medium mb-1 text-gray-400">Company Logo</label>
-              <div className="flex items-center gap-3">
-                <label
-                  htmlFor="companyLogoUrl"
-                  className="cursor-pointer bg-[#FD356E] text-white rounded-md px-4 py-2 text-sm font-medium hover:bg-[#FF5F85] transition-colors"
-                >
-                  Choose File
-                </label>
-                <span className="text-gray-400 text-sm">
-                  {formData.companyLogoUrl ? formData.companyLogoUrl.name : 'No file chosen'}
-                </span>
+              <label className="block text-gray-400 text-sm mb-4">Company Logo</label>
+              <div className="bg-[#1E1E24] border border-gray-700 rounded-lg p-4">
+                {formData.companyLogoUrl  ? (
+                  <div className="relative inline-block">
+                    <img 
+                      src={formData.companyLogoUrl } 
+                      alt="company image" 
+                      className="w-24 h-24 rounded-lg object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setFormData(prev => ({ ...prev, companyLogoUrl: null }))}
+                      className="absolute -top-2 -right-2 bg-[#31313b]   rounded-full p-1 hover:bg-[#FD356E] transition-colors"
+                    >
+                      <X className="h-4 w-4 text-white" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-6">
+                    <input
+                        type="file"
+                        name="companyLogoUrl"  
+                        id="companyLogoUrl"
+                        onChange={handleChange}
+                        className="hidden"
+                        accept="image/*"
+                    />
+                    <label
+                      htmlFor="companyLogoUrl"
+                      className="flex flex-col items-center cursor-pointer"
+                    >
+                      <div className="bg-[#2A2A32] rounded-full p-3 mb-2">
+                        <Upload className="h-6 w-6 text-[#FD356E]" />
+                      </div>
+                      <span className="text-gray-400 text-sm">Choose Image</span>
+                    </label>
+                  </div>
+                )}
               </div>
-              <input
-                type="file"
-                name="companyLogoUrl"
-                id="companyLogoUrl"
-                onChange={handleChange}
-                className="hidden"
-                accept="image/*"
-              />
             </div>
+
+
+
+            {/* pdf */}
             <div>
               <label className="block text-sm font-medium mb-1 text-gray-400">Related PDF</label>
               <div className="flex items-center gap-3">
