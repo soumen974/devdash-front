@@ -1,322 +1,374 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Eye, Download, X } from 'lucide-react';
+import { X, Upload, User, Mail, Phone, FileText, Image,Loader } from 'lucide-react';
 
-const Modal = ({ isOpen, onClose, children }) => {
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-11/12 max-w-xl relative">
-        <button
-          onClick={onClose}
-          className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
-        >
-          <X size={24} />
-        </button>
-        {children}
-      </div>
-    </div>
-  );
-};
-
-const PreviewModal = ({ imageUrl, onClose }) => (
-  <Modal isOpen={true} onClose={onClose}>
-    <div className="flex flex-col items-center">
-      <h3 className="text-lg font-semibold mb-4">Image Preview</h3>
-      <div className="w-full max-h-96 overflow-auto">
-        <img 
-          src={imageUrl} 
-          alt="Preview" 
-          className="max-w-full h-auto rounded-lg"
-        />
-      </div>
-      <div className="mt-4 flex space-x-2">
-        <button
-          onClick={onClose}
-          className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md"
-        >
-          OK
-        </button>
-      </div>
-    </div>
-  </Modal>
-);
-
-const PersonalDataUI = () => {
-  const [personalData, setPersonalData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  // Image and resume handling states
-  const [imagePreview, setImagePreview] = useState(null);
-  const [showImagePreview, setShowImagePreview] = useState(false);
-  const [resumePreview, setResumePreview] = useState(null);
-  const [showResumePreview, setShowResumePreview] = useState(false);
-  const [AddpersonalData, setAddpersonalData] = useState(false);
-
+const PersonalDataForm = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    headline: '',
+    description: '',
+    about: '',
+  });
+  
+  const [files, setFiles] = useState({
+    imageUrl: null,
+    resumeUrl: null,
+  });
+  
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [currentData, setCurrentData] = useState(null);
 
   useEffect(() => {
-    const fetchPersonalData = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_API}/dev/data/personal_data`, {
-          withCredentials: true,
-        });
-        setPersonalData(response.data.data);
-      } catch (err) {
-        setError(err.response.data.message);
-      }
-    };
     fetchPersonalData();
   }, []);
 
-  const handleInputChange = (e) => {
-    setPersonalData({ ...personalData, [e.target.name]: e.target.value });
+  const fetchPersonalData = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API}/dev/data/personal_data`, {
+        withCredentials: true,
+      });
+      setCurrentData(response.data.data);
+      setFormData(response.data.data);
+      setFiles(response.data.data);
+    } catch (err) {
+      setError('Failed to fetch personal data');
+      console.error('Fetch error:', err);
+    }
   };
 
-  const handleFileChange = async (e) => {
-    if (e.target.name === 'imageUrl') {
-      const file = e.target.files[0];
-      // File validation logic
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-        setShowImagePreview(true);
-        setPersonalData({ ...personalData, imageUrl: file });
-      };
-      reader.readAsDataURL(file);
-    } else if (e.target.name === 'resumeUrl') {
-      const file = e.target.files[0];
-      // File validation logic
-      setResumePreview(URL.createObjectURL(file));
-      setShowResumePreview(true);
-      setPersonalData({ ...personalData, resumeUrl: file });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    if (files.length > 0) {
+      setFiles(prev => ({
+        ...prev,
+        [name]: files[0]
+      }));
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    const formDataToSend = new FormData();
+    Object.keys(formData).forEach(key => {
+      formDataToSend.append(key, formData[key]);
+    });
+    
+    if (files.imageUrl) formDataToSend.append('imageUrl', files.imageUrl);
+    if (files.resumeUrl) formDataToSend.append('resumeUrl', files.resumeUrl);
 
     try {
-      const formData = new FormData();
-      Object.keys(personalData).forEach((key) => {
-        if (personalData[key] !== null) {
-          formData.append(key, personalData[key]);
+      const response = await axios.post(
+        `${process.env.REACT_APP_API}/dev/data/personal_data`,
+        formDataToSend,
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         }
-      });
-
-      let response;
-      if (personalData._id) {
-        // Update existing data
-        response = await axios.put(`${process.env.REACT_APP_API}/dev/data/personal_data`, formData, {
-          withCredentials: true,
-        });
-      } else {
-        // Create new data
-        response = await axios.post(`${process.env.REACT_APP_API}/dev/data/personal_data`, formData, {
-          withCredentials: true,
-        });
-      }
-
-      setPersonalData(response.data.data);
-      setIsLoading(false);
+      );
+      setSuccess('Personal data updated successfully!');
+      setCurrentData(response.data.data);
     } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred');
-      setIsLoading(false);
+      setError(err.response?.data?.message || 'An error occurred while updating personal data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm('Are you sure you want to delete your personal data?')) return;
+    
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      await axios.delete(
+        `${process.env.REACT_APP_API}/dev/data/personal_data`,
+        { withCredentials: true }
+      );
+      setSuccess('Personal data deleted successfully');
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        headline: '',
+        description: '',
+        about: '',
+      });
+      setFiles({
+        imageUrl: null,
+        resumeUrl: null,
+      });
+      setCurrentData(null);
+    } catch (err) {
+      setError(err.response?.data?.message || 'An error occurred while deleting personal data');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4">
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <h2 className="text-2xl font-bold mb-4">
-          {personalData?._id ? 'Update Personal Data' : 'Create Personal Data'}
-        </h2>
+    <div className="min-h-screen p-4 md:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] bg-clip-text text-transparent">
+            Personal Information
+          </h1>
+          <p className="text-gray-400">
+            Manage and update your profile details
+          </p>
+        </div>
 
-        {error && (
-          <>
-          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
-            <p className="font-bold">Error</p>
-            <p>{error}</p>
-            
-          </div>
-          
-          <button
-              onClick={() => setAddpersonalData(true)}
-              className={`px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white ${
-                isLoading
-                  ? 'bg-blue-400 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
-              }`}
-              disabled={isLoading}
-            >
-              { error=='Personal data not found for this user' ?  personalData?._id ? 'Update' : 'Create' : null}
-            </button>
-            </>
-          
-          
-        )}
-
-       
-        <form onSubmit={handleSubmit} className="mt-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="name" className="block font-medium mb-2">Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={personalData?.name || ''}
-                onChange={handleInputChange}
-                className="w-full border border-gray-300 rounded-md shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500"
-                required
-              />
-            </div>
-
-            <div>
-              <label htmlFor="email" className="block font-medium mb-2">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={personalData?.email || ''}
-                onChange={handleInputChange}
-                className="w-full border border-gray-300 rounded-md shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500"
-                required
-              />
-            </div>
-
-            <div>
-              <label htmlFor="phone" className="block font-medium mb-2">Phone</label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={personalData?.phone || ''}
-                onChange={handleInputChange}
-                className="w-full border border-gray-300 rounded-md shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="headline" className="block font-medium mb-2">Headline</label>
-              <input
-                type="text"
-                id="headline"
-                name="headline"
-                value={personalData?.headline || ''}
-                onChange={handleInputChange}
-                className="w-full border border-gray-300 rounded-md shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500"
-              />
+        {/* Loading State */}
+        {loading ? (
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="flex flex-col items-center gap-4">
+              <Loader className="h-8 w-8 text-[#FD356E] animate-spin" />
+              <p className="text-gray-400">Loading your information...</p>
             </div>
           </div>
+        ) : (
+          <div className="bg-[#2A2A32] rounded-xl p-6 md:p-8">
+            <form onSubmit={handleSubmit} className="space-y-8">
+              {/* Basic Information */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-6">
+                  <div className="relative">
+                    <label className="block text-gray-400 text-sm mb-2">Name</label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full bg-[#1E1E24] text-white border border-gray-700 rounded-lg py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:border-transparent"
+                        placeholder="Your full name"
+                      />
+                    </div>
+                  </div>
 
-          <div className="mt-4">
-            <label htmlFor="description" className="block font-medium mb-2">Description</label>
-            <textarea
-              id="description"
-              name="description"
-              value={personalData?.description || ''}
-              onChange={handleInputChange}
-              rows={3}
-              className="w-full border border-gray-300 rounded-md shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500"
-            />
-          </div>
+                  <div className="relative">
+                    <label className="block text-gray-400 text-sm mb-2">Email</label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full bg-[#1E1E24] text-white border border-gray-700 rounded-lg py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:border-transparent"
+                        placeholder="your.email@example.com"
+                      />
+                    </div>
+                  </div>
 
-          <div className="mt-4">
-            <label htmlFor="about" className="block font-medium mb-2">About</label>
-            <textarea
-              id="about"
-              name="about"
-              value={personalData?.about || ''}
-              onChange={handleInputChange}
-              rows={4}
-              className="w-full border border-gray-300 rounded-md shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500"
-            />
-          </div>
+                  <div className="relative">
+                    <label className="block text-gray-400 text-sm mb-2">Phone</label>
+                    <div className="relative">
+                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        className="w-full bg-[#1E1E24] text-white border border-gray-700 rounded-lg py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:border-transparent"
+                        placeholder="Your phone number"
+                      />
+                    </div>
+                  </div>
+                </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-            <div>
-              <label htmlFor="imageUrl" className="block font-medium mb-2">Profile Image</label>
-              <input
-                type="file"
-                id="imageUrl"
-                name="imageUrl"
-                onChange={handleFileChange}
-                accept="image/*"
-                className="w-full border border-gray-300 rounded-md shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500"
-              />
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-gray-400 text-sm mb-2">Headline</label>
+                    <input
+                      type="text"
+                      name="headline"
+                      value={formData.headline}
+                      onChange={handleInputChange}
+                      className="w-full bg-[#1E1E24] text-white border border-gray-700 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:border-transparent"
+                      placeholder="Professional headline"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-400 text-sm mb-2">Description</label>
+                    <textarea
+                      name="description"
+                      value={formData.description}
+                      onChange={handleInputChange}
+                      className="w-full bg-[#1E1E24] text-white border border-gray-700 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:border-transparent h-32 resize-none"
+                      placeholder="Brief description about yourself"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* About Section */}
+              <div>
+                <label className="block text-gray-400 text-sm mb-2">About</label>
+                <textarea
+                  name="about"
+                  value={formData.about}
+                  onChange={handleInputChange}
+                  className="w-full bg-[#1E1E24] text-white border border-gray-700 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:border-transparent h-40 resize-none"
+                  placeholder="Detailed information about yourself"
+                />
+              </div>
+
+              {/* File Upload Section */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Profile Image Upload */}
+                <div>
+                  <label className="block text-gray-400 text-sm mb-4">Profile Image</label>
+                  <div className="bg-[#1E1E24] border border-gray-700 rounded-lg p-4">
+                    {files.imageUrl ? (
+                      <div className="relative inline-block">
+                        <img 
+                          src={files.imageUrl} 
+                          alt="Profile" 
+                          className="w-24 h-24 rounded-lg object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setFiles(prev => ({ ...prev, imageUrl: null }))}
+                          className="absolute -top-2 -right-2 bg-[#FD356E] rounded-full p-1 hover:bg-[#FF5F85] transition-colors"
+                        >
+                          <X className="h-4 w-4 text-white" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center py-6">
+                        <input
+                          type="file"
+                          name="imageUrl"
+                          onChange={handleFileChange}
+                          accept="image/*"
+                          className="hidden"
+                          id="imageUpload"
+                        />
+                        <label
+                          htmlFor="imageUpload"
+                          className="flex flex-col items-center cursor-pointer"
+                        >
+                          <div className="bg-[#2A2A32] rounded-full p-3 mb-2">
+                            <Upload className="h-6 w-6 text-[#FD356E]" />
+                          </div>
+                          <span className="text-gray-400 text-sm">Choose Image</span>
+                        </label>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Resume Upload */}
+                <div>
+                  <label className="block text-gray-400 text-sm mb-4">Resume</label>
+                  <div className="bg-[#1E1E24] border border-gray-700 rounded-lg p-4">
+                    {files.resumeUrl ? (
+                      <div className="flex items-center justify-between">
+                        <a 
+                          href={files.resumeUrl} 
+                          target="_blank" 
+                          className="flex items-center text-[#FF5F85] hover:text-[#FD356E] transition-colors"
+                        >
+                          <FileText className="h-5 w-5 mr-2" />
+                          View Resume
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => setFiles(prev => ({ ...prev, resumeUrl: null }))}
+                          className="text-gray-400 hover:text-white"
+                        >
+                          <X className="h-5 w-5" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center py-6">
+                        <input
+                          type="file"
+                          name="resumeUrl"
+                          onChange={handleFileChange}
+                          accept=".pdf,.doc,.docx"
+                          className="hidden"
+                          id="resumeUpload"
+                        />
+                        <label
+                          htmlFor="resumeUpload"
+                          className="flex flex-col items-center cursor-pointer"
+                        >
+                          <div className="bg-[#2A2A32] rounded-full p-3 mb-2">
+                            <Upload className="h-6 w-6 text-[#FD356E]" />
+                          </div>
+                          <span className="text-gray-400 text-sm">Choose Resume</span>
+                        </label>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
               
-            </div>
 
-            <div>
-              <label htmlFor="resumeUrl" className="block font-medium mb-2">Resume</label>
-              <input
-                type="file"
-                id="resumeUrl"
-                name="resumeUrl"
-                onChange={handleFileChange}
-                className="w-full border border-gray-300 rounded-md shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500"
-              />
-              {resumePreview && (
-                <div className="mt-2">
-                  <button
-                    onClick={() => setShowResumePreview(true)}
-                    className="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md transition-colors"
-                  >
-                    <Eye className="w-4 h-4 mr-2" />
-                    Preview Resume
-                  </button>
-                  <button
-                    onClick={() => window.open(resumePreview, '_blank')}
-                    className="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md transition-colors"
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Download Resume
-                  </button>
+              {/* Status Messages */}
+              {error && (
+                <div className="bg-red-900/20 border border-red-800 rounded-lg p-4">
+                  <p className="text-red-400">{error}</p>
                 </div>
               )}
-            </div>
+
+              {success && (
+                <div className="bg-green-900/20 border border-green-800 rounded-lg p-4">
+                  <p className="text-green-400">{success}</p>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex justify-between pt-6">
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  disabled={loading || !currentData}
+                  className="px-6 py-3 bg-[#2A2A32] text-white rounded-lg hover:bg-[#1E1E24] focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:ring-offset-2 focus:ring-offset-[#2A2A32] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  {loading ? 'Deleting...' : 'Delete Data'}
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="px-6 py-3 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white rounded-lg hover:from-[#FF5F85] hover:to-[#FD356E] focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:ring-offset-2 focus:ring-offset-[#2A2A32] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  {loading ? 'Saving...' : 'Save Changes'}
+                </button>
+              </div>
+            </form>
           </div>
-
-          <div className="mt-6">
-            <button
-              type="submit"
-              className={`px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white ${
-                isLoading
-                  ? 'bg-blue-400 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
-              }`}
-              disabled={isLoading}
-            >
-              {isLoading ? 'Saving...' : personalData?._id ? 'Update' : 'Create'}
-            </button>
-          </div>
-        </form>
-        
-
-        {showImagePreview && (
-          <PreviewModal
-            imageUrl={imagePreview || personalData?.imageUrl}
-            onClose={() => setShowImagePreview(false)}
-          />
-        )}
-
-        {showResumePreview && (
-          <Modal isOpen={true} onClose={() => setShowResumePreview(false)}>
-            <div className="h-[80vh]">
-              <iframe
-                src={personalData?.resumeUrl}
-                title="Resume Preview"
-                className="w-full h-full rounded border border-gray-200"
-              />
-            </div>
-          </Modal>
         )}
       </div>
     </div>
   );
 };
 
-export default PersonalDataUI;
+export default PersonalDataForm;
