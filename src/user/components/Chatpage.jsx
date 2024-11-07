@@ -2,21 +2,25 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Markdown from "react-markdown";
-
-import {IKImage } from "imagekitio-react";
+import { IKImage } from "imagekitio-react";
 import axios from "axios";
-import { Loader2, ArrowRight,Sparkles } from "lucide-react";
+import { Loader2, ArrowRight, Sparkles, UserCircle } from "lucide-react";
 import NewPrompt from "./NewPrompt";
-
 
 const MessageBubble = ({ message, isUser }) => {
   return (
-    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} w-full mb-4`}>
+    <div className={`flex ${isUser ? "justify-end" : "justify-start"} w-full`}>
       <div
         className={`flex flex-col max-w-[80%] ${
-          isUser ? 'items-end' : 'items-start'
+          isUser ? "items-end" : "items-start"
         }`}
       >
+        {isUser ? (
+          <UserCircle className="absolute -right-10 w-5 h-5 text-white opacity-100 transition-opacity" />
+        ) : (
+          <Sparkles className="absolute -left-10 w-5 h-5 text-[#FD356E] opacity-100 transition-opacity" />
+        )}
+
         {message.img && (
           <div className="mb-2 rounded-xl overflow-hidden group transform transition-all duration-300 hover:scale-[1.02]">
             <IKImage
@@ -32,22 +36,17 @@ const MessageBubble = ({ message, isUser }) => {
           </div>
         )}
 
-          <div
-            className={`rounded-xl px-6 py-4 backdrop-blur-lg transition-all duration-300 hover:scale-[1.02] ${
-              isUser
-                ? 'bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white'
-                : 'bg-[#2A2A32]/90 border-2 border-gray-700/30 text-gray-100'
-            }`}
-          >
-                      {!isUser&& <Sparkles className=" absolute -left-10  w-5 h-5 text-[#FD356E] opacity-100 transition-opacity" />}
-
-            <Markdown 
-              className="prose prose-invert max-w-none"
-            >
-              {message.parts[0].text}
-            </Markdown>
-          </div>
-        
+        <div
+          className={`rounded-xl px-6 py-4 backdrop-blur-lg transition-all duration-300 hover:scale-[1.02] ${
+            isUser
+              ? "bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white"
+              : "bg-[#2A2A32]/90 border-2 border-gray-700/30 text-gray-100"
+          }`}
+        >
+          <Markdown className="prose prose-invert max-w-none">
+            {message.parts[0].text}
+          </Markdown>
+        </div>
       </div>
     </div>
   );
@@ -72,7 +71,6 @@ const ErrorState = () => (
 const Chatpage = () => {
   const path = useLocation().pathname;
   const chatId = path.split("/").pop();
-
   const { isPending, error, data } = useQuery({
     queryKey: ["chat", chatId],
     queryFn: () =>
@@ -85,10 +83,6 @@ const Chatpage = () => {
 
   return (
     <div className="min-h-[91.8vh] bg-[#1E1E24] relative overflow-hidden">
-      {/* Background Decorations */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#FD356E]/5 rounded-full blur-3xl -mr-48 -mt-48"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#FD356E]/5 rounded-full blur-3xl -ml-48 -mb-48"></div>
-
       <div className="max-w-4xl mx-auto px-4 py-6 relative">
         <div className="space-y-4 mb-24">
           {isPending ? (
@@ -107,17 +101,16 @@ const Chatpage = () => {
             </div>
           )}
         </div>
-
         {data && (
-          <div className="fixed bottom-8 left-0 right-0 px-4">
-            <div className="max-w-2xl mx-auto">
-              <NewPrompt 
+          <div className="bottom-8 left-0 right-0 px-4">
+            {" "}
+            <div className="max-w-2xl lg:max-w-4xl mx-auto">
+              {" "}
+              <NewPrompt
                 data={data}
-                className="backdrop-blur-lg bg-[#2A2A32]/90 rounded-xl border-2 border-gray-700/30
-                          hover:border-[#FD356E]/30 shadow-lg hover:shadow-[#FD356E]/10 
-                          transition-all duration-300"
-              />
-            </div>
+                className="fixed backdrop-blur-lg bg-[#2A2A32]/90 rounded-xl border-2 border-gray-700/30 hover:border-[#FD356E]/30 shadow-lg hover:shadow-[#FD356E]/10 transition-all duration-300"
+              />{" "}
+            </div>{" "}
           </div>
         )}
       </div>

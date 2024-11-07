@@ -147,7 +147,7 @@ const NewPrompt = ({ data, className }) => {
       )}
       
       {img.dbData?.filePath && (
-        <div className="relative mb-4 rounded-xl overflow-hidden group">
+        <div className="w-fit relative left-20 lg:left-96 mb-4 rounded-xl overflow-hidden group">
           <IKImage
             urlEndpoint={process.env.REACT_APP_IMAGE_KIT_ENDPOINT}
             path={img.dbData?.filePath}
@@ -159,7 +159,7 @@ const NewPrompt = ({ data, className }) => {
           />
           <button
             onClick={clearImage}
-            className="absolute top-2 right-2 p-1 rounded-full bg-black/50 text-white
+            className="absolute top-2 left-[92%] p-1 rounded-full bg-black/50 text-white
                      opacity-0 group-hover:opacity-100 transition-opacity duration-200
                      hover:bg-black/70"
           >
@@ -169,8 +169,9 @@ const NewPrompt = ({ data, className }) => {
       )}
 
       {/* Messages */}
-      {question && (
-        <div className="bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white p-4 rounded-xl mb-4 self-end
+     <div className={`flex flex-col ${!answer && "items-end"}`}>
+       {question && (
+        <div className="max-w-[80%] bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white p-4 rounded-xl mb-4 self-end
                       transform transition-all duration-300 hover:scale-[1.02]">
           <Markdown className="prose prose-invert max-w-none">
             {question}
@@ -179,7 +180,7 @@ const NewPrompt = ({ data, className }) => {
       )}
       
       {answer && (
-        <div className="bg-[#2A2A32]/90 border-2 border-gray-700/30 text-gray-100 p-4 rounded-xl mb-4
+        <div className="max-w-[80%] bg-[#2A2A32]/90 border-2 border-gray-700/30 text-gray-100 p-4 rounded-xl mb-4
                       transform transition-all duration-300 hover:scale-[1.02]">
           <Markdown className="prose prose-invert max-w-none">
             {answer}
@@ -187,7 +188,8 @@ const NewPrompt = ({ data, className }) => {
         </div>
       )}
 
-      <div className="h-24" ref={endRef}></div>
+     </div>
+      <div className="h-2" ref={endRef}></div>
 
       {/* Input Form */}
       <form
@@ -212,7 +214,7 @@ const NewPrompt = ({ data, className }) => {
               Upload image
             </div>
           </div>
-          <Sparkles className="w-5 h-5 text-[#FD356E] opacity-50 group-hover:opacity-100 transition-opacity" />
+          {/* <Sparkles className="w-5 h-5 text-[#FD356E] opacity-50 group-hover:opacity-100 transition-opacity" /> */}
         </div>
         
         <input
@@ -221,7 +223,7 @@ const NewPrompt = ({ data, className }) => {
           ref={inputRef}
           placeholder="Ask anything..."
           autoComplete="off"
-          className="w-full h-14 pl-24 pr-16 bg-transparent text-white placeholder-gray-400 
+          className="w-full h-14 pl-16 pr-16 bg-transparent text-white placeholder-gray-400 
                    border-none outline-none focus:ring-2 focus:ring-[#FD356E]/20 rounded-xl
                    transition-all duration-200"
           disabled={img.isLoading || mutation.isPending || isTyping}
