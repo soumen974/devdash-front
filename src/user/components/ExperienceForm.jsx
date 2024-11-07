@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { X, Plus, Trash } from 'lucide-react';
+import React, { useState ,useEffect} from 'react';
+import { X } from 'lucide-react';
 import axios from 'axios';
-
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_API,
@@ -13,17 +12,15 @@ const api = axios.create({
 
 const ExperienceForm = ({ experience, onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
+    username: '',
     position: '',
     companyName: '',
     location: '',
     time: '',
-    learnings: experience?.learnings || [],
-    skills: experience?.skills || [],
-  });
-
-  const [files, setFiles] = useState({
     companyLogoUrl: null,
     relatedPDFUrl: null,
+    learnings: experience?.learnings || [],
+    skills: experience?.skills || [],
   });
   const [newLearning, setNewLearning] = useState('');
   const [newSkill, setNewSkill] = useState('');
@@ -31,64 +28,36 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
   useEffect(() => {
     if (experience) {
       setFormData({
-        ...experience
-      });
-      setFiles({
         ...experience,
         companyLogoUrl: null,
-        relatedPDFUrl: null
-      })
+        relatedPDFUrl: null,
+      });
+      
     }
   }, [experience]);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  // const handleChange = (e) => {
-  //   const { name, value, files } = e.target;
-  //   setFormData(prev => ({
-  //     ...prev,
-  //     [name]: files ? files[0] : value
-  //   }));
-  // };
-
-  const handleFileChange = (e) => {
-    const { name, files } = e.target;
-    if (files.length > 0) {
-      setFiles(prev => ({
-        ...prev,
-        [name]: files[0]
-      }));
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formDataToSend = new FormData();
-    Object.keys(formData).forEach(key => {
-      formDataToSend.append(key, formData[key]);
-    });
-
-    if (files.companyLogoUrl) formDataToSend.append('companyLogoUrl', files.companyLogoUrl);
-    if (files.relatedPDFUrl) formDataToSend.append('relatedPDFUrl', files.relatedPDFUrl);
-
 
     try {
       if (experience) {
-        await api.put(`/dev/${experience._id}`, formDataToSend);
+        await api.put(`/dev/${experience._id}`, formData);
       } else {
-        await api.post('/dev', formDataToSend);
+        await api.post('/dev', formData);
       }
       onSubmit();
       onClose();
     } catch (error) {
       console.error('Error submitting form:', error.response?.data);
     }
+  };
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: files ? files[0] : value
+    }));
   };
 
   const addLearning = () => {
@@ -125,8 +94,9 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
     }));
   };
 
+
   return (
-    <div className="fixed z-50 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="p-6 border-b">
           <div className="flex justify-between items-center">
@@ -151,7 +121,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
                 type="text"
                 name="position"
                 value={formData.position}
-                onChange={handleInputChange}
+                onChange={handleChange}
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
               />
@@ -162,7 +132,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
                 type="text"
                 name="companyName"
                 value={formData.companyName}
-                onChange={handleInputChange}
+                onChange={handleChange}
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
               />
@@ -177,7 +147,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
                 type="text"
                 name="location"
                 value={formData.location}
-                onChange={handleInputChange}
+                onChange={handleChange}
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
               />
@@ -188,7 +158,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
                 type="text"
                 name="time"
                 value={formData.time}
-                onChange={handleInputChange}
+                onChange={handleChange}
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
               />
@@ -202,7 +172,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
               <input
                 type="file"
                 name="companyLogoUrl"
-                onChange={handleFileChange}
+                onChange={handleChange}
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 accept="image/*"
               />
@@ -212,7 +182,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
               <input
                 type="file"
                 name="relatedPDFUrl"
-                onChange={handleFileChange}
+                onChange={handleChange}
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 accept=".pdf"
               />
@@ -235,7 +205,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
                 onClick={addLearning}
                 className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
               >
-                <Plus size={16} />
+                Add
               </button>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -250,7 +220,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
                     onClick={() => removeLearning(idx)}
                     className="text-red-500 hover:text-red-700"
                   >
-                    <Trash size={14} />
+                    <X size={14} />
                   </button>
                 </span>
               ))}
@@ -273,7 +243,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
                 onClick={addSkill}
                 className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
               >
-                <Plus size={16} />
+                Add
               </button>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -288,7 +258,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
                     onClick={() => removeSkill(idx)}
                     className="text-red-500 hover:text-red-700"
                   >
-                    <Trash size={14} />
+                    <X size={14} />
                   </button>
                 </span>
               ))}
