@@ -1,10 +1,12 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Loader2, PanelRightOpen, Trash2 } from 'lucide-react'; // Import Trash icon
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Loader2, PanelRightOpen, Plus, Trash2 } from 'lucide-react'; // Import Trash icon
 import Logo from '../assets/Logo.svg';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery,useQueryClient } from '@tanstack/react-query';
 
 export default function RightSideBar(props) {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { isPending, error, data } = useQuery({
     queryKey: ['userChats'],
     queryFn: () =>
@@ -16,11 +18,35 @@ export default function RightSideBar(props) {
   const { setissidebar, issidebar } = props;
   const location = useLocation();
 
-  // Function to handle delete
-  const handleDelete = (chatId) => {
-    // Implement your delete functionality here, like an API call to delete chat
-    console.log(`Delete chat with ID: ${chatId}`);
+  const handleDelete = async (chatId) => {
+    if (window.confirm("Are you sure you want to delete this chat?")) {
+      try {
+        // Find the index of the chat being deleted
+        const chatIndex = data.findIndex(chat => chat._id === chatId);
+        
+        // Call the API to delete the chat
+        await fetch(`${process.env.REACT_APP_API}/api/chats/${chatId}`, {
+          method: 'DELETE',
+          credentials: 'include',
+        });
+
+        // Invalidate and refetch user chats to update UI
+        queryClient.invalidateQueries(['userChats']);
+
+        // Navigate to the previous chat if it exists
+        if (chatIndex > 0) {
+          navigate(`/dashboard/gemini/chats/${data[chatIndex - 1]._id}`);
+        } else if (data.length > 1) { // If there are more than one chats
+          navigate(`/dashboard/gemini/chats/${data[1]._id}`);
+        } else {
+          navigate('/dashboard/gemini'); // Navigate back to create new chat if no chats left
+        }
+      } catch (error) {
+        console.error("Failed to delete chat:", error);
+      }
+    }
   };
+
 
   return (
     <>
@@ -34,18 +60,21 @@ export default function RightSideBar(props) {
         <div className="h-[88vh] divide-y-[1px] divide-[#2d313f] flex gap-3 flex-col px-3 py-4">
           <Link
             to="/dashboard/gemini"
-            className={`hover:bg-[#262936] rounded-lg p-3 ${
+            className={`flex gap-2 hover:bg-[#262936] rounded-lg p-3 ${
               location.pathname === '/dashboard/gemini' ? 'bg-[#262936]' : ''
             }`}
           >
-            Create a new Chat
+            <Plus/>Create a new Chat
           </Link>
+          {console.log(data)}
           <div className="relative flex flex-col-reverse overflow-y-scroll py-2">
             {isPending ? (
               <Loader2 className="relative left-28 size-8 animate-spin" />
             ) : error ? (
               <p>Something went wrong</p>
-            ) : (
+            ) : data.length === 0 ? (
+              <p>Start a new conversation</p> // Show this message if no chats exist
+            ) :  (
               data.map((chat) => (
                 <div
                   key={chat._id}

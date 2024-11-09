@@ -17,7 +17,6 @@ const NewPrompt = ({ data, className }) => {
     aiData: {},
   });
   const [isTyping, setIsTyping] = useState(false);
-
   const chat = model.startChat({
     history: data?.history.map(({ role, parts }) => ({
       role: role || 'user',
@@ -25,22 +24,15 @@ const NewPrompt = ({ data, className }) => {
     })),
   });
 
-  const endRef = useRef(null);
+  const endRef = useRef();
   const formRef = useRef();
   const inputRef = useRef();
 
-  // Auto-scroll effect
   useEffect(() => {
-    const smoothScroll = () => {
-      endRef.current?.scrollIntoView({ behavior: "smooth" });
-    };
-    // Small delay to ensure content is rendered
-    const timeoutId = setTimeout(smoothScroll, 100);
-    return () => clearTimeout(timeoutId);
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [data, question, answer, img.dbData]);
 
   const queryClient = useQueryClient();
-
   const mutation = useMutation({
     mutationFn: () => {
       return axios
@@ -61,25 +53,21 @@ const NewPrompt = ({ data, className }) => {
         .then((res) => res.data);
     },
     onSuccess: () => {
-      queryClient
-        .invalidateQueries({ queryKey: ["chat", data._id] })
-        .then(() => {
-          formRef.current.reset();
-          setQuestion("");
-          setAnswer("");
-          setImg({
-            isLoading: false,
-            error: "",
-            dbData: {},
-            aiData: {},
-          });
-          // Focus input after successful submission
-          inputRef.current?.focus();
+      queryClient.invalidateQueries({ queryKey: ["chat", data._id] }).then(() => {
+        formRef.current.reset();
+        setQuestion("");
+        setAnswer("");
+        setImg({
+          isLoading: false,
+          error: "",
+          dbData: {},
+          aiData: {},
         });
+        inputRef.current?.focus();
+      });
     },
     onError: (error) => {
       console.error("Error updating chat:", error);
-      // Show error state briefly
       setAnswer("Sorry, something went wrong. Please try again.");
       setTimeout(() => setAnswer(""), 3000);
     },
@@ -88,7 +76,6 @@ const NewPrompt = ({ data, className }) => {
   const add = async (text, isInitial) => {
     if (!isInitial) setQuestion(text);
     setIsTyping(true);
-
     try {
       const result = await chat.sendMessageStream(
         Object.entries(img.aiData).length ? [img.aiData, text] : [text]
@@ -105,7 +92,7 @@ const NewPrompt = ({ data, className }) => {
       setAnswer("Sorry, I encountered an error. Please try again.");
     } finally {
       setIsTyping(false);
-    } 
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -124,7 +111,6 @@ const NewPrompt = ({ data, className }) => {
     });
   };
 
-  // Initial message handling
   const hasRun = useRef(false);
   useEffect(() => {
     if (!hasRun.current && data?.history?.length === 1) {
@@ -135,17 +121,15 @@ const NewPrompt = ({ data, className }) => {
 
   return (
     <div className="relative">
-      {/* Image Preview */}
+      <div className="h-2" ref={endRef}></div>
       {img.isLoading && (
-        <div className="mt-4 p-4 rounded-xl bg-[#FD356E]/10 border border-[#FD356E]/20 
-                       backdrop-blur-md animate-fadeIn">
+        <div className="mt-4 p-4 rounded-xl bg-[#FD356E]/10 border border-[#FD356E]/20 backdrop-blur-md animate-fadeIn">
           <div className="flex items-center gap-2 text-[#FD356E]">
             <Loader2 className="w-4 h-4 animate-spin" />
             Uploading image...
           </div>
         </div>
       )}
-      
       {img.dbData?.filePath && (
         <div className="w-fit relative left-20 lg:left-96 mb-4 rounded-xl overflow-hidden group">
           <IKImage
@@ -159,84 +143,65 @@ const NewPrompt = ({ data, className }) => {
           />
           <button
             onClick={clearImage}
-            className="absolute top-2 left-[92%] p-1 rounded-full bg-black/50 text-white
-                     opacity-0 group-hover:opacity-100 transition-opacity duration-200
-                     hover:bg-black/70"
+            className="absolute top-2 left-[92%] p-1 rounded-full bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-black/70"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
       )}
-
-      {/* Messages */}
-     <div className={`flex flex-col ${!answer && "items-end"}`}>
-       {question && (
-        <div className="max-w-[80%] relative left-24 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white p-4 rounded-xl mb-4 self-end
-                      transform transition-all duration-300 hover:scale-[1.02]">
-          <Markdown className="prose prose-invert max-w-none">
-            {question}
-          </Markdown>
-        </div>
-      )}
-      
-      {answer && (
-        <div className="max-w-[80%] relative right-24 bg-[#2A2A32]/90 border-2 border-gray-700/30 text-gray-100 p-4 rounded-xl mb-4
-                      transform transition-all duration-300 hover:scale-[1.02]">
-          <Markdown className="prose prose-invert max-w-none">
-            {answer}
-          </Markdown>
-        </div>
-      )}
-
-     </div>
+      {/* <div className={`flex flex-col ${!answer && "items-end"}`}>
+        {question && (
+          <div className="max-w-[80%] relative left-24 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white p-4 rounded-xl mb-4 self-end transform transition-all duration-300 hover:scale-[1.02]">
+            <Markdown className="prose prose-invert max-w-none">
+              {question}
+            </Markdown>
+          </div>
+        )}
+        {answer && (
+          <div className="max-w-[80%] relative right-24 bg-[#2A2A32]/90 border-2 border-gray-700/30 text-gray-100 p-4 rounded-xl mb-4 transform transition-all duration-300 hover:scale-[1.02]">
+            <Markdown className="prose prose-invert max-w-none">
+              {answer}
+            </Markdown>
+          </div>
+        )}
+      </div> */}
       <div className="h-2" ref={endRef}></div>
-
-      {/* Input Form */}
-      <form
-        onSubmit={handleSubmit}
-        ref={formRef}
-        className={`relative group ${className}`}
-      >
+      {(mutation.isPending || isTyping) && (
+        <div className="my-4 p-4 rounded-xl bg-[#FD356E]/10 border border-[#FD356E]/20 backdrop-blur-md animate-fadeIn">
+          <div className="flex items-center gap-2 text-[#FD356E]">
+            <div className="w-2 h-2 rounded-full bg-[#FD356E] animate-pulse"></div>
+            {isTyping ? "Generating response..." : "Processing your request..."}
+          </div>
+        </div>
+      )}
+      <form onSubmit={handleSubmit} ref={formRef} className={`relative group ${className}`}>
         <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
           <div className="relative group/upload">
             <Upload setImg={setImg}>
               <button
                 type="button"
-                className="p-2 rounded-xl bg-[#FD356E]/10 hover:bg-[#FD356E]/20
-                         transition-colors duration-200"
+                className="p-2 rounded-xl bg-[#FD356E]/10 hover:bg-[#FD356E]/20 transition-colors duration-200"
               >
                 <ImageIcon className="w-5 h-5 text-[#FD356E]" />
               </button>
             </Upload>
-            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1
-                          bg-black/75 text-white text-sm rounded-lg whitespace-nowrap
-                          opacity-0 group-hover/upload:opacity-100 transition-opacity duration-200">
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-black/75 text-white text-sm rounded-lg whitespace-nowrap opacity-0 group-hover/upload:opacity-100 transition-opacity duration-200">
               Upload image
             </div>
           </div>
-          {/* <Sparkles className="w-5 h-5 text-[#FD356E] opacity-50 group-hover:opacity-100 transition-opacity" /> */}
         </div>
-        
         <input
           type="text"
           name="text"
           ref={inputRef}
           placeholder="Ask anything..."
           autoComplete="off"
-          className="w-full h-14 pl-16 pr-16 bg-transparent text-white placeholder-gray-400 
-                   border-none outline-none focus:ring-2 focus:ring-[#FD356E]/20 rounded-xl
-                   transition-all duration-200"
+          className="w-full h-14 pl-16 pr-16 bg-transparent text-white placeholder-gray-400 border-none outline-none focus:ring-2 focus:ring-[#FD356E]/20 rounded-xl transition-all duration-200"
           disabled={img.isLoading || mutation.isPending || isTyping}
         />
-        
-        <button 
+        <button
           type="submit"
-          className="absolute right-3 top-1/2 -translate-y-1/2 p-3
-                   bg-gradient-to-r from-[#FD356E] to-[#FF5F85] 
-                   hover:from-[#FF5F85] hover:to-[#FD356E] 
-                   rounded-xl transition-all duration-200 transform 
-                   hover:scale-105 active:scale-95 disabled:opacity-50 
-                   disabled:cursor-not-allowed"
+          className="absolute right-3 top-1/2 -translate-y-1/2 p-3 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] hover:from-[#FF5F85] hover:to-[#FD356E] rounded-xl transition-all duration-200 transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={img.isLoading || mutation.isPending || isTyping}
         >
           {img.isLoading || mutation.isPending || isTyping ? (
@@ -246,17 +211,6 @@ const NewPrompt = ({ data, className }) => {
           )}
         </button>
       </form>
-
-      {/* Status Messages */}
-      {(mutation.isPending || isTyping) && (
-        <div className="mt-4 p-4 rounded-xl bg-[#FD356E]/10 border border-[#FD356E]/20 
-                      backdrop-blur-md animate-fadeIn">
-          <div className="flex items-center gap-2 text-[#FD356E]">
-            <div className="w-2 h-2 rounded-full bg-[#FD356E] animate-pulse"></div>
-            {isTyping ? "Generating response..." : "Processing your request..."}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

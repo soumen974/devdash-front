@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Markdown from "react-markdown";
@@ -72,6 +72,7 @@ const ErrorState = () => (
 const Chatpage = () => {
   const path = useLocation().pathname;
   const chatId = path.split("/").pop();
+  const endRef = useRef(null);
 
   const { isPending, error, data } = useQuery({
     queryKey: ["chat", chatId],
@@ -82,6 +83,10 @@ const Chatpage = () => {
         })
         .then((res) => res.data),
   });
+
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [data]);
 
   return (
     <div className="min-h-[91.8vh]  relative overflow-hidden">
@@ -102,13 +107,14 @@ const Chatpage = () => {
                   isUser={message.role === "user"}
                 />
               ))}
+               <div ref={endRef} />
             </div>
           )}
         </div>
 
         {data && (
-          <div className="bottom-8 left-0 right-0 px-4">
-            <div className="max-w-2xl mx-auto">
+          <div className="fixed bottom-8 left-0 lg:left-72 right-0 px-4">
+            <div className="max-w-2xl lg:max-w-4xl mx-auto">
               <NewPrompt 
                 data={data}
                 className="backdrop-blur-lg bg-[#2A2A32]/90 rounded-xl border-2 border-gray-700/30
