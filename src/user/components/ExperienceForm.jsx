@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { X, Plus, Trash } from 'lucide-react';
+import React, { useState ,useEffect} from 'react';
+import { X ,Upload } from 'lucide-react';
 import axios from 'axios';
 
 const api = axios.create({
@@ -16,15 +16,11 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
     companyName: '',
     location: '',
     time: '',
+    companyLogoUrl: null,
+    relatedPDFUrl: null,
     learnings: experience?.learnings || [],
     skills: experience?.skills || [],
   });
-
-  const [files, setFiles] = useState({
-    companyLogoUrl: null,
-    relatedPDFUrl: null,
-  });
-
   const [newLearning, setNewLearning] = useState('');
   const [newSkill, setNewSkill] = useState('');
 
@@ -32,49 +28,21 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
     if (experience) {
       setFormData({
         ...experience,
-      });
-      setFiles({
         companyLogoUrl: experience.companyLogoUrl || null,
         relatedPDFUrl: experience.relatedPDFUrl || null,
       });
     }
   }, [experience]);
-
-  const handleInputChange = (e) => {
-    const { name, value, files } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: files ? files[0] : value,
-    }));
-  };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formDataToSend = new FormData();
-  
-    // Convert learnings and skills to JSON before appending to FormData
-    const formDataWithArrays = {
-      ...formData,
-      learnings: JSON.stringify(formData.learnings),
-      skills: JSON.stringify(formData.skills),
-    };
-  
-    Object.keys(formDataWithArrays).forEach((key) => {
-      formDataToSend.append(key, formDataWithArrays[key]);
-    });
-  
-    if (files.companyLogoUrl) {
-      formDataToSend.append('companyLogoUrl', files.companyLogoUrl);
-    }
-    if (files.relatedPDFUrl) {
-      formDataToSend.append('relatedPDFUrl', files.relatedPDFUrl);
-    }
-  
+
     try {
       if (experience) {
-        await api.put(`/dev/${experience._id}`, formDataToSend);
+        await api.put(`/dev/${experience._id}`, formData);
       } else {
-        await api.post('/dev', formDataToSend);
+        await api.post('/dev', formData);
       }
       onSubmit();
       onClose();
@@ -83,216 +51,281 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
     }
   };
 
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: files ? files[0] : value
+    }));
+  };
+
   const addLearning = () => {
     if (!newLearning.trim()) return;
-    setFormData((prev) => ({
+
+    setFormData(prev => ({
       ...prev,
-      learnings: [...prev.learnings, { name: newLearning.trim() }],
+      learnings: [...prev.learnings, { name: newLearning.trim() }]
     }));
     setNewLearning('');
   };
 
   const addSkill = () => {
     if (!newSkill.trim()) return;
-    setFormData((prev) => ({
+
+    setFormData(prev => ({
       ...prev,
-      skills: [...prev.skills, { name: newSkill.trim() }],
+      skills: [...prev.skills, { name: newSkill.trim() }]
     }));
     setNewSkill('');
   };
 
   const removeLearning = (index) => {
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      learnings: prev.learnings.filter((_, i) => i !== index),
+      learnings: prev.learnings.filter((_, i) => i !== index)
     }));
   };
 
   const removeSkill = (index) => {
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      skills: prev.skills.filter((_, i) => i !== index),
+      skills: prev.skills.filter((_, i) => i !== index)
     }));
   };
 
+
   return (
-    <div className="fixed z-50 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b">
+    <div className="fixed z-30 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+      <div className="bg-[#2A2A32] rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-lg">
+        <div className="p-6 border-b border-gray-700">
           <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold">
-              {experience ? 'Edit' : 'Add'} Experience
+            <h2 className="text-2xl font-bold text-white">
+              {formData.position ? 'Edit' : 'Add'} Experience
             </h2>
             <button
               onClick={onClose}
-              className="p-2 text-gray-600 hover:text-gray-800 transition-colors"
+              className="p-2 text-gray-400 hover:text-gray-300 transition-colors"
             >
               <X size={20} />
             </button>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {/* Form fields */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium mb-1">Position</label>
+              <label className="block text-sm font-medium mb-1 text-gray-400">Position</label>
               <input
                 type="text"
                 name="position"
                 value={formData.position}
-                onChange={handleInputChange}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-700 rounded-md focus:ring-2 focus:ring-[#FD356E] focus:border-[#FD356E] bg-[#1E1E24] text-white"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Company Name</label>
+              <label className="block text-sm font-medium mb-1 text-gray-400">Company Name</label>
               <input
                 type="text"
                 name="companyName"
                 value={formData.companyName}
-                onChange={handleInputChange}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-700 rounded-md focus:ring-2 focus:ring-[#FD356E] focus:border-[#FD356E] bg-[#1E1E24] text-white"
                 required
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Location and Time */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium mb-1">Location</label>
+              <label className="block text-sm font-medium mb-1 text-gray-400">Location</label>
               <input
                 type="text"
                 name="location"
                 value={formData.location}
-                onChange={handleInputChange}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-700 rounded-md focus:ring-2 focus:ring-[#FD356E] focus:border-[#FD356E] bg-[#1E1E24] text-white"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Time Period</label>
+              <label className="block text-sm font-medium mb-1 text-gray-400">Time Period</label>
               <input
                 type="text"
                 name="time"
                 value={formData.time}
-                onChange={handleInputChange}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-700 rounded-md focus:ring-2 focus:ring-[#FD356E] focus:border-[#FD356E] bg-[#1E1E24] text-white"
                 required
               />
             </div>
           </div>
 
-          <div className="space-y-4">
+          {/* File uploads */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* image */}
             <div>
-              <label className="block text-sm font-medium mb-1">Company Logo</label>
-              <input
-                type="file"
-                name="companyLogoUrl"
-                onChange={handleInputChange}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                accept="image/*"
-              />
+              <label className="block text-gray-400 text-sm mb-4">Company Logo</label>
+              <div className="bg-[#1E1E24] border border-gray-700 rounded-lg p-4">
+                {formData.companyLogoUrl  ? (
+                  <div className="relative inline-block">
+                    <img 
+                      src={formData.companyLogoUrl } 
+                      alt="company image" 
+                      className="w-24 h-24 rounded-lg object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setFormData(prev => ({ ...prev, companyLogoUrl: null }))}
+                      className="absolute -top-2 -right-2 bg-[#31313b]   rounded-full p-1 hover:bg-[#FD356E] transition-colors"
+                    >
+                      <X className="h-4 w-4 text-white" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-6">
+                    <input
+                        type="file"
+                        name="companyLogoUrl"  
+                        id="companyLogoUrl"
+                        onChange={handleChange}
+                        className="hidden"
+                        accept="image/*"
+                    />
+                    <label
+                      htmlFor="companyLogoUrl"
+                      className="flex flex-col items-center cursor-pointer"
+                    >
+                      <div className="bg-[#2A2A32] rounded-full p-3 mb-2">
+                        <Upload className="h-6 w-6 text-[#FD356E]" />
+                      </div>
+                      <span className="text-gray-400 text-sm">Choose Image</span>
+                    </label>
+                  </div>
+                )}
+              </div>
             </div>
+
+
+
+            {/* pdf */}
             <div>
-              <label className="block text-sm font-medium mb-1">Related PDF</label>
+              <label className="block text-sm font-medium mb-1 text-gray-400">Related PDF</label>
+              <div className="flex items-center gap-3">
+                <label
+                  htmlFor="relatedPDFUrl"
+                  className="cursor-pointer bg-[#FD356E] text-white rounded-md px-4 py-2 text-sm font-medium hover:bg-[#FF5F85] transition-colors"
+                >
+                  Choose File
+                </label>
+                <span className="text-gray-400 text-sm">
+                  {formData.relatedPDFUrl ? formData.relatedPDFUrl.name : 'No file chosen'}
+                </span>
+              </div>
               <input
                 type="file"
                 name="relatedPDFUrl"
-                onChange={handleInputChange}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                id="relatedPDFUrl"
+                onChange={handleChange}
+                className="hidden"
                 accept=".pdf"
               />
             </div>
           </div>
 
+          {/* Learnings */}
           <div>
-            <label className="block text-sm font-medium mb-1">Learnings</label>
-            <div className="flex gap-2 mb-2">
+            <label className="block text-sm font-medium mb-1 text-gray-400">Learnings</label>
+            <div className="flex gap-3 mb-4">
               <input
                 type="text"
                 value={newLearning}
                 onChange={(e) => setNewLearning(e.target.value)}
-                className="flex-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="flex-1 p-3 border border-gray-700 rounded-md focus:ring-2 focus:ring-[#FD356E] focus:border-[#FD356E] bg-[#1E1E24] text-white"
                 placeholder="Add a learning..."
               />
               <button
                 type="button"
                 onClick={addLearning}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                className="px-4 py-2 bg-[#FD356E] text-white rounded-md hover:bg-[#FF5F85] transition-colors"
               >
-                <Plus size={16} />
+                Add
               </button>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-3">
               {formData.learnings.map((learning, idx) => (
                 <span
                   key={idx}
-                  className="px-3 py-1 bg-gray-100 rounded-full text-sm flex items-center gap-2"
+                  className="px-3 py-1 bg-gray-700 rounded-full text-sm flex items-center gap-2 text-white"
                 >
                   {learning.name}
                   <button
                     type="button"
                     onClick={() => removeLearning(idx)}
-                    className="text-red-500 hover:text-red-700"
+                    className="text-red-400 hover:text-red-300 transition-colors"
                   >
-                    <Trash size={14} />
+                    <X size={14} />
                   </button>
                 </span>
               ))}
             </div>
           </div>
 
+          {/* Skills */}
           <div>
-            <label className="block text-sm font-medium mb-1">Skills</label>
-            <div className="flex gap-2 mb-2">
+            <label className="block text-sm font-medium mb-1 text-gray-400">Skills</label>
+            <div className="flex gap-3 mb-4">
               <input
                 type="text"
                 value={newSkill}
                 onChange={(e) => setNewSkill(e.target.value)}
-                className="flex-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="flex-1 p-3 border border-gray-700 rounded-md focus:ring-2 focus:ring-[#FD356E] focus:border-[#FD356E] bg-[#1E1E24] text-white"
                 placeholder="Add a skill..."
               />
               <button
                 type="button"
                 onClick={addSkill}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                className="px-4 py-2 bg-[#FD356E] text-white rounded-md hover:bg-[#FF5F85] transition-colors"
               >
-                <Plus size={16} />
+                Add
               </button>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-3">
               {formData.skills.map((skill, idx) => (
                 <span
                   key={idx}
-                  className="px-3 py-1 bg-gray-100 rounded-full text-sm flex items-center gap-2"
+                  className="px-3 py-1 bg-gray-700 rounded-full text-sm flex items-center gap-2 text-white"
                 >
                   {skill.name}
                   <button
                     type="button"
                     onClick={() => removeSkill(idx)}
-                    className="text-red-500 hover:text-red-700"
+                    className="text-red-400 hover:text-red-300 transition-colors"
                   >
-                    <Trash size={14} />
+                    <X size={14} />
                   </button>
                 </span>
               ))}
             </div>
           </div>
 
-          <div className="flex justify-end gap-4 pt-4 border-t">
+          {/* Form actions */}
+          <div className="flex justify-end gap-4 pt-6 border-t border-gray-700">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 border rounded hover:bg-gray-50 transition-colors"
+              className="px-4 py-2 border border-gray-700 rounded-md hover:bg-gray-700 transition-colors text-white"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+              className="px-4 py-2 bg-[#FD356E] text-white rounded-md hover:bg-[#FF5F85] transition-colors"
             >
-              {experience ? 'Update' : 'Create'} Experience
+              {formData.position ? 'Update' : 'Create'} Experience
             </button>
           </div>
         </form>
