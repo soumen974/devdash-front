@@ -3,6 +3,14 @@ import CalendarView from '../components/CalendarView';
 import EventForm from '../components/EventForm';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+const log = {
+  error: (message) => {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(`❌ Calendar: ${message}`);
+    }
+  }
+};
+
 const ReminderAdding = () => {
   const [calendarEmail, setCalendarEmail] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -12,7 +20,7 @@ const ReminderAdding = () => {
 
   const checkCalendarStatus = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API}/calendar/status`, {
+      const response = await fetch(`${process.env.REACT_APP_API}/google/status`, {
         credentials: 'include',
         headers: {
           'Accept': 'application/json'
@@ -20,17 +28,15 @@ const ReminderAdding = () => {
       });
       
       if (!response.ok) {
-        throw new Error(`Failed to check calendar status: ${response.status}`);
+        throw new Error(`Status check failed: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('Calendar status response:', data);
-      
       setCalendarEmail(data.email);
       setIsConnected(data.connected);
       setError(null);
     } catch (error) {
-      console.error('Error checking calendar status:', error);
+      log.error(error.message);
       setError('Failed to check calendar status');
       setIsConnected(false);
     } finally {
@@ -45,6 +51,7 @@ const ReminderAdding = () => {
     const errorParam = urlParams.get('error');
     if (errorParam) {
       setError(decodeURIComponent(errorParam));
+      // Clean up URL parameters silently
       window.history.replaceState({}, '', window.location.pathname);
     }
     
@@ -56,7 +63,7 @@ const ReminderAdding = () => {
     try {
       window.location.href = `${process.env.REACT_APP_API}/google/connect`;
     } catch (error) {
-      console.error('Error connecting to calendar:', error);
+      log.error('Connection attempt failed');
       setError('Failed to connect to Google Calendar');
     }
   };
@@ -82,7 +89,7 @@ const ReminderAdding = () => {
           {isConnected && calendarEmail ? (
             <div className="flex items-center space-x-2">
               <span className="text-green-600">✓</span>
-              <span>Connected to: {calendarEmail}</span>
+              <span>Calendar Connected to: {calendarEmail}</span>
               <button 
                 onClick={checkCalendarStatus}
                 className="ml-4 px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded-md"
@@ -97,15 +104,13 @@ const ReminderAdding = () => {
             </div>
           )}
         </div>
-        
-        {!isConnected && (
-          <button
-            onClick={handleConnectToCalendar}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-          >
-            Connect to Google Calendar
-          </button>
-        )}
+
+        <button
+          onClick={handleConnectToCalendar}
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+        >
+          {isConnected ? 'Reconnect to Google Calendar' : 'Connect to Google Calendar'}
+        </button>
       </div>
 
       <div className="bg-white rounded-lg shadow">
@@ -114,8 +119,7 @@ const ReminderAdding = () => {
         </QueryClientProvider>
       </div>
 
-      {/* {isConnected && calendarEmail && <EventForm />} */}
-      <EventForm />
+      {isConnected && calendarEmail && <EventForm />}
     </div>
   );
 };
