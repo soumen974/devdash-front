@@ -69,7 +69,7 @@ export default function Auth() {
     return (
       <div className="min-h-screen bg-[#19191C] text-white">
         <div>
-          <MessageBox servermessage={message} error={error} />
+           <MessageBox servermessage={message} error={error} />
 
           <div className="min-h-screen bg-[#19191C] flex">
             {/* Left Side - Decorative Panel */}
@@ -100,9 +100,16 @@ export default function Auth() {
               {!isCodeSend ? (
                 <form onSubmit={handleSubmit} className="w-full max-w-md space-y-8 bg-[#1E1E24]/50 backdrop-blur-xl p-8 rounded-2xl border border-[#3C3C3C]/30">
                   {/* Form Header */}
-                  <div className="space-y-2">
-                    <h1 className="text-3xl font-bold tracking-tight">Register</h1>
-                    <p className="text-gray-400">Create your account</p>
+                  
+
+                  <div className="relative ]">
+                    
+                    <h2 className="text-3xl font-bold text-white mb-3 relative">
+                    Register
+                    </h2>
+                    <p className="text-gray-400 text-sm relative">
+                    Create your account
+                    </p>
                   </div>
 
                   {/* Email Input */}
@@ -158,20 +165,22 @@ export default function Auth() {
                   <div className="grid grid-cols-2 gap-4">
                     <button
                       type="button"
+                      disabled={loading}
                       onClick={handleOAuthGoogleLogin}
-                      className="flex items-center justify-center px-4 py-3 bg-[#1E1E24] hover:bg-[#2A2A32]
+                      className={`${loading? 'cursor-not-allowed hover:border-[#FF5F7E]':''} flex items-center justify-center px-4 py-3 bg-[#1E1E24] hover:bg-[#2A2A32]
                         border border-[#3C3C3C] rounded-lg text-white transition-all duration-200
-                        group "
+                        group `}
                     >
                       <img src={google} alt="Google" className="w-5 h-5 mr-2" />
-                      <span className="">Google</span>
+                      <span className="">Google </span>
                     </button>
                     <button
                       type="button"
+                       disabled={loading}
                       onClick={() => window.location.href = `${process.env.REACT_APP_API}/auth/github`}
-                      className="flex items-center justify-center px-4 py-3 bg-[#1E1E24] hover:bg-[#2A2A32]
+                      className={`${loading? 'cursor-not-allowed hover:border-[#FF5F7E]':''} flex items-center justify-center px-4 py-3 bg-[#1E1E24] hover:bg-[#2A2A32]
                         border border-[#3C3C3C] rounded-lg text-white transition-all duration-200
-                        group "
+                        group `}
                     >
                       <img src={github} alt="GitHub" className="w-5 h-5 mr-2" />
                       <span className="">GitHub</span>
@@ -190,6 +199,7 @@ export default function Auth() {
                 </form>
               ) : (
                 <div className="w-full max-w-md">
+                  
                   {!isoktoProceed ? (
                     <VerifyMail 
                       email={email}

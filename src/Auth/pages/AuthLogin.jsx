@@ -66,8 +66,8 @@ const AuthLogin = () => {
       <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-[#FD356E] to-[#FF6B98] p-12">
         <div className="absolute inset-0 bg-black/10" />
         <div className="relative z-10 flex flex-col h-full">
-          <a href='/' className="bg-white backdrop-blur-xl rounded-xl p-3 w-12 h-12 flex items-center justify-center">
-            <img src={Logo} alt="Logo" className="w-8 h-8" />
+          <a href='/' className="h-10 w-10 bg-white  rounded-lg flex items-center justify-center">
+            <img src={Logo} className="h-5 w-5 text-white" />
           </a>
           <div className="flex-grow flex flex-col justify-center">
             <h1 className="text-white text-5xl font-bold mb-6">

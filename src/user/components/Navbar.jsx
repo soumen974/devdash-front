@@ -55,7 +55,7 @@ export default function Navbar() {
           {/* Logo and Brand */}
           <a href='/' className="flex items-center space-x-3">
             <div className="flex-shrink-0">
-              <div className="h-8 w-8 bg-white from-pink-500 to-purple-500 rounded-lg flex items-center justify-center">
+              <div className="h-8 w-8 bg-white  rounded-lg flex items-center justify-center">
                 <img src={Logo} className="h-5 w-5 text-white" />
               </div>
             </div>
