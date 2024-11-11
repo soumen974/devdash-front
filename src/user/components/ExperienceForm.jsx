@@ -95,7 +95,7 @@ const ExperienceForm = ({ experience, onClose, onSubmit }) => {
 
 
   return (
-    <div className="fixed z-30 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+    <div className="fixed z-40 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
       <div className="bg-[#2A2A32] rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-lg">
         <div className="p-6 border-b border-gray-700">
           <div className="flex justify-between items-center">
