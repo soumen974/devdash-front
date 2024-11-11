@@ -27,7 +27,7 @@ export default function PersonalDataForm({ personalData, onClose, onSubmit }) {
           });
           setFiles({
             imageUrl: personalData.imageUrl  || null,
-            resumeUrl: personalData.resumeUr  || null,
+            resumeUrl: personalData.resumeUrl  || null,
           });
         }
       }, [personalData]);
@@ -76,6 +76,11 @@ export default function PersonalDataForm({ personalData, onClose, onSubmit }) {
             }
           );
           setSuccess('Personal data updated successfully!');
+          setTimeout(() => {
+            onSubmit();
+          onClose();
+          }, 1500);
+          
         } catch (err) {
           setError(err.response?.data?.message || 'An error occurred while updating personal data');
         } finally {
@@ -298,16 +303,26 @@ export default function PersonalDataForm({ personalData, onClose, onSubmit }) {
               )}
 
               {/* Action Buttons */}
-              <div className="flex justify-between pt-6">
-               
+              
+
+              <div className="flex justify-end gap-4 pt-6 border-t border-gray-700">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  disabled={loading}
+                  className="px-4 py-2 border border-gray-700 rounded-md hover:bg-gray-700 transition-colors text-white"
+                >
+                  Cancel
+                </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-3 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white rounded-lg hover:from-[#FF5F85] hover:to-[#FD356E] focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:ring-offset-2 focus:ring-offset-[#2A2A32] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-4 py-2 bg-[#FD356E] text-white rounded-md hover:bg-[#FF5F85] transition-colors"
                 >
-                  {loading ? 'Saving...' : 'Save Changes'}
+                  {personalData ? 'Update' :  loading ? 'Saving...' : 'Create'}  Project
                 </button>
               </div>
+
             </form>
           </div>
 

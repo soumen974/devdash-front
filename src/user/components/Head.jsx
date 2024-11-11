@@ -7,6 +7,7 @@ import SideBar from './SideBar';
 import RightSideBar from "./RightSideBar";
 import { Search } from 'lucide-react';
 import {User ,ChevronDown ,Mail ,SunMoon } from 'lucide-react';
+import { useUserImage } from './PersonalDataList';
 
 
 
@@ -23,7 +24,7 @@ const Notification=({className})=>{
 
 
 export default function Head({sideBar, setsideBar}) {
- 
+  const { imageUrl } = useUserImage();
 //  const [] = useState(false);
 
  const [message, setMessage] = useState('');
@@ -138,9 +139,11 @@ export default function Head({sideBar, setsideBar}) {
                         <Notification className="w-6 h-6 p  fill-white" />
                       </div>
                       <div className="flex  group    items-center gap-1">
-                        <div className="  rounded-full  ">
-                          {/* <User/> */}
-                          <img className='w-9 h-9 rounded-full' src="https://www.befunky.com/images/wp/wp-2021-01-linkedin-profile-picture-focus-face.jpg?auto=avif,webp&format=jpg&width=950" alt="" />
+                        <div className="   ">
+                          
+                          {imageUrl ? <img className='w-9 h-9 rounded-full' src={imageUrl} alt="User" />
+                          : <div className="bg-gray-700  rounded-full p-2"> <User className='w-6 h-6  ' /></div>
+                          }
                         </div>
                         <div className="relative">
                           <ChevronDown className='h-4 w-4 ' />
