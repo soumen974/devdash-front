@@ -65,7 +65,7 @@ const ExperienceList = ({UseForShow}) => {
       <div className="flex justify-between items-center mb-4 mt-14">
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] bg-clip-text text-transparent">
-            Personal Recent Experiences
+             Recent Experiences
           </h1>
           <p className="text-gray-400">
             Manage and update your profile details
