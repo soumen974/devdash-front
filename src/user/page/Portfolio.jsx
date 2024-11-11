@@ -4,6 +4,7 @@ import ExperienceList from "../components/ExperienceList";
 import ProjectsList from "../components/ProjectsList";
 import LicenceCertificationList from "../components/LicenceCertificationList";
 import LicenceCertificationForm from "../components/LicenceCertificationForm";
+import Footer from "../components/Footerinportfolio";
 
 export default function Portfolio() {
   return (
@@ -21,7 +22,7 @@ export default function Portfolio() {
             {/* <LicenceCertificationForm/> */}
 
               <div className="">
-                {/* Footer */}
+                <Footer/>
               </div>
           </div>
           
