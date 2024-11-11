@@ -4,6 +4,7 @@ import {Plus, X, Upload, User, Mail, Phone, FileText, Image,Loader ,ArrowUpRight
 import ExperienceList from "./ExperienceList";
 import ProjectsList from "./ProjectsList";
 import PersonalDataForm from "./PersonalDataForm";
+import LicenceCertificationList from "./LicenceCertificationList";
 
 
 
@@ -284,6 +285,7 @@ const PersonalDataList = () => {
 
       <ExperienceList UseForShow={false}/>
       <ProjectsList UseForShow={false} />
+      <LicenceCertificationList UseForShow={false}/>
     </div>
   );
 };

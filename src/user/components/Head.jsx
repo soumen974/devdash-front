@@ -6,7 +6,7 @@ import DialogBox from '../../components/DialogBox';
 import SideBar from './SideBar';
 import RightSideBar from "./RightSideBar";
 import { Search } from 'lucide-react';
-import {User ,ChevronDown ,Mail ,SunMoon } from 'lucide-react';
+import {User ,ChevronDown ,Mail ,SunMoon,Bell } from 'lucide-react';
 import { useUserImage } from './PersonalDataList';
 
 
@@ -135,8 +135,12 @@ export default function Head({sideBar, setsideBar}) {
 
                     <div className="text-white flex items-center   gap-2 relative">
                   
-                      <div className=" items-center flex rounded-full p-2  before:w-2 before:h-2 h-full w-fit before:absolute before:left-7 before:opacity-75 before:animate-ping  before:top-0 before:bg-red-500 before:rounded-full     after:w-2 after:h-2 after:absolute after:left-7   after:top-0 after:bg-red-500 after:rounded-full ">
-                        <Notification className="w-6 h-6 p  fill-white" />
+                      <div className=" items-center flex rounded-full p-2  before:w-2 before:h-2 h-full w-fit before:absolute before:left-7 before:opacity-75 before:animate-ping  before:top-0 ">
+                        {/* <Notification className="w-6 h-6 p  fill-white" /> */}
+                        <button className="text-gray-300 hover:text-white relative">
+                          <Bell className="h-5 w-5" />
+                          <span className="absolute -top-1 -right-1 h-3 w-3 bg-pink-500 rounded-full" />
+                        </button>
                       </div>
                       <div className="flex  group    items-center gap-1">
                         <div className="   ">
