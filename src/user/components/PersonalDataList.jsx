@@ -5,6 +5,7 @@ import ExperienceList from "./ExperienceList";
 import ProjectsList from "./ProjectsList";
 import PersonalDataForm from "./PersonalDataForm";
 import LicenceCertificationList from "./LicenceCertificationList";
+import SocialMediaCRUD from "./SocialMediaCRUD";
 
 
 
@@ -286,6 +287,8 @@ const PersonalDataList = () => {
       <ExperienceList UseForShow={false}/>
       <ProjectsList UseForShow={false} />
       <LicenceCertificationList UseForShow={false}/>
+     <div className="mt-20">
+      <SocialMediaCRUD/></div>
     </div>
   );
 };
