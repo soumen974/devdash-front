@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { X, Upload, User, Mail, Phone, FileText, Image,Loader } from 'lucide-react';
+import {Plus, X, Upload, User, Mail, Phone, FileText, Image,Loader } from 'lucide-react';
 import ExperienceList from "../components/ExperienceList";
 import ProjectsList from "../components/ProjectsList";
 
@@ -128,17 +128,26 @@ const PersonalDataForm = () => {
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-6 lg:p-8">
+    <div className=" max-w-6xl mx-auto p-4 md:p-6 lg:p-8   ">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
+      
+        <div className="flex justify-between items-center mb-4 mt-14">
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] bg-clip-text text-transparent">
-            Personal Information
+           Personal Information
           </h1>
           <p className="text-gray-400">
             Manage and update your profile details
           </p>
         </div>
+        <button 
+          // onClick={() => setShowForm(true)} 
+          className="px-6 flex items-center py-3 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white rounded-lg hover:from-[#FF5F85] hover:to-[#FD356E] focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:ring-offset-2 focus:ring-offset-[#2A2A32] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+          <Plus size={20} /> Add Experience
+        </button>
+      </div>
 
         {/* Loading State */}
         {loading ? (

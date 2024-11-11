@@ -62,15 +62,22 @@ const ProjectsList = ({UseForShow}) => {
     <div className="max-w-6xl mx-auto">
        {!UseForShow?
        (
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Recent Projects</h1>
-        <button 
+        <div className="flex justify-between items-center mb-4 mt-14">
+          <div className="mb-8">
+          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] bg-clip-text text-transparent">
+          Recent Projects
+          </h1>
+          <p className="text-gray-400">
+            Manage and update your profile details
+          </p>
+          </div>
+          <button 
           onClick={() => setShowForm(true)} 
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        >
+          className="px-6 flex items-center py-3 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white rounded-lg hover:from-[#FF5F85] hover:to-[#FD356E] focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:ring-offset-2 focus:ring-offset-[#2A2A32] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
           <Plus size={20} /> Add Project
-        </button>
-      </div>
+          </button>
+        </div>
        ):(null)}
 
       {showForm && (

@@ -113,15 +113,15 @@ const ProjectForm = ({ project, onClose, onSubmit }) => {
 
   return (
     <div className="fixed z-30 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b">
+      <div className="bg-[#2A2A32] rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-gray-700">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold">
               {project ? 'Edit' : 'Add'} Project
             </h2>
             <button
               onClick={onClose}
-              className="p-2 text-gray-600 hover:text-gray-800 transition-colors"
+              className="p-2 text-gray-400 hover:text-gray-300 transition-colors"
             >
               <X size={20} />
             </button>
@@ -130,24 +130,24 @@ const ProjectForm = ({ project, onClose, onSubmit }) => {
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Title</label>
+              <label className="block text-sm font-medium mb-1 text-gray-400">Title</label>
               <input
                 type="text"
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full p-3 border border-gray-700 rounded-md focus:ring-2 focus:ring-[#FD356E] focus:border-[#FD356E] bg-[#1E1E24] text-white"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">GitHub Link</label>
+              <label className="block text-sm font-medium mb-1 text-gray-400">GitHub Link</label>
               <input
                 type="text"
                 name="github_link"
                 value={formData.github_link}
                 onChange={handleChange}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full p-3 border border-gray-700 rounded-md focus:ring-2 focus:ring-[#FD356E] focus:border-[#FD356E] bg-[#1E1E24] text-white"
                 required
               />
             </div>
@@ -155,49 +155,49 @@ const ProjectForm = ({ project, onClose, onSubmit }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Website Link</label>
+              <label className="block text-sm font-medium mb-1 text-gray-400">Website Link</label>
               <input
                 type="text"
                 name="website_link"
                 value={formData.website_link}
                 onChange={handleChange}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full p-3 border border-gray-700 rounded-md focus:ring-2 focus:ring-[#FD356E] focus:border-[#FD356E] bg-[#1E1E24] text-white"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Thumbnail Image</label>
+              <label className="block text-sm font-medium mb-1 text-gray-400">Thumbnail Image</label>
               <input
                 type="file"
                 name="thumbNailImage"
                 onChange={handleChange}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full p-3 border border-gray-700 rounded-md focus:ring-2 focus:ring-[#FD356E] focus:border-[#FD356E] bg-[#1E1E24] text-white"
                 accept="image/*"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">description</label>
+            <label className="block text-sm font-medium mb-1 text-gray-400">description</label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
-              className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full p-3 border border-gray-700 rounded-md focus:ring-2 focus:ring-[#FD356E] focus:border-[#FD356E] bg-[#1E1E24] text-white"
               rows={4}
               required
             ></textarea>
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Learning</label>
+            <label className="block text-sm font-medium mb-1 text-gray-400">Learning</label>
            
               <div className="flex gap-2 mb-2">
                 <input
                   type="text"
                   value={newLearning}
                   onChange={(e) => setNewLearning(e.target.value)}
-                  className="flex-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="flex-1 w-full p-3 border border-gray-700 rounded-md focus:ring-2 focus:ring-[#FD356E] focus:border-[#FD356E] bg-[#1E1E24] text-white"
                   
                   placeholder="Add a learning..."
                 />
@@ -237,13 +237,13 @@ const ProjectForm = ({ project, onClose, onSubmit }) => {
 
          {/* Skills */}
          <div>
-            <label className="block text-sm font-medium mb-1">Skills</label>
+            <label className="block text-sm font-medium mb-1 text-gray-400">Skills</label>
             <div className="flex gap-2 mb-2">
               <input
                 type="text"
                 value={newSkill}
                 onChange={(e) => setNewSkill(e.target.value)}
-                className="flex-1 p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="flex-1 w-full p-3 border border-gray-700 rounded-md focus:ring-2 focus:ring-[#FD356E] focus:border-[#FD356E] bg-[#1E1E24] text-white"
                 placeholder="Add a skill..."
               />
               <button

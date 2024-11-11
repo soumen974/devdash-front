@@ -62,12 +62,19 @@ const ExperienceList = ({UseForShow}) => {
   return (
     <div className=" max-w-6xl mx-auto">
      {!UseForShow? 
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Recent Experiences</h1>
+      <div className="flex justify-between items-center mb-4 mt-14">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] bg-clip-text text-transparent">
+            Personal Recent Experiences
+          </h1>
+          <p className="text-gray-400">
+            Manage and update your profile details
+          </p>
+        </div>
         <button 
           onClick={() => setShowForm(true)} 
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        >
+          className="px-6 flex items-center py-3 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white rounded-lg hover:from-[#FF5F85] hover:to-[#FD356E] focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:ring-offset-2 focus:ring-offset-[#2A2A32] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
           <Plus size={20} /> Add Experience
         </button>
       </div>
@@ -88,91 +95,93 @@ const ExperienceList = ({UseForShow}) => {
 
       /* editable compoent */
       (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {experiences.map((experience) => (
-          <div key={experience._id} className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex justify-between items-start mb-4">
-              <div className="flex items-center gap-4">
-                {experience.companyLogoUrl && (
-                  <img 
-                    src={experience.companyLogoUrl} 
-                    alt={experience.companyName}
-                    className="w-12 h-12 object-contain"
-                  />
-                )}
-                <div>
-                  <h2 className="text-xl  font-bold">{experience.position}</h2>
-                  <p className="text-gray-600">{experience.companyName}</p>
-                </div>
-              </div>
-              <div className="flex gap-2">
-                <button 
-                  className="p-2 text-gray-600 hover:text-blue-600 transition-colors"
-                  onClick={() => {
-                    setEditingExperience(experience);
-                    setShowForm(true);
-                  }}
-                >
-                  <Edit size={16} />
-                </button>
-                <button 
-                  className="p-2 text-gray-600 hover:text-red-600 transition-colors"
-                  onClick={() => handleDelete(experience._id)}
-                >
-                  <Trash2 size={16} />
-                </button>
-              </div>
-            </div>
-            
-            <div className="space-y-4">
-              <div>
-                <p className="text-gray-600">{experience.location}</p>
-                <p className="text-gray-600">{experience.time}</p>
-              </div>
-              
-              {experience.learnings?.length > 0 && (
-                <div>
-                  <h3 className="font-semibold mb-2">Key Learnings</h3>
-                  <ul className="list-disc pl-4">
-                    {experience.learnings.map((learning) => (
-                      <li key={learning._id} className="text-gray-600 flex items-center justify-between">
-                        {learning.name}
-                        <button
-                          onClick={() => handleRemoveLearning(experience._id, learning._id)}
-                          className="text-red-500 hover:text-red-700 ml-2"
-                        >
-                          <X size={14} />
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              
-              {experience.skills?.length > 0 && (
-                <div>
-                  <h3 className="font-semibold mb-2">Skills</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {experience.skills.map((skill) => (
-                      <span 
-                        key={skill._id}
-                        className="px-3 py-1 bg-gray-100 rounded-full text-sm flex items-center gap-2"
-                      >
-                        {skill.name}
-                        <button
-                          onClick={() => handleRemoveSkill(experience._id, skill._id)}
-                          className="text-red-500 hover:text-red-700"
-                        >
-                          <X size={14} />
-                        </button>
-                      </span>
-                    ))}
+      <div className="">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {experiences.map((experience) => (
+            <div key={experience._id} className="bg-white rounded-lg shadow-md p-6">
+              <div className="flex justify-between items-start mb-4">
+                <div className="flex items-center gap-4">
+                  {experience.companyLogoUrl && (
+                    <img 
+                      src={experience.companyLogoUrl} 
+                      alt={experience.companyName}
+                      className="w-12 h-12 object-contain"
+                    />
+                  )}
+                  <div>
+                    <h2 className="text-xl  font-bold">{experience.position}</h2>
+                    <p className="text-gray-600">{experience.companyName}</p>
                   </div>
                 </div>
-              )}
+                <div className="flex gap-2">
+                  <button 
+                    className="p-2 text-gray-600 hover:text-blue-600 transition-colors"
+                    onClick={() => {
+                      setEditingExperience(experience);
+                      setShowForm(true);
+                    }}
+                  >
+                    <Edit size={16} />
+                  </button>
+                  <button 
+                    className="p-2 text-gray-600 hover:text-red-600 transition-colors"
+                    onClick={() => handleDelete(experience._id)}
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <p className="text-gray-600">{experience.location}</p>
+                  <p className="text-gray-600">{experience.time}</p>
+                </div>
+                
+                {experience.learnings?.length > 0 && (
+                  <div>
+                    <h3 className="font-semibold mb-2">Key Learnings</h3>
+                    <ul className="list-disc pl-4">
+                      {experience.learnings.map((learning) => (
+                        <li key={learning._id} className="text-gray-600 flex items-center justify-between">
+                          {learning.name}
+                          <button
+                            onClick={() => handleRemoveLearning(experience._id, learning._id)}
+                            className="text-red-500 hover:text-red-700 ml-2"
+                          >
+                            <X size={14} />
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                
+                {experience.skills?.length > 0 && (
+                  <div>
+                    <h3 className="font-semibold mb-2">Skills</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {experience.skills.map((skill) => (
+                        <span 
+                          key={skill._id}
+                          className="px-3 py-1 bg-gray-100 rounded-full text-sm flex items-center gap-2"
+                        >
+                          {skill.name}
+                          <button
+                            onClick={() => handleRemoveSkill(experience._id, skill._id)}
+                            className="text-red-500 hover:text-red-700"
+                          >
+                            <X size={14} />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
       ):
 
