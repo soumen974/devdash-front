@@ -68,91 +68,82 @@ const EventForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold mb-4">Add Event to Google Calendar</h2>
+    <div className="">
+      <div className="w-full max-w-lg p-6 rounded-2xl shadow-xl bg-[#2A2A3D] border border-[#3E3E4E]">
+        <h2 className="text-3xl font-bold mb-6 text-[#FF5F85] text-center bg-gradient-to-r from-[#FD356E] to-[#FF5F85] bg-clip-text text-transparent">Add Event to Google Calendar</h2>
 
-      {errorMessage && (
-        <div className="mb-4 p-2 bg-red-500 text-white rounded">
-          {errorMessage}
-        </div>
-      )}
+        {errorMessage && (
+          <div className="mb-4 p-3 rounded-lg bg-[#FF5F85]/20 border border-[#FF5F85]/30 text-[#FF5F85] text-sm font-medium animate-fadeIn">
+            {errorMessage}
+          </div>
+        )}
 
-      {successMessage && (
-        <div 
-          className={`mb-4 p-2 bg-green-500 text-white rounded transition-opacity duration-300 ${
-            isSuccess ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          {successMessage}
-        </div>
-      )}
+        {successMessage && (
+          <div className={`mb-4 p-3 rounded-lg bg-[#28A745]/20 border border-[#28A745]/30 text-[#28A745] text-sm font-medium animate-fadeIn ${isSuccess ? 'opacity-100' : 'opacity-0'}`}>
+            {successMessage}
+          </div>
+        )}
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="eventname" className="block text-sm font-medium text-gray-700">
-            Event Name
-          </label>
-          <input
-            type="text"
-            id="eventname"
-            name="eventname"
-            value={eventDetails.eventname}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border rounded-lg shadow-sm"
-            required
-          />
-        </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label htmlFor="eventname" className="block text-sm font-medium text-[#B5B5C3]">Event Name</label>
+            <input
+              type="text"
+              id="eventname"
+              name="eventname"
+              value={eventDetails.eventname}
+              onChange={handleChange}
+              className="mt-1 w-full p-3 rounded-lg bg-[#3E3E4E] text-white focus:ring-2 focus:ring-[#FF5F85] border border-[#4A4A5D] focus:border-[#FF5F85] transition-all"
+              required
+            />
+          </div>
 
-        <div className="mb-4">
-          <label htmlFor="eventdesc" className="block text-sm font-medium text-gray-700">
-            Event Description
-          </label>
-          <textarea
-            id="eventdesc"
-            name="eventdesc"
-            value={eventDetails.eventdesc}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border rounded-lg shadow-sm"
-          ></textarea>
-        </div>
+          <div>
+            <label htmlFor="eventdesc" className="block text-sm font-medium text-[#B5B5C3]">Event Description</label>
+            <textarea
+              id="eventdesc"
+              name="eventdesc"
+              value={eventDetails.eventdesc}
+              onChange={handleChange}
+              className="mt-1 w-full p-3 rounded-lg bg-[#3E3E4E] text-white focus:ring-2 focus:ring-[#FF5F85] border border-[#4A4A5D] focus:border-[#FF5F85] transition-all"
+              placeholder="Optional"
+            ></textarea>
+          </div>
 
-        <div className="mb-4">
-          <label htmlFor="startdate" className="block text-sm font-medium text-gray-700">
-            Start Date and Time
-          </label>
-          <input
-            type="datetime-local"
-            id="startdate"
-            name="startdate"
-            value={eventDetails.startdate}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border rounded-lg shadow-sm"
-            required
-          />
-        </div>
+          <div>
+            <label htmlFor="startdate" className="block text-sm font-medium text-[#B5B5C3]">Start Date and Time</label>
+            <input
+              type="datetime-local"
+              id="startdate"
+              name="startdate"
+              value={eventDetails.startdate}
+              onChange={handleChange}
+              className="mt-1 w-full p-3 rounded-lg bg-[#3E3E4E] text-white focus:ring-2 focus:ring-[#FF5F85] border border-[#4A4A5D] focus:border-[#FF5F85] transition-all"
+              required
+            />
+          </div>
 
-        <div className="mb-4">
-          <label htmlFor="enddate" className="block text-sm font-medium text-gray-700">
-            End Date and Time
-          </label>
-          <input
-            type="datetime-local"
-            id="enddate"
-            name="enddate"
-            value={eventDetails.enddate}
-            onChange={handleChange}
-            className="mt-1 p-2 w-full border rounded-lg shadow-sm"
-            required
-          />
-        </div>
+          <div>
+            <label htmlFor="enddate" className="block text-sm font-medium text-[#B5B5C3]">End Date and Time</label>
+            <input
+              type="datetime-local"
+              id="enddate"
+              name="enddate"
+              value={eventDetails.enddate}
+              onChange={handleChange}
+              className="mt-1 w-full p-3 rounded-lg bg-[#3E3E4E] text-white focus:ring-2 focus:ring-[#FF5F85] border border-[#4A4A5D] focus:border-[#FF5F85] transition-all"
+              required
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600"
-        >
-          Add Event
-        </button>
-      </form>
+          <button
+            type="submit"
+            className="w-full py-3 rounded-lg bg-gradient-to-r from-[#FF5F85] to-[#FD356E] text-white font-medium transition-transform transform hover:scale-105 hover:shadow-lg shadow-[#FF5F85]/20"
+          >
+            Add Event
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
