@@ -15,6 +15,7 @@ const Home = () => {
   const { name } = useUserImage();
   const {headline}=useUserImage();
   const {description}=useUserImage();
+  const {myusername}=useUserImage();
 
   const recent_experience = [
     {
@@ -121,18 +122,18 @@ const Home = () => {
 
   return (
     <>
-      <div className='text-white '>
+      <div className='text-white relative'>
 
         {/* page link */} 
-        <div className="fixed  bottom-5 z-20 ">
+        <div className="sticky top-20 left-20 z-10 ">
             <div className="flex justify-end">
                 <a
-                  href='kkb'
+                  href={`https://myportfoliofoxdash.vercel.app/${myusername}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF5F85] to-[#FD356E] text-white rounded-xl hover:from-[#FD356E] hover:to-[#FF5F85] transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
-                  <span>Portfolio link</span>
+                  <span>Public link</span>
                   <ArrowUpRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300" />
                 </a>
               </div>
@@ -144,7 +145,7 @@ const Home = () => {
             
             <h5 className="py-1 text-[#62626A] text-[1.1rem] pt-4">
            
-            <HighlightedHeadline headline= { headline || "I build Web Apps and Designs understanding the user experience." } />
+            <HighlightedHeadline headline= { headline || "I build WebApps and Designs understanding the user experience." } />
             </h5>
             
              
@@ -244,20 +245,18 @@ const HighlightedHeadline = ({ headline }) => {
   // Split the headline into words
   const words = headline.split(' ');
 
-  // Check if we should apply colors to specific words
-  const shouldApplyColors = words.length >= 2 && words.length <= 3;
-
   return (
     <h5 className="py-1 text-[#62626A] text-[1.1rem] pt-4">
       {words.map((word, index) => {
         // Conditionally style the 2nd and 4th words
-        if (shouldApplyColors && (index === 2 || index === 4)) {
+        if (index === 2 || index === 4) {
           return (
-            <span
-              key={index}
-              className="bg-purple-500 rounded-full text-[.8rem] text-gray-100 px-3 py-[0.15rem]"
-            >
-              {word}
+            <span key={index} className="mr-2">
+              <span
+                className="bg-purple-500 rounded-full text-[.8rem] text-gray-100 px-3 py-[0.15rem]"
+              >
+                {word}
+              </span>
             </span>
           );
         }
@@ -265,20 +264,22 @@ const HighlightedHeadline = ({ headline }) => {
         // For the "Web Apps" and "Designs" terms, apply their specific styles
         if (word === 'Web' || word === 'Apps') {
           return (
-            <span
-              key={index}
-              className="bg-purple-500 rounded-full text-[.8rem] text-gray-100 px-3 py-[0.15rem]"
-            >
-              {word}
+            <span key={index} className="mr-2">
+              <span
+                className="bg-purple-500 rounded-full text-[.8rem] text-gray-100 px-3 py-[0.15rem]"
+              >
+                {word}
+              </span>
             </span>
           );
         } else if (word === 'Designs') {
           return (
-            <span
-              key={index}
-              className="bg-violet-500 rounded-full px-3 py-[0.15rem] text-[.8rem] text-gray-100"
-            >
-              {word}
+            <span key={index} className="mr-2">
+              <span
+                className="bg-violet-500 rounded-full px-3 py-[0.15rem] text-[.8rem] text-gray-100"
+              >
+                {word}
+              </span>
             </span>
           );
         }
