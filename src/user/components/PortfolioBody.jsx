@@ -1,15 +1,20 @@
 import { SiAltiumdesigner } from "react-icons/si";
 import { TbCodeDots } from "react-icons/tb";
 import { PiCodeBold } from "react-icons/pi";
-// import { GlobeDemo } from "../components/GlobeDemo";
-// import { IoIosArrowDown } from "react-icons/io";
-// import { MdOutlineArrowOutward } from "react-icons/md";
-import { Link } from 'react-router-dom'; // If using react-router for navigation
-
-// import { FormtoMail } from "../components/FormtoMail";
+import { Link } from 'react-router-dom'; 
 import GithubStreaks from "../page/StreaksTable";
+import ExperienceList from "./ExperienceList";
+import ProjectsList from "./ProjectsList";
+import LicenceCertificationList from "./LicenceCertificationList";
+import { useUserImage } from './PersonalDataList';
+import {User  } from 'lucide-react';
 
 const Home = () => {
+  // ,name,headline,about
+  const { imageUrl } = useUserImage();
+  const { name } = useUserImage();
+  const {headline}=useUserImage();
+  const {description}=useUserImage();
 
   const recent_experience = [
     {
@@ -120,21 +125,33 @@ const Home = () => {
         {/* intro */}
         <div className="flex-col-1 gap-y-2 flex flex-wrap-reverse justify-between">
           <div>
-            <h1 className="text-3xl sm:text-5xl font-extrabold bg-clip-text">Soumen Bhunia</h1>
+            <h1 className="text-3xl sm:text-5xl font-extrabold bg-clip-text"> {name || "Soumen Bhunia"}</h1>
+            
             <h5 className="py-1 text-[#62626A] text-[1.1rem] pt-4">
-              I build <span className="bg-purple-500 rounded-full text-[.8rem] text-gray-100 px-3 py-[0.15rem]">Web Apps</span> and <span className="bg-violet-500 rounded-full px-3 py-[0.15rem] text-[.8rem] text-gray-100">Designs</span> understanding the user experience.
+           
+            <HighlightedHeadline headline= { headline || "I build Web Apps and Designs understanding the user experience." } />
             </h5>
+            
+             
+           
           </div>
 
           <div className="overflow-hidden w-fit h-fit">
-            <img src="/images/soumenbhunia.svg" className="w-16 h-16 rounded-md hover:scale-125 transition-scale duration-300" alt="Soumen Bhunia" width={64} height={64} />
+            
+            {imageUrl ? <img src={imageUrl} className="w-16 h-16 rounded-md hover:scale-125 transition-scale duration-300" alt="Soumen Bhunia" width={64} height={64} />
+                          : <div className=" w-16 h-16  bg-gradient-to-br from-[#FF5F85]/20 to-[#FD356E]/20 rounded-md opacity-60 hover:opacity-100 transition-opacity duration-300 p-2"></div>
+                          }
           </div>
         </div>
 
+       { <div className="py-8 text-[#62626A] text-[1.1rem]">
+          {description}
+        </div> 
+         ||
         <div className="py-8 text-[#62626A] text-[1.1rem]">
           <a href="https://github.com/soumen974" className='text-white'>IBM</a> certified web developer, I build user-friendly web apps. <br />
           Check me on <a href="https://github.com/soumen974" className='text-white'>GitHub</a>
-        </div>
+        </div>}
 
         <div className="mx-auto group max-w-7xl">
           <h1 className='text-2xl md:text-4xl flex gap-1 pb-5'>GitHub Contributions
@@ -148,62 +165,16 @@ const Home = () => {
           <h1 className='text-2xl md:text-4xl flex gap-1'>Recent Experience 
             {/* <KnowMore link={'/experience'} /> */}
             </h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 md:grid-cols-2 justify-between">
-            {recent_experience.map((experience) => (
-              <div key={experience.company} className="border backdrop-blur-2xl bg-gradient-to-b border-neutral-800 from-inherit bg-zinc-800/30 sm:grid flex gap-x-5 gap-y-2 mt-4 p-3 w-full rounded-xl sm:rounded-md">
-                <div>
-                  {experience.image}
-                </div>
-                <div>
-                  <h1>{experience.position}</h1>
-                  <h2 className='text-white text-sm font-light'>{experience.company}</h2>
-                  <h3 className='text-gray-100 font-thin text-sm'>{experience.time}</h3>
-                </div>
-              </div>
-            ))}
-          </div>
+            <ExperienceList UseForShow={true}/>
         </div>
+        
 
         {/* projects */}
         <div className="py-5">
           <h1 className='text-2xl md:text-4xl '>Projects</h1>
-          <div className="pt-8 grid grid-cols-1 sm:grid-cols-2 gap-5 md:grid-cols-2  justify-between   ">
-            {projects.map((project)=>(
-              <div key={project.title} className=" ">
-                <div className="border backdrop-blur-2xl bg-gradient-to-b border-neutral-700 from-inherit bg-zinc-800/30 flex flex-col gap-4 items-start w-fit mx-auto p-4 relative z-0    ">
-                    <Icon className="absolute h-6 w-6 -top-3 -left-3 dark:text-white text-black" />
-                    <Icon className="absolute h-6 w-6 -bottom-3 -left-3 dark:text-white text-black" />
-                    <Icon className="absolute h-6 w-6 -top-3 -right-3 dark:text-white text-black" />
-                    <Icon className="absolute h-6 w-6 -bottom-3 -right-3 dark:text-white text-black" />
-
-                    
-
-                    <div className="grid gap-2">
-                        <div className="">
-                          <h2></h2>
-                          <h1>{project.title}</h1>
-                        </div>
-
-                        <h2 className="dark:text-white text-black  text-sm font-light">
-                          {project.description}
-                        </h2>
-                    </div>
-                    
-                    <div className=" flex flex-wrap gap-2 w-[90%]">
-                      {project.Skills.map((skill)=>(
-                        <h1 key={skill.name} className=' w-fit text-[0.7rem] border  border-neutral-700 rounded-full   shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]  p-1 px-4 items-center justify-center '>{skill.name}</h1>
-                      ))}
-                    </div>
-
-
-                </div>
-
-              
-              </div>
-
-            ))}
-          </div>
+          <ProjectsList UseForShow={true} />
         </div>
+        
 
         {/* services */}
         <div className="py-5 group">
@@ -226,42 +197,11 @@ const Home = () => {
         {/* licenses and certifications */}
         <div className="py-">
           <h1 className='text-2xl md:text-4xl '>Licenses & certifications</h1>
-          <div className="py-3 flex-col-reverse flex">
-          {Licenses_and_certification.map((LnC)=>(
-              <div key={LnC.title} className=" py-5 flex shrink-0 gap-5">
-
-                <div className="flex items-center">
-                  {LnC.logo}
-                </div>
-
-                <div className=" grid">
-                  <h1 className="font-bold truncate ">
-                    {LnC.title}
-                  </h1>
-
-                  <h1 className="">
-                  { LnC.company}
-                  </h1>
-
-                  <h1 className='text-gray-100 font-thin text-sm'>
-                    {LnC.time} 
-                  </h1>
-                  {/* Skills */}
-
-                  <div className="w-fit py-2 flex gap-1 overflow-x-hidden">
-                    {LnC.Skills.map((skill)=>(
-                      <h1 key={skill.name} className='bg-green-400 text-black font-bold flex items-center text-[0.6rem] px-2 rounded-full'>
-                        {skill.name}
-                      </h1>
-                    ))}
-                  </div>
-
-                </div>
-
-              </div>
-            ))}
-          </div>
+          <LicenceCertificationList UseForShow={true}/>
         </div>
+
+        
+
         
       </div>
     </>
@@ -285,5 +225,54 @@ const Icon = ({ className }) => {
   );
 };
 
+const HighlightedHeadline = ({ headline }) => {
+  // Split the headline into words
+  const words = headline.split(' ');
+
+  // Check if we should apply colors to specific words
+  const shouldApplyColors = words.length >= 2 && words.length <= 3;
+
+  return (
+    <h5 className="py-1 text-[#62626A] text-[1.1rem] pt-4">
+      {words.map((word, index) => {
+        // Conditionally style the 2nd and 4th words
+        if (shouldApplyColors && (index === 2 || index === 4)) {
+          return (
+            <span
+              key={index}
+              className="bg-purple-500 rounded-full text-[.8rem] text-gray-100 px-3 py-[0.15rem]"
+            >
+              {word}
+            </span>
+          );
+        }
+
+        // For the "Web Apps" and "Designs" terms, apply their specific styles
+        if (word === 'Web' || word === 'Apps') {
+          return (
+            <span
+              key={index}
+              className="bg-purple-500 rounded-full text-[.8rem] text-gray-100 px-3 py-[0.15rem]"
+            >
+              {word}
+            </span>
+          );
+        } else if (word === 'Designs') {
+          return (
+            <span
+              key={index}
+              className="bg-violet-500 rounded-full px-3 py-[0.15rem] text-[.8rem] text-gray-100"
+            >
+              {word}
+            </span>
+          );
+        }
+
+        // Render other words normally
+        return <span key={index}>{word} </span>;
+      })}
+    </h5>
+  );
+};
 
 

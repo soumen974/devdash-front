@@ -3,7 +3,6 @@ import PortfolioBody from "../components/PortfolioBody";
 import ExperienceList from "../components/ExperienceList";
 import ProjectsList from "../components/ProjectsList";
 import LicenceCertificationList from "../components/LicenceCertificationList";
-import LicenceCertificationForm from "../components/LicenceCertificationForm";
 import Footer from "../components/Footerinportfolio";
 
 export default function Portfolio() {
@@ -16,9 +15,9 @@ export default function Portfolio() {
           <div className="max-w-2xl mx-auto mt-20 z-0  ">
            
             <PortfolioBody/>
-            <ExperienceList UseForShow={true}/>
-            <ProjectsList UseForShow={true} />
-            <LicenceCertificationList UseForShow={true}/>
+            {/* <ExperienceList UseForShow={true}/> */}
+            {/* <ProjectsList UseForShow={true} /> */}
+            {/* <LicenceCertificationList UseForShow={true}/> */}
             {/* <LicenceCertificationForm/> */}
 
               <div className="">
