@@ -1,31 +1,27 @@
+import { X } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 
-const EventForm = () => {
-  const initialState = {
-    eventname: '',
-    eventdesc: '',
-    startdate: '',
-    enddate: '',
-  };
-
-  const [eventDetails, setEventDetails] = useState(initialState);
+const EventForm = ({ initialData, onSuccess, onClose}) => {
+  const [eventDetails, setEventDetails] = useState({
+    eventname: initialData?.title || '',
+    eventdesc: initialData?.description || '',
+    startdate: initialData?.start ? new Date(initialData.start).toISOString().slice(0, 16) : '',
+    enddate: initialData?.end ? new Date(initialData.end).toISOString().slice(0, 16) : '',
+  });
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    let timeoutId;
-    if (successMessage) {
-      setIsSuccess(true);
-      timeoutId = setTimeout(() => {
-        setIsSuccess(false);
-        setTimeout(() => {
-          setSuccessMessage('');
-        }, 300); 
-      }, 2000);
+    if (initialData) {
+      setEventDetails({
+        eventname: initialData.title,
+        eventdesc: initialData.description || '',
+        startdate: new Date(initialData.start).toISOString().slice(0, 16),
+        enddate: new Date(initialData.end).toISOString().slice(0, 16),
+      });
     }
-    return () => clearTimeout(timeoutId);
-  }, [successMessage]);
+  }, [initialData]);
 
   const handleChange = (e) => {
     setEventDetails({
@@ -45,105 +41,138 @@ const EventForm = () => {
     }
 
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API}/calendar/add-event`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify(eventDetails),
-        }
-      );
+      const url = initialData 
+        ? `${process.env.REACT_APP_API}/calendar/update/${initialData.id}`
+        : `${process.env.REACT_APP_API}/calendar/add-event`;
 
-      if (response.status === 201) {
-        setSuccessMessage('Event added successfully!');
-        setEventDetails(initialState);
+      const method = initialData ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(eventDetails),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save event');
+      }
+
+      setSuccessMessage(initialData ? 'Event updated successfully!' : 'Event added successfully!');
+      if (onSuccess) {
+        setTimeout(() => {
+          onSuccess();
+        }, 1500);
       }
     } catch (error) {
-      console.error(error);
-      setErrorMessage('Error adding event. Please try again.');
+      setErrorMessage(error.message);
     }
   };
 
   return (
-    <div className="">
-      <div className="w-full max-w-lg p-6 rounded-2xl shadow-xl bg-[#2A2A3D] border border-[#3E3E4E]">
-        <h2 className="text-3xl font-bold mb-6 text-[#FF5F85] text-center bg-gradient-to-r from-[#FD356E] to-[#FF5F85] bg-clip-text text-transparent">Add Event to Google Calendar</h2>
+    <div className="w-full max-w-lg p-8 rounded-3xl shadow-2xl bg-gradient-to-br from-[#2A2A3D] to-[#1F1F2E] border border-[#3E3E4E]/30 backdrop-blur-xl relative">
+      <button
+    onClick={onClose}
+    className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-[#3E3E4E]/50 hover:bg-[#FF5F85]/20 transition-all duration-300 text-gray-400 hover:text-[#FF5F85] z-50"
+  >
+   <X className="h-6 w-6" />
+  </button>
+      <div className="relative mb-8">
+        <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-[#FD356E] to-[#FF5F85] bg-clip-text text-transparent">
+          {initialData ? 'Update Calendar Event' : 'Add Event to Calendar'}
+        </h2>
+        <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] rounded-full"></div>
+      </div>
 
-        {errorMessage && (
-          <div className="mb-4 p-3 rounded-lg bg-[#FF5F85]/20 border border-[#FF5F85]/30 text-[#FF5F85] text-sm font-medium animate-fadeIn">
-            {errorMessage}
-          </div>
-        )}
+      {errorMessage && (
+        <div className="mb-6 p-4 rounded-xl bg-[#FF5F85]/10 border border-[#FF5F85]/20 text-[#FF5F85] text-sm font-medium animate-fadeIn">
+          {errorMessage}
+        </div>
+      )}
 
-        {successMessage && (
-          <div className={`mb-4 p-3 rounded-lg bg-[#28A745]/20 border border-[#28A745]/30 text-[#28A745] text-sm font-medium animate-fadeIn ${isSuccess ? 'opacity-100' : 'opacity-0'}`}>
-            {successMessage}
-          </div>
-        )}
+      {successMessage && (
+        <div className="mb-6 p-4 rounded-xl bg-[#28A745]/10 border border-[#28A745]/20 text-[#28A745] text-sm font-medium animate-fadeIn">
+          {successMessage}
+        </div>
+      )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="eventname" className="block text-sm font-medium text-[#B5B5C3]">Event Name</label>
-            <input
-              type="text"
-              id="eventname"
-              name="eventname"
-              value={eventDetails.eventname}
-              onChange={handleChange}
-              className="mt-1 w-full p-3 rounded-lg bg-[#3E3E4E] text-white focus:ring-2 focus:ring-[#FF5F85] border border-[#4A4A5D] focus:border-[#FF5F85] transition-all"
-              required
-            />
-          </div>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-2">
+          <label htmlFor="eventname" className="block text-sm font-medium text-[#B5B5C3]">
+            Event Name <span className="text-[#FF5F85]">*</span>
+          </label>
+          <input
+            type="text"
+            id="eventname"
+            name="eventname"
+            value={eventDetails.eventname}
+            onChange={handleChange}
+            className="w-full p-4 rounded-xl bg-[#3E3E4E]/50 text-white placeholder-[#6C6C7E] focus:ring-2 focus:ring-[#FF5F85] border border-[#4A4A5D]/30 focus:border-[#FF5F85] transition-all duration-300"
+            placeholder="Enter event name"
+            required
+          />
+        </div>
 
-          <div>
-            <label htmlFor="eventdesc" className="block text-sm font-medium text-[#B5B5C3]">Event Description</label>
-            <textarea
-              id="eventdesc"
-              name="eventdesc"
-              value={eventDetails.eventdesc}
-              onChange={handleChange}
-              className="mt-1 w-full p-3 rounded-lg bg-[#3E3E4E] text-white focus:ring-2 focus:ring-[#FF5F85] border border-[#4A4A5D] focus:border-[#FF5F85] transition-all"
-              placeholder="Optional"
-            ></textarea>
-          </div>
+        <div className="space-y-2">
+          <label htmlFor="eventdesc" className="block text-sm font-medium text-[#B5B5C3]">
+            Event Description
+          </label>
+          <textarea
+            id="eventdesc"
+            name="eventdesc"
+            value={eventDetails.eventdesc}
+            onChange={handleChange}
+            className="w-full p-4 rounded-xl bg-[#3E3E4E]/50 text-white placeholder-[#6C6C7E] focus:ring-2 focus:ring-[#FF5F85] border border-[#4A4A5D]/30 focus:border-[#FF5F85] transition-all duration-300"
+            rows="4"
+            placeholder="Enter event description"
+          />
+        </div>
 
-          <div>
-            <label htmlFor="startdate" className="block text-sm font-medium text-[#B5B5C3]">Start Date and Time</label>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <label htmlFor="startdate" className="block text-sm font-medium text-[#B5B5C3]">
+              Start Date & Time <span className="text-[#FF5F85]">*</span>
+            </label>
             <input
               type="datetime-local"
               id="startdate"
               name="startdate"
               value={eventDetails.startdate}
               onChange={handleChange}
-              className="mt-1 w-full p-3 rounded-lg bg-[#3E3E4E] text-white focus:ring-2 focus:ring-[#FF5F85] border border-[#4A4A5D] focus:border-[#FF5F85] transition-all"
+              className="w-full p-4 rounded-xl bg-[#3E3E4E]/50 text-white focus:ring-2 focus:ring-[#FF5F85] border border-[#4A4A5D]/30 focus:border-[#FF5F85] transition-all duration-300"
               required
             />
           </div>
 
-          <div>
-            <label htmlFor="enddate" className="block text-sm font-medium text-[#B5B5C3]">End Date and Time</label>
+          <div className="space-y-2">
+            <label htmlFor="enddate" className="block text-sm font-medium text-[#B5B5C3]">
+              End Date & Time <span className="text-[#FF5F85]">*</span>
+            </label>
             <input
               type="datetime-local"
               id="enddate"
               name="enddate"
               value={eventDetails.enddate}
               onChange={handleChange}
-              className="mt-1 w-full p-3 rounded-lg bg-[#3E3E4E] text-white focus:ring-2 focus:ring-[#FF5F85] border border-[#4A4A5D] focus:border-[#FF5F85] transition-all"
+              className="w-full p-4 rounded-xl bg-[#3E3E4E]/50 text-white focus:ring-2 focus:ring-[#FF5F85] border border-[#4A4A5D]/30 focus:border-[#FF5F85] transition-all duration-300"
               required
             />
           </div>
+        </div>
 
-          <button
-            type="submit"
-            className="w-full py-3 rounded-lg bg-gradient-to-r from-[#FF5F85] to-[#FD356E] text-white font-medium transition-transform transform hover:scale-105 hover:shadow-lg shadow-[#FF5F85]/20"
-          >
-            Add Event
-          </button>
-        </form>
-      </div>
+        <button
+          type="submit"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          className={`w-full py-4 px-6 rounded-xl font-medium text-white transition-all duration-300 transform
+            ${isHovered ? 'bg-gradient-to-r from-[#FF5F85] to-[#FD356E] scale-105' : 'bg-gradient-to-r from-[#FD356E] to-[#FF5F85]'}
+            hover:shadow-lg hover:shadow-[#FF5F85]/20 focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:ring-offset-2 focus:ring-offset-[#2A2A3D]`}
+        >
+          {initialData ? 'Update Event' : 'Add Event'}
+        </button>
+      </form>
     </div>
   );
 };
