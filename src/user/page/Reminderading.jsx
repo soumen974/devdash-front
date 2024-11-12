@@ -27,7 +27,7 @@ const ReminderAdding = () => {
           'Accept': 'application/json'
         }
       });
-      
+
       if (!response.ok) {
         throw new Error(`Status check failed: ${response.status}`);
       }
@@ -47,14 +47,14 @@ const ReminderAdding = () => {
 
   useEffect(() => {
     checkCalendarStatus();
-    
+
     const urlParams = new URLSearchParams(window.location.search);
     const errorParam = urlParams.get('error');
     if (errorParam) {
       setError(decodeURIComponent(errorParam));
       window.history.replaceState({}, '', window.location.pathname);
     }
-    
+
     const intervalId = setInterval(checkCalendarStatus, 5000);
     return () => clearInterval(intervalId);
   }, []);
@@ -78,22 +78,42 @@ const ReminderAdding = () => {
 
   return (
     <div className="relative p-6 space-y-8 bg-[#1E1E24] rounded-lg shadow-xl text-white">
-      <div className="absolute top-0 right-0 p-4 space-x-4 flex items-center">
-        {isConnected && (
+      <div className="grid grid-cols-2 gap-4">
+        <div className="flex flex-col">
+          {/* Left Column */}
+          <div className="text-lg font-medium mb-6">
+            {isConnected && calendarEmail ? (
+              <div className="flex items-center space-x-2">
+                <span className="text-green-600">✓</span>
+                <span>Calendar Connected to: {calendarEmail}</span>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <span className="text-yellow-600">!</span>
+                <span>No calendar connected</span>
+              </div>
+            )}
+          </div>
+
           <button
-            onClick={() => setShowEventForm((prev) => !prev)}
-            className="px-6 py-2 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white rounded-lg hover:from-[#FF5F85] hover:to-[#FD356E] focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:ring-offset-2 focus:ring-offset-[#2A2A32] transition-all"
+            onClick={handleConnectToCalendar}
+            className="w-fit px-8 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all"
           >
-            {showEventForm ? 'Hide Event Form' : 'Add Event'}
+            {isConnected ? 'Choose another Google Calendar' : 'Connect to Google Calendar'}
           </button>
-        )}
-        
-        <button
-          onClick={handleConnectToCalendar}
-          className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all"
-        >
-          {isConnected ? 'Choose another Google Calendar' : 'Connect to Google Calendar'}
-        </button>
+        </div>
+
+        <div className="flex flex-col items-end justify-between">
+          {/* Right Column */}
+          {isConnected && (
+            <button
+              onClick={() => setShowEventForm((prev) => !prev)}
+              className="px-6 py-4 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white rounded-lg hover:from-[#FF5F85] hover:to-[#FD356E] focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:ring-offset-2 focus:ring-offset-[#2A2A32] transition-all"
+            >
+              {showEventForm ? 'Hide Event Form' : 'Add Event'}
+            </button>
+          )}
+        </div>
       </div>
 
       {error && (
@@ -102,30 +122,10 @@ const ReminderAdding = () => {
         </div>
       )}
 
-      <div className="text-lg font-medium mb-6">
-        {isConnected && calendarEmail ? (
-          <div className="flex items-center space-x-2">
-            <span className="text-green-600">✓</span>
-            <span>Calendar Connected to: {calendarEmail}</span>
-            {/* <button 
-              onClick={checkCalendarStatus}
-              className="ml-4 px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded-md"
-            >
-              Refresh
-            </button> */}
-          </div>
-        ) : (
-          <div className="flex items-center space-x-2">
-            <span className="text-yellow-600">!</span>
-            <span>No calendar connected</span>
-          </div>
-        )}
-      </div>
-
       {/* Overlay Event Form */}
       {showEventForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="relative bg-[#2D2F3C] p-8 rounded-lg shadow-lg w-full max-w-md">
+          <div className="relative bg-[#2D2F3C] p-8 rounded-lg shadow-lg w-full max-w-fit">
             <EventForm />
             <button
               onClick={() => setShowEventForm(false)}
