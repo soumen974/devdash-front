@@ -152,7 +152,7 @@ const PersonalDataList = () => {
           onClick={() => {setShowForm(true);setEditingForm(currentData);}} 
           className="px-6 flex items-center py-3 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white rounded-lg hover:from-[#FF5F85] hover:to-[#FD356E] focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:ring-offset-2 focus:ring-offset-[#2A2A32] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-          <Plus size={20} /> Add Personal Information
+          <Plus size={20} /> {!editingForm? "Update":"Add"} Personal Information
         </button>
       </div>
 
@@ -298,7 +298,12 @@ export default PersonalDataList;
 // exporting image to another component
 export const useUserImage = () => {
     const [imageUrl, setImageUrl] = useState(null);
+    const [name, setname] = useState(null);
+    const [headline, setheadline] = useState(null);
+    const [description, setdescription] = useState(null);
+
     const [error, setError] = useState(null);
+    // .name ,headline,about
   
     const fetchPersonalData = async () => {
       try {
@@ -306,6 +311,9 @@ export const useUserImage = () => {
           withCredentials: true,
         });
         setImageUrl(response.data.data.imageUrl);
+        setname(response.data.data.name);
+        setheadline(response.data.data.headline);
+        setdescription(response.data.data.description);
       } catch (err) {
         setError('Failed to fetch personal data');
         console.error('Fetch error:', err);
@@ -316,5 +324,5 @@ export const useUserImage = () => {
       fetchPersonalData();
     }, []);
   
-    return { imageUrl, error };
+    return { imageUrl, error,name,headline,description };
   };
