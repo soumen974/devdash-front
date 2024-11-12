@@ -7,7 +7,7 @@ import ExperienceList from "./ExperienceList";
 import ProjectsList from "./ProjectsList";
 import LicenceCertificationList from "./LicenceCertificationList";
 import { useUserImage } from './PersonalDataList';
-import {User  } from 'lucide-react';
+import { FileText,ArrowUpRight} from 'lucide-react';
 
 const Home = () => {
   // ,name,headline,about
@@ -121,7 +121,22 @@ const Home = () => {
 
   return (
     <>
-      <div className='text-white'>
+      <div className='text-white '>
+
+        {/* page link */} 
+        <div className="fixed  bottom-5 z-20 ">
+            <div className="flex justify-end">
+                <a
+                  href='kkb'
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF5F85] to-[#FD356E] text-white rounded-xl hover:from-[#FD356E] hover:to-[#FF5F85] transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  <span>Portfolio link</span>
+                  <ArrowUpRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300" />
+                </a>
+              </div>
+        </div>
         {/* intro */}
         <div className="flex-col-1 gap-y-2 flex flex-wrap-reverse justify-between">
           <div>
