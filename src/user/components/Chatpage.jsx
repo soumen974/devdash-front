@@ -5,7 +5,7 @@ import Markdown from "react-markdown";
 
 import {IKImage } from "imagekitio-react";
 import axios from "axios";
-import { Loader2, ArrowRight,Sparkles } from "lucide-react";
+import { Loader2, ArrowRight,Sparkles, UserCircle } from "lucide-react";
 import NewPrompt from "./NewPrompt";
 
 
@@ -17,6 +17,10 @@ const MessageBubble = ({ message, isUser }) => {
           isUser ? 'items-end' : 'items-start'
         }`}
       >
+        {!isUser ? 
+            <Sparkles className="absolute -left-7 w-5 h-5 text-[#FD356E] opacity-100 transition-opacity" />
+           :  <UserCircle className="absolute -right-7 w-5 h-5 text-white opacity-100 transition-opacity" />
+}
         {message.img && (
           <div className="mb-2 rounded-xl overflow-hidden group transform transition-all duration-300 hover:scale-[1.02]">
             <IKImage
@@ -39,7 +43,7 @@ const MessageBubble = ({ message, isUser }) => {
                 : 'bg-[#2A2A32]/90 border-2 border-gray-700/30 text-gray-100'
             }`}
           >
-                      {!isUser&& <Sparkles className=" absolute -left-10  w-5 h-5 text-[#FD356E] opacity-100 transition-opacity" />}
+                      {/* {!isUser&& <Sparkles className=" absolute -left-10  w-5 h-5 text-[#FD356E] opacity-100 transition-opacity" />} */}
 
             <Markdown 
               className="prose prose-invert max-w-none"

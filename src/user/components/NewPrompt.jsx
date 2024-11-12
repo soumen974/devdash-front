@@ -17,6 +17,7 @@ const NewPrompt = ({ data, className }) => {
     aiData: {},
   });
   const [isTyping, setIsTyping] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const chat = model.startChat({
     history: data?.history.map(({ role, parts }) => ({
       role: role || 'user',
@@ -131,24 +132,53 @@ const NewPrompt = ({ data, className }) => {
         </div>
       )}
       {img.dbData?.filePath && (
-        <div className="w-fit relative left-20 lg:left-96 mb-4 rounded-xl overflow-hidden group">
+        <div
+          className="h-20 w-36 relative left-2 mb-2 rounded-xl overflow-hidden group"
+          onClick={() => setIsPreviewOpen(true)} // Open modal on click
+        >
           <IKImage
             urlEndpoint={process.env.REACT_APP_IMAGE_KIT_ENDPOINT}
             path={img.dbData?.filePath}
             transformation={[{ width: 400 }]}
             loading="lazy"
             lqip={{ active: true }}
-            width="400"
-            className="rounded-xl"
+            width="600"
+            className="rounded-xl object-cover"
           />
           <button
-            onClick={clearImage}
-            className="absolute top-2 left-[92%] p-1 rounded-full bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-black/70"
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent modal open on cancel button click
+              clearImage();
+            }}
+            className="absolute top-1 left-28 p-1 rounded-full bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-black/70"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
       )}
+
+      {isPreviewOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+          <div className="relative bg-white rounded-lg overflow-hidden">
+            <button
+              className="absolute top-4 right-4 text-gray-700 bg-white rounded-full p-1"
+              onClick={() => setIsPreviewOpen(false)} // Close modal
+            >
+              <X className="w-6 h-6" />
+            </button>
+            <IKImage
+              urlEndpoint={process.env.REACT_APP_IMAGE_KIT_ENDPOINT}
+              path={img.dbData?.filePath}
+              transformation={[{ width: 800 }]}
+              loading="lazy"
+              lqip={{ active: true }}
+              width="700"
+              className="rounded-lg object-cover"
+            />
+          </div>
+        </div>
+      )}
+
       {/* <div className={`flex flex-col ${!answer && "items-end"}`}>
         {question && (
           <div className="max-w-[80%] relative left-24 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white p-4 rounded-xl mb-4 self-end transform transition-all duration-300 hover:scale-[1.02]">
