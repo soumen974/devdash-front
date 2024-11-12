@@ -107,7 +107,7 @@ export default function RightSideBar(props) {
                     }`}
                     title="Delete chat"
                   >
-                    <Trash2 />
+                    <Trash2 className='size-5' />
                   </button>
                 </div>
               ))
