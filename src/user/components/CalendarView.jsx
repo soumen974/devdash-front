@@ -51,7 +51,7 @@ const CalendarView = () => {
     const days = [];
 
     for (let i = 0; i < firstDay; i++) {
-      days.push(<div key={`empty-${i}`} className="h-24 border border-gray-600 bg-gray-800 rounded-lg" />);
+      days.push(<div key={`empty-${i}`} className="h-24  bg-gradient-to-br from-[#FF5F85]/20 to-[#FD356E]/20 opacity-20 rounded-lg" />);
     }
 
     for (let day = 1; day <= daysInMonth; day++) {
