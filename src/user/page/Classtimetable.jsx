@@ -5,6 +5,7 @@ import axios from 'axios';
 
 const Classtimetable = () => {
   const [file, setFile] = useState(null);
+  const [headers, setHeaders] = useState([]);
   const [timetableData, setTimetableData] = useState([]);
 
   // Handle file upload and parse it using XLSX
@@ -19,12 +20,18 @@ const Classtimetable = () => {
       const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
       const parsedData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
 
-      // Assuming the first row contains headers, skip it
-      const formattedData = parsedData.slice(1).map((row) => ({
-        day: row[0],       // e.g., 'Monday'
-        time: row[1],      // e.g., '10:00 AM'
-        className: row[2], // e.g., 'Math'
-      }));
+      // Extract headers from the first row
+      const fileHeaders = parsedData[0];
+      setHeaders(fileHeaders);
+
+      // Extract data, excluding the header row
+      const formattedData = parsedData.slice(1).map((row) => {
+        const rowData = {};
+        fileHeaders.forEach((header, index) => {
+          rowData[header] = row[index];
+        });
+        return rowData;
+      });
 
       setTimetableData(formattedData);
     };
@@ -58,13 +65,19 @@ const Classtimetable = () => {
       )}
       {timetableData.length > 0 && (
         <table className="min-w-full mt-4 border">
-          
+          <thead>
+            <tr>
+              {headers.map((header, index) => (
+                <th key={index} className="px-4 py-2 border-b">{header}</th>
+              ))}
+            </tr>
+          </thead>
           <tbody>
             {timetableData.map((entry, index) => (
               <tr key={index} className="border-t">
-                <td className="px-4 py-2">{entry.day}</td>
-                <td className="px-4 py-2">{entry.time}</td>
-                <td className="px-4 py-2">{entry.className}</td>
+                {headers.map((header, colIndex) => (
+                  <td key={colIndex} className="px-4 py-2">{entry[header]}</td>
+                ))}
               </tr>
             ))}
           </tbody>
