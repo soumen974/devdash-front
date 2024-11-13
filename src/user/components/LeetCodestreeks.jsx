@@ -77,8 +77,8 @@ const LeetCodeStats = () => {
   }, []);
 
   return (
-    <div className="">
-      <div className="  rounded-xl">
+    <div className="px-2">
+      <div className=" mb-6 rounded-xl">
         {/* Search Bar */}
         <div className="flex gap-2 mt-6 mb-6">
           <input
@@ -112,15 +112,15 @@ const LeetCodeStats = () => {
               </div>
               
               <div className="grid grid-cols-3 gap-4">
-                <div className="text-center p-4  bg-gradient-to-br from-[#FF5F85]/20 to-[#FD356E]/20 rounded-md opacity-60  rounded-lg">
+                <div className="text-center bg-[#1E1E24]/50 backdrop-blur-sm rounded-xl p-4 hover:bg-[#1E1E24] transition-all duration-300 rounded-lg">
                   <div className="text-2xl font-bold text-white">{currentStreak}</div>
                   <div className="text-gray-400 text-sm">Current Streak</div>
                 </div>
-                <div className="text-center p-4  bg-gradient-to-br from-[#FF5F85]/20 to-[#FD356E]/20 rounded-md opacity-60  rounded-lg">
+                <div className="text-center bg-[#1E1E24]/50 backdrop-blur-sm rounded-xl p-4 hover:bg-[#1E1E24] transition-all duration-300 rounded-lg">
                   <div className="text-2xl font-bold text-white">{longestStreak}</div>
                   <div className="text-gray-400 text-sm">Longest Streak</div>
                 </div>
-                <div className="text-center p-4  bg-gradient-to-br from-[#FF5F85]/20 to-[#FD356E]/20 rounded-md opacity-60  rounded-lg">
+                <div className="text-center bg-[#1E1E24]/50 backdrop-blur-sm rounded-xl p-4 hover:bg-[#1E1E24] transition-all duration-300 rounded-lg">
                   <div className="text-2xl font-bold text-white">{profileData.totalSolved}</div>
                   <div className="text-gray-400 text-sm">Problems Solved</div>
                 </div>
@@ -178,7 +178,7 @@ const LeetCodeStats = () => {
                   {streaks.map((streak, index) => (
                     <div 
                       key={index}
-                      className="flex items-center justify-between p-3  bg-gradient-to-br from-[#FF5F85]/20 to-[#FD356E]/20 rounded-md opacity-60  "
+                      className="flex items-center justify-between bg-[#1E1E24]/50 backdrop-blur-sm rounded-xl p-4 hover:bg-[#1E1E24] transition-all duration-300  "
                     >
                       <span className="text-gray-400">Streak #{index + 1}</span>
                       <span className="text-white font-medium">{streak} days</span>

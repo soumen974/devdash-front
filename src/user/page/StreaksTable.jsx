@@ -50,11 +50,11 @@ export default function StreaksTable({setTrackFormShow,trackFormShow}) {
   }, []);
 
 
-  const token = trackData?.github_token || '';
-const username = trackData?.github_id || '';
+  const token = trackData?.github_token || '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';
+const username = trackData?.github_id || 'Soumen974';
 
-console.log(username);
-console.log(token);
+console.log(trackData?.github_token);
+console.log(trackData?.github_id);
 
 
 
