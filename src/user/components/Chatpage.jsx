@@ -20,12 +20,12 @@ const MessageBubble = ({ message, isUser }) => {
         }`}
       >
         {!isUser ? (
-          <Sparkles className="absolute -left-7 w-5 h-5 text-[#FD356E] opacity-100 transition-opacity" />
+          <Sparkles className="absolute -left-7 w-6 h-6 text-[#FD356E] opacity-100 transition-opacity" />
         ) : (
           imageUrl ? (
-            <img src={imageUrl} alt="User" className="absolute -right-7 w-5 h-5 rounded-full" />
+            <img src={imageUrl} alt="User" className="absolute -right-7  w-7 h-7 rounded-full" />
           ) : (
-            <UserCircle className="absolute -right-7 w-5 h-5 text-white opacity-100 transition-opacity" />
+            <UserCircle className="absolute -right-7 w-6 h-6 text-white opacity-100 transition-opacity" />
           )
         )}
 
