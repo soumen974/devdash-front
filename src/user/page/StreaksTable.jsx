@@ -81,7 +81,7 @@ console.log(trackData?.github_id);
   const getColorClass = (color) => {
     switch (color) {
       case '#ebedf0':
-        return '#1D1D20';
+        return '#1E1E24';
       case '#9be9a8':
         return '#0e4429';
       case '#30a14e':
@@ -100,7 +100,7 @@ console.log(trackData?.github_id);
     <div className="">
       
       {username?
-      <div className="border overflow-auto border-gray-600 rounded-md p-3 gap-2 grid grid-cols-8">
+      <div className=" overflow-auto bg-[#2a2a3285] rounded-xl p-4   gap-2 grid grid-cols-8">
       
       {contributions.map((day, index) => (
           <div

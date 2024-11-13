@@ -79,13 +79,15 @@ const LeetCodeStats = () => {
   return (
     <div className="px-2">
       <div className=" mb-6 rounded-xl">
+
+    
         {/* Search Bar */}
         <div className="flex gap-2 mt-6 mb-6">
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full bg-[#1E1E24] text-white border border-gray-700 rounded-lg py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:border-transparent"
+            className="w-full bg-[#2a2a3285] text-white border border-gray-700 rounded-lg py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:border-transparent"
             placeholder="Enter LeetCode username"
           />
           <button
