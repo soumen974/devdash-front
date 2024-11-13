@@ -47,8 +47,16 @@ const DashHome = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center max-md:px-2">
       <div className="mx-auto group max-w-7xl overflow-auto">
+         <div className="mb-8 mt-10">
+          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] bg-clip-text text-transparent">
+           Dashboard 
+          </h1>
+          <p className="text-gray-400">
+          Monitor your key metrics and performance insights
+          </p>
+        </div>
         <StreaksTable setTrackFormShow={setTrackFormShow} trackFormShow={trackFormShow} />
         <LeetCodeStreaks />
         {/* <HackerRankBadges /> */}

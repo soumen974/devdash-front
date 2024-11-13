@@ -7,7 +7,7 @@ import ExperienceList from "./ExperienceList";
 import ProjectsList from "./ProjectsList";
 import LicenceCertificationList from "./LicenceCertificationList";
 import { useUserImage } from './PersonalDataList';
-import { FileText,ArrowUpRight} from 'lucide-react';
+import { FileText,ArrowUpRight,Loader} from 'lucide-react';
 
 const Home = () => {
   // ,name,headline,about
@@ -16,6 +16,8 @@ const Home = () => {
   const {headline}=useUserImage();
   const {description}=useUserImage();
   const {myusername}=useUserImage();
+  const {isLoading}=useUserImage();
+
 
   const recent_experience = [
     {
@@ -120,6 +122,15 @@ const Home = () => {
     },
   ];
 
+  if (isLoading) {
+    return <div className="flex items-center justify-center min-h-[400px]">
+    <div className="flex flex-col items-center gap-4">
+      <Loader className="h-8 w-8 text-[#FD356E] animate-spin" />
+      <p className="text-gray-400">Loading ...</p>
+    </div>
+  </div>
+  }
+
   return (
     <>
       <div className='text-white relative'>
@@ -128,7 +139,7 @@ const Home = () => {
         <div className="sticky top-20 left-20 z-10 ">
             <div className="flex justify-end">
                 <a
-                  href={`https://myportfoliofoxdash.vercel.app/${myusername}`}
+                  href={`http://localhost:3001/${myusername}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF5F85] to-[#FD356E] text-white rounded-xl hover:from-[#FD356E] hover:to-[#FF5F85] transition-all duration-300 shadow-lg hover:shadow-xl"
