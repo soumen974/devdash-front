@@ -66,7 +66,7 @@ export default function RightSideBar(props) {
           >
             <Plus/>Create a new Chat
           </Link>
-          {console.log(data)}
+          {/* {console.log(data)} */}
           <div className="relative flex flex-col-reverse overflow-y-scroll py-2">
             {isPending ? (
               <Loader2 className="relative left-28 size-8 animate-spin" />
