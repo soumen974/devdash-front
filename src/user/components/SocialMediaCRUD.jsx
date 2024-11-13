@@ -204,22 +204,26 @@ const SocialMediaList = ({ socials, onDelete,onSubmit  }) => {
 
 export const Sendsocialdat = () =>{
     const [socials, setSocials] = useState({});
+    const [isLoading, setisLoading] = useState(false);
 
     useEffect(() => {
       const fetchSocials = async () => {
+        setisLoading(true);
         try {
           const response = await axios.get(`${process.env.REACT_APP_API}/devs/socials`, {
             withCredentials: true,
           });
           setSocials(response.data);
+          setisLoading(false);
         } catch (error) {
           console.error('Error fetching social media information:', error);
+          setisLoading(false);
         }
       };
       fetchSocials();
     }, []);
 
-    return {socials};
+    return {socials,isLoading};
 }
 
 

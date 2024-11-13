@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, X } from 'lucide-react';
+import { Calendar, Clock, X ,Loader } from 'lucide-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import EventForm from './EventForm';
 
@@ -140,9 +140,12 @@ const CalendarView = () => {
   });
 
   if (isLoading) {
-    return <div className="flex items-center justify-center h-64">
-      <div className="animate-spin h-12 w-12 border-b-4 border-[#FD356E] rounded-full"></div>
-    </div>;
+    return <div className="flex items-center justify-center min-h-[400px]">
+    <div className="flex flex-col items-center gap-4">
+      <Loader className="h-8 w-8 text-[#FD356E] animate-spin" />
+      <p className="text-gray-400">Loading ...</p>
+    </div>
+  </div>
   }
 
   return (

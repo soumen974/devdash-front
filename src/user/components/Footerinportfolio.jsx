@@ -8,8 +8,14 @@ import { Sendsocialdat  } from "./SocialMediaCRUD";
 
 export default function Footerinportfolio() {
     const { socials } = Sendsocialdat();
+    const { isLoading } = Sendsocialdat();
+
+    if (isLoading) {
+      return <div className='text-white flex justify-center '>Wait </div>;
+    }
+
     if (!Array.isArray(Object.values(socials)) || Object.values(socials).length === 0) {
-        return <div>No social media information available.</div>;
+        return <div>No social media </div>;
       }
   return (
     <div>
