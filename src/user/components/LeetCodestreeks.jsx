@@ -1,8 +1,6 @@
-// src/StreaksTable.js
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 
-const LeetCodestreeks = () => {
+const LeetCodeStats = () => {
   const [username, setUsername] = useState('sob99338');
   const [streaks, setStreaks] = useState([]);
   const [currentStreak, setCurrentStreak] = useState(0);
@@ -13,8 +11,13 @@ const LeetCodestreeks = () => {
 
   const getContributions = async (username) => {
     const url = `https://leetcode-stats-api.herokuapp.com/${username}`;
-    const response = await axios.get(url);
-    return response.data;
+    try {
+      const response = await fetch(url);
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return null;
+    }
   };
 
   const calculateStreaks = (submissionCalendar) => {
@@ -30,9 +33,9 @@ const LeetCodestreeks = () => {
     let missedStreaksFlag = false;
 
     dates.forEach((date) => {
-      const currentDate = new Date(parseInt(date) * 1000); // Convert from UNIX timestamp
+      const currentDate = new Date(parseInt(date) * 1000);
       if (previousDate) {
-        const previousDateDt = new Date(previousDate * 1000); // Convert from UNIX timestamp
+        const previousDateDt = new Date(previousDate * 1000);
         const difference = (currentDate - previousDateDt) / (1000 * 60 * 60 * 24);
         if (difference === 1) {
           currentStreak += 1;
@@ -58,12 +61,14 @@ const LeetCodestreeks = () => {
   const handleFetchStreaks = async () => {
     setLoading(true);
     const data = await getContributions(username);
-    const { streaks, maxStreak, missedStreaksFlag } = calculateStreaks(data.submissionCalendar);
-    setStreaks(streaks);
-    setLongestStreak(maxStreak);
-    setCurrentStreak(streaks[streaks.length - 1]);
-    setMissedStreaks(missedStreaksFlag);
-    setProfileData(data);
+    if (data) {
+      const { streaks, maxStreak, missedStreaksFlag } = calculateStreaks(data.submissionCalendar);
+      setStreaks(streaks);
+      setLongestStreak(maxStreak);
+      setCurrentStreak(streaks[streaks.length - 1]);
+      setMissedStreaks(missedStreaksFlag);
+      setProfileData(data);
+    }
     setLoading(false);
   };
 
@@ -72,63 +77,129 @@ const LeetCodestreeks = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center">
-      <h1 className="text-3xl font-bold mb-4">LeetCode Contribution Streaks</h1>
-      <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="Enter LeetCode username"
-        className="p-2 mb-4 border border-gray-300 rounded"
-      />
-      <button
-        onClick={handleFetchStreaks}
-        disabled={loading}
-        className="bg-blue-500 text-white p-2 rounded"
-      >
-        {loading ? 'Loading...' : 'Fetch Data'}
-      </button>
+    <div className="px-2">
+      <div className=" mb-6 rounded-xl">
+        {/* Search Bar */}
+        <div className="flex gap-2 mt-6 mb-6">
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="w-full bg-[#1E1E24] text-white border border-gray-700 rounded-lg py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:border-transparent"
+            placeholder="Enter LeetCode username"
+          />
+          <button
+            onClick={handleFetchStreaks}
+            disabled={loading}
+            className="px-4 py-2 bg-[#FD356E] text-white rounded-md hover:bg-[#FF5F85] transition-colors"
+          >
+            {loading ? 'Loading...' : 'Search'}
+          </button>
+        </div>
 
-      {profileData && (
-        <div className="mt-6 w-full max-w-lg">
-          <h2 className="text-xl font-bold mb-2 text-white">LeetCode Profile Summary</h2>
-          <div className="bg-white p-4 rounded shadow-md">
-            <p className="text-lg font-semibold">
-              Solved: {profileData.totalSolved}/{profileData.totalQuestions}
-            </p>
-            <p className="text-lg">Acceptance Rate: {profileData.acceptanceRate}%</p>
-            <p className="text-lg">Beats: {profileData.easySolved}/{profileData.totalEasy} Easy, {profileData.mediumSolved}/{profileData.totalMedium} Medium, {profileData.hardSolved}/{profileData.totalHard} Hard</p>
+        {profileData && (
+          <div className="space-y-6">
+            {/* Main Stats Card */}
+            <div className="bg-[#2A2A32] rounded-xl p-6 ">
+              <div className="flex items-center justify-between mb-6">
+                <div className="space-y-1">
+                  <h2 className="text-xl font-bold text-white">@{username}</h2>
+                  <p className="text-gray-400">LeetCode Profile</p>
+                </div>
+                <div className="bg-purple-500/10 text-purple-400 px-3 py-1 rounded-full text-sm">
+                  {profileData.acceptanceRate}% acceptance
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-3 gap-4">
+                <div className="text-center bg-[#1E1E24]/50 backdrop-blur-sm rounded-xl p-4 hover:bg-[#1E1E24] transition-all duration-300 rounded-lg">
+                  <div className="text-2xl font-bold text-white">{currentStreak}</div>
+                  <div className="text-gray-400 text-sm">Current Streak</div>
+                </div>
+                <div className="text-center bg-[#1E1E24]/50 backdrop-blur-sm rounded-xl p-4 hover:bg-[#1E1E24] transition-all duration-300 rounded-lg">
+                  <div className="text-2xl font-bold text-white">{longestStreak}</div>
+                  <div className="text-gray-400 text-sm">Longest Streak</div>
+                </div>
+                <div className="text-center bg-[#1E1E24]/50 backdrop-blur-sm rounded-xl p-4 hover:bg-[#1E1E24] transition-all duration-300 rounded-lg">
+                  <div className="text-2xl font-bold text-white">{profileData.totalSolved}</div>
+                  <div className="text-gray-400 text-sm">Problems Solved</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Problem Stats Card */}
+            <div className="bg-[#2A2A32] rounded-xl p-6  0">
+              <h3 className="text-lg font-semibold text-white mb-4">Problem Solving Stats</h3>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-green-400">Easy</span>
+                    <span className="text-white">{profileData.easySolved}/{profileData.totalEasy}</span>
+                  </div>
+                  <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-green-400 rounded-full"
+                      style={{width: `${(profileData.easySolved/profileData.totalEasy) * 100}%`}}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-yellow-400">Medium</span>
+                    <span className="text-white">{profileData.mediumSolved}/{profileData.totalMedium}</span>
+                  </div>
+                  <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-yellow-400 rounded-full"
+                      style={{width: `${(profileData.mediumSolved/profileData.totalMedium) * 100}%`}}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-red-400">Hard</span>
+                    <span className="text-white">{profileData.hardSolved}/{profileData.totalHard}</span>
+                  </div>
+                  <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-red-400 rounded-full"
+                      style={{width: `${(profileData.hardSolved/profileData.totalHard) * 100}%`}}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Streak History */}
+            {streaks.length > 0 && (
+              <div className="bg-[#2A2A32] rounded-xl p-6 ">
+                <h3 className="text-lg font-semibold text-white mb-4">Streak History</h3>
+                <div className="space-y-3">
+                  {streaks.map((streak, index) => (
+                    <div 
+                      key={index}
+                      className="flex items-center justify-between bg-[#1E1E24]/50 backdrop-blur-sm rounded-xl p-4 hover:bg-[#1E1E24] transition-all duration-300  "
+                    >
+                      <span className="text-gray-400">Streak #{index + 1}</span>
+                      <span className="text-white font-medium">{streak} days</span>
+                    </div>
+                  ))}
+                </div>
+                {missedStreaks && (
+                  <div className="mt-4 text-yellow-400 text-sm flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    You have missed streaks in the past
+                  </div>
+                )}
+              </div>
+            )}
           </div>
-        </div>
-      )}
-
-      {streaks.length > 0 && (
-        <div className="mt-4 w-full max-w-lg text-white">
-          <h2 className="text-2xl font-bold mb-2">Current Streak: {currentStreak} days</h2>
-          <h2 className="text-2xl font-bold mb-2">Longest Streak: {longestStreak} days</h2>
-          {missedStreaks && (
-            <p className="text-red-500 font-semibold">You have missed streaks in the past!</p>
-          )}
-          <table className="table-auto border-collapse border border-gray-200 mt-4">
-            <thead>
-              <tr>
-                <th className="border border-gray-300 px-4 py-2 bg-gray-700 text-white">Streak Number</th>
-                <th className="border border-gray-300 px-4 py-2 bg-gray-700 text-white">Days</th>
-              </tr>
-            </thead>
-            <tbody>
-              {streaks.map((streak, index) => (
-                <tr key={index}>
-                  <td className="border border-gray-300 px-4 py-2">{index + 1}</td>
-                  <td className="border border-gray-300 px-4 py-2">{streak}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
 
-export default LeetCodestreeks;
+export default LeetCodeStats;
