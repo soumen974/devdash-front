@@ -202,7 +202,7 @@ const CalendarView = ({ variant = 'full' }) => {
   });
 
   if (isLoading) {
-    return <div className="flex items-center justify-center min-h-[400px]">
+    return <div className="flex items-center justify-center min-h-full">
     <div className="flex flex-col items-center gap-4">
       <Loader className="h-8 w-8 text-[#FD356E] animate-spin" />
       <p className="text-gray-400">Loading ...</p>
@@ -212,7 +212,7 @@ const CalendarView = ({ variant = 'full' }) => {
 
   return (
     <div className={`p-6 bg-[#1E1E24] rounded-2xl shadow-2xl border border-[#FD356E]/10 relative ${
-      variant === 'compact' ? 'w-[300px]' : ''
+      variant === 'compact' ? 'w-full' : ''
     }`}>
       {error && (
         <div className="mb-4 p-4 bg-[#FD356E]/10 text-[#FD356E] rounded-lg">{error.message}</div>

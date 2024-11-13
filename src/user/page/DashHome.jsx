@@ -59,6 +59,8 @@ const DashHome = () => {
         </div>
         <StreaksTable setTrackFormShow={setTrackFormShow} trackFormShow={trackFormShow} />
         <LeetCodeStreaks />
+        <CalendarView variant="compact" />
+
         {/* <HackerRankBadges /> */}
           <table className="w-full border-collapse bg-gradient-to-r from-[#1E1E24] to-[#2A2A32] rounded-xl overflow-hidden">
             <thead>
@@ -83,9 +85,7 @@ const DashHome = () => {
           </table>
         <TrackForm setTrackFormShow={setTrackFormShow} trackFormShow={trackFormShow} />
       </div>
-      <div>
-          <CalendarView variant="compact" />
-        </div>
+      
     </div>
   );
 };
