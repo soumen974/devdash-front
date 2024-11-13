@@ -3,6 +3,30 @@ import { Calendar, Clock, X ,Loader } from 'lucide-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import EventForm from './EventForm';
 
+const EventsPopover = ({ events, position, onClose, onEventClick }) => {
+  return (
+    <div 
+      className="absolute z-50 bg-[#2A2A32] rounded-lg shadow-xl border border-[#FD356E]/20 p-2 min-w-[200px]"
+      style={{ top: position.y, left: position.x }}
+    >
+      <div className="flex flex-col gap-1">
+        {events.map(event => (
+          <div
+            key={event.id}
+            onClick={() => onEventClick(event)}
+            className="p-2 hover:bg-[#FD356E]/10 rounded cursor-pointer text-sm text-white"
+          >
+            <div className="font-medium">{event.title}</div>
+            <div className="text-xs text-gray-400">
+              {new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const fetchEvents = async () => {
   const statusResponse = await fetch(`${process.env.REACT_APP_API}/google/status`, {
     credentials: 'include'
@@ -13,13 +37,16 @@ const fetchEvents = async () => {
   if (!statusData.connected) {
     return []; 
   }
+
   const response = await fetch(`${process.env.REACT_APP_API}/calendar/events`, {
     credentials: 'include'
   });
+
   if (!response.ok) {
     const data = await response.json();
     throw new Error(data.message || 'Failed to fetch events');
   }
+
   const data = await response.json();
   return data.events.map(event => ({
     id: event.id,
@@ -32,11 +59,12 @@ const fetchEvents = async () => {
   }));
 };
 
-const CalendarView = () => {
+const CalendarView = ({ variant = 'full' }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [showEventForm, setShowEventForm] = useState(false);
   const [eventToEdit, setEventToEdit] = useState(null);
+  const [activePopover, setActivePopover] = useState(null);
   const queryClient = useQueryClient();
 
   const { data: events = [], error, isLoading } = useQuery({
@@ -58,13 +86,13 @@ const CalendarView = () => {
             'Content-Type': 'application/json'
           }
         });
-  
+
         const data = await response.json();
-  
+
         if (!response.ok) {
           throw new Error(data.message || 'Failed to delete event');
         }
-  
+
         queryClient.invalidateQueries(['calendar-events']);
         setSelectedEvent(null);
       } catch (error) {
@@ -72,7 +100,6 @@ const CalendarView = () => {
       }
     }
   };
-  
 
   const handleUpdateClick = (event) => {
     setEventToEdit({
@@ -109,23 +136,58 @@ const CalendarView = () => {
     const days = [];
 
     for (let i = 0; i < firstDay; i++) {
-      days.push(<div key={`empty-${i}`} className="h-24 bg-gradient-to-br from-[#FF5F85]/20 to-[#FD356E]/20 opacity-20 rounded-lg" />);
+      days.push(
+        <div 
+          key={`empty-${i}`} 
+          className={`${
+            variant === 'compact' 
+              ? 'h-8' 
+              : 'h-24'
+          } bg-gradient-to-br from-[#FF5F85]/20 to-[#FD356E]/20 opacity-20 rounded-lg`} 
+        />
+      );
     }
 
     for (let day = 1; day <= daysInMonth; day++) {
       const dayEvents = getEventsForDay(day);
+      const hasEvents = dayEvents.length > 0;
+
       days.push(
-        <div key={day} className="h-24 border border-gray-600 p-2 bg-gradient-to-r from-[#23242A] via-[#2F2F3B] to-[#23242A] rounded-lg shadow-lg">
-          <div className="font-semibold text-[#A0AEC0] mb-1">{day}</div>
-          {dayEvents.map(event => (
+        <div 
+          key={day} 
+          className={`${
+            variant === 'compact' 
+              ? 'h-8 p-1' 
+              : 'h-24 p-2'
+          } border border-gray-600 bg-gradient-to-r from-[#23242A] via-[#2F2F3B] to-[#23242A] rounded-lg shadow-lg relative`}
+        >
+          <div className={`font-semibold ${hasEvents ? 'text-[#FD356E]' : 'text-[#A0AEC0]'} ${
+            variant === 'compact' ? 'text-xs text-center' : 'mb-1'
+          }`}>
+            {day}
+          </div>
+          {variant !== 'compact' && dayEvents.length > 0 && (
             <div 
-              key={event.id} 
-              onClick={() => setSelectedEvent(event)}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (dayEvents.length === 1) {
+                  setSelectedEvent(dayEvents[0]);
+                } else {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  setActivePopover({
+                    events: dayEvents,
+                    position: {
+                      x: rect.left,
+                      y: rect.bottom + window.scrollY
+                    }
+                  });
+                }
+              }}
               className="text-xs bg-[#FD356E] text-white p-1 rounded-md cursor-pointer truncate hover:bg-[#FF5F85]"
             >
-              {event.title}
+              {dayEvents[0].title} {dayEvents.length > 1 && `+${dayEvents.length - 1} more`}
             </div>
-          ))}
+          )}
         </div>
       );
     }
@@ -149,13 +211,17 @@ const CalendarView = () => {
   }
 
   return (
-    <div className="p-6 bg-[#1E1E24] rounded-2xl shadow-2xl border border-[#FD356E]/10 relative">
+    <div className={`p-6 bg-[#1E1E24] rounded-2xl shadow-2xl border border-[#FD356E]/10 relative ${
+      variant === 'compact' ? 'w-[300px]' : ''
+    }`}>
       {error && (
         <div className="mb-4 p-4 bg-[#FD356E]/10 text-[#FD356E] rounded-lg">{error.message}</div>
       )}
 
       <div className="mb-6">
-        <div className="flex items-center justify-between mb-4">
+        <div className={`flex items-center justify-between mb-4 ${
+          variant === 'compact' ? 'text-sm' : ''
+        }`}>
           <div className="flex items-center gap-2 text-[#FF5F85]">
             <Calendar className="h-6 w-6" />
             <h2 className="text-2xl font-semibold text-[#E2E8F0]">My Calendar Events</h2>
@@ -173,7 +239,9 @@ const CalendarView = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-7 gap-0 text-gray-400">
+        <div className={`grid grid-cols-7 gap-0 text-gray-400 ${
+          variant === 'compact' ? 'text-xs' : ''
+        }`}>
           {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
             <div key={day} className="p-2 text-center font-medium border-b border-[#2A2A32]">
               {day}
@@ -183,7 +251,7 @@ const CalendarView = () => {
         <div className="grid grid-cols-7 gap-2 mt-2">{renderCalendarGrid()}</div>
       </div>
 
-      {selectedEvent && (
+      {variant !== 'compact' && selectedEvent && (
         <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center">
           <div className="p-6 max-w-md w-full bg-[#1E1E24] rounded-xl border border-[#FD356E]/10 text-[#E2E8F0] shadow-2xl">
             <div className="flex justify-between items-center mb-4">
@@ -222,7 +290,8 @@ const CalendarView = () => {
           </div>
         </div>
       )}
-      {showEventForm && (
+
+      {variant !== 'compact' && showEventForm && (
         <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center">
           <div className="relative">
             <EventForm 
@@ -235,6 +304,24 @@ const CalendarView = () => {
             />
           </div>
         </div>
+      )}
+
+      {activePopover && (
+        <>
+          <div 
+            className="fixed inset-0" 
+            onClick={() => setActivePopover(null)} 
+          />
+          <EventsPopover 
+            events={activePopover.events}
+            position={activePopover.position}
+            onClose={() => setActivePopover(null)}
+            onEventClick={(event) => {
+              setSelectedEvent(event);
+              setActivePopover(null);
+            }}
+          />
+        </>
       )}
     </div>
   );

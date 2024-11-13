@@ -5,6 +5,7 @@ import StreaksTable from "./StreaksTable";
 import LeetCodeStreaks from "../components/LeetCodestreeks";
 import HackerRankBadges from "../components/HackerRankBadges";
 import TrackForm from "../components/TrackForm";
+import CalendarView from '../components/CalendarView';
 // import {workdata  } from "../components/WorkListings";
 
 const DashHome = () => {
@@ -59,9 +60,6 @@ const DashHome = () => {
         <StreaksTable setTrackFormShow={setTrackFormShow} trackFormShow={trackFormShow} />
         <LeetCodeStreaks />
         {/* <HackerRankBadges /> */}
-
-        
-
           <table className="w-full border-collapse bg-gradient-to-r from-[#1E1E24] to-[#2A2A32] rounded-xl overflow-hidden">
             <thead>
             <tr className="border-b border-[#FD356E]/10">
@@ -85,6 +83,9 @@ const DashHome = () => {
           </table>
         <TrackForm setTrackFormShow={setTrackFormShow} trackFormShow={trackFormShow} />
       </div>
+      <div>
+          <CalendarView variant="compact" />
+        </div>
     </div>
   );
 };
