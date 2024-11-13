@@ -3,7 +3,6 @@ import axios from 'axios';
 import { format } from 'date-fns';
 
 
-
 const query = `
   query ($username: String!) {
     user(login: $username) {
@@ -22,7 +21,7 @@ const query = `
   }
 `;
 
-export default function StreaksTable(Props) {
+export default function StreaksTable({setTrackFormShow,trackFormShow}) {
   const [contributions, setContributions] = useState([]);
   // const[trackFormShow,settrackFormShow]=useState(false);
 
@@ -117,7 +116,7 @@ console.log(token);
        :
        <div className="border  border-gray-600 rounded-md p-3  grid  ">
          <div className=' w-[55vw] h-28  flex justify-center items-center text-black  '>
-          <h1 onClick={()=>{Props.settrackFormShow(true)}} className='bg-green-200 p-2 rounded-sm'>Track github</h1>
+          <h1 onClick={()=>{setTrackFormShow(true)}} className='bg-green-200 p-2 rounded-sm'>Track github</h1>
           </div>
         </div>
         

@@ -2,10 +2,10 @@ import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import axios from 'axios';
 
-export default function TrackForm(Props) {
+export default function TrackForm({setTrackFormShow,trackFormShow}) {
 
   const cancelButtonRef1 = useRef(null);
-  
+  // Props.settrackFormShow
   const [formData, setFormData] = useState({
     github_id: '',
     github_token: '',
@@ -39,7 +39,7 @@ export default function TrackForm(Props) {
         }
       );
       setMessage(response.data.message);
-      Props.settrackFormShow( false);
+      setTrackFormShow( false);
     } catch (error) {
       if (error.response) {
         setError(error.response.data.message || 'Server error');
@@ -57,8 +57,8 @@ export default function TrackForm(Props) {
 
   return (
    <>
-   <Transition.Root show={Props.trackFormShow  } as={Fragment}>
-<Dialog as="div" className="relative z-40" initialFocus={cancelButtonRef1} onClose={Props.settrackFormShow}>
+   <Transition.Root show={trackFormShow  } as={Fragment}>
+<Dialog as="div" className="relative z-40" initialFocus={cancelButtonRef1} onClose={setTrackFormShow}>
   <Transition.Child
     as={Fragment}
     enter="ease-out duration-300"
