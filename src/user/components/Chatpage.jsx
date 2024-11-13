@@ -7,9 +7,11 @@ import {IKImage } from "imagekitio-react";
 import axios from "axios";
 import { Loader2, ArrowRight,Sparkles, UserCircle } from "lucide-react";
 import NewPrompt from "./NewPrompt";
+import { useUserImage } from "./PersonalDataList";
 
 
 const MessageBubble = ({ message, isUser }) => {
+  const { imageUrl } = useUserImage();
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} w-full mb-4`}>
       <div
@@ -17,10 +19,16 @@ const MessageBubble = ({ message, isUser }) => {
           isUser ? 'items-end' : 'items-start'
         }`}
       >
-        {!isUser ? 
-            <Sparkles className="absolute -left-7 w-5 h-5 text-[#FD356E] opacity-100 transition-opacity" />
-           :  <UserCircle className="absolute -right-7 w-5 h-5 text-white opacity-100 transition-opacity" />
-}
+        {!isUser ? (
+          <Sparkles className="absolute -left-7 w-5 h-5 text-[#FD356E] opacity-100 transition-opacity" />
+        ) : (
+          imageUrl ? (
+            <img src={imageUrl} alt="User" className="absolute -right-7 w-5 h-5 rounded-full" />
+          ) : (
+            <UserCircle className="absolute -right-7 w-5 h-5 text-white opacity-100 transition-opacity" />
+          )
+        )}
+
         {message.img && (
           <div className="mb-2 rounded-xl overflow-hidden group transform transition-all duration-300 hover:scale-[1.02]">
             <IKImage
