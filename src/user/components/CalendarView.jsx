@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, FileText, X } from 'lucide-react';
+import { Calendar, Clock, X } from 'lucide-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import EventForm from './EventForm';
 
