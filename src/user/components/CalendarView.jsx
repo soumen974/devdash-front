@@ -1,240 +1,180 @@
-import React, { useState } from 'react';
-import { Calendar, Clock, X } from 'lucide-react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import EventForm from './EventForm';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import CalendarView from '../components/CalendarView';
 
-const fetchEvents = async () => {
-  const statusResponse = await fetch(`${process.env.REACT_APP_API}/google/status`, {
-    credentials: 'include'
-  });
-  
-  const statusData = await statusResponse.json();
-  
-  if (!statusData.connected) {
-    return []; 
-  }
-  const response = await fetch(`${process.env.REACT_APP_API}/calendar/events`, {
-    credentials: 'include'
-  });
-  if (!response.ok) {
-    const data = await response.json();
-    throw new Error(data.message || 'Failed to fetch events');
-  }
-  const data = await response.json();
-  return data.events.map(event => ({
-    id: event.id,
-    title: event.summary,
-    description: event.description,
-    start: new Date(event.start),
-    end: new Date(event.end),
-    creator: event.creator,
-    status: event.status
-  }));
-};
+const Classtimetable = () => {
+  const [file, setFile] = useState(null);
+  const [timetableData, setTimetableData] = useState([]);
+  const [headers, setHeaders] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [syncLoading, setSyncLoading] = useState(false);
 
-const CalendarView = () => {
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [showEventForm, setShowEventForm] = useState(false);
-  const [eventToEdit, setEventToEdit] = useState(null);
-  const queryClient = useQueryClient();
+  axios.defaults.withCredentials = true;
 
-  const { data: events = [], error, isLoading } = useQuery({
-    queryKey: ['calendar-events'],
-    queryFn: fetchEvents,
-    refetchInterval: 1000,
-    refetchOnWindowFocus: true,
-    staleTime: 0
-  });
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile && (selectedFile.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || 
+        selectedFile.type === 'application/vnd.ms-excel')) {
+      setFile(selectedFile);
+    } else {
+      alert('Please select a valid Excel file (.xlsx or .xls)');
+    }
+  };
 
-  const handleDeleteEvent = async () => {
-    if (window.confirm('Are you sure you want to delete this event?')) {
-      try {
-        const response = await fetch(`${process.env.REACT_APP_API}/calendar/delete/${selectedEvent.id}`, {
-          method: 'DELETE',
-          credentials: 'include',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          }
-        });
-  
-        const data = await response.json();
-  
-        if (!response.ok) {
-          throw new Error(data.message || 'Failed to delete event');
+  const handleSubmit = async () => {
+    if (!file) return;
+    
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await axios.post(`${process.env.REACT_APP_API}/api/upload-timetable`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
-  
-        queryClient.invalidateQueries(['calendar-events']);
-        setSelectedEvent(null);
-      } catch (error) {
-        console.error('Delete operation failed:', error.message);
+      });
+
+      if (response.status === 200) {
+        fetchTimetableData();
+        alert('Timetable uploaded successfully!');
+        setFile(null);
+        const fileInput = document.querySelector('input[type="file"]');
+        if (fileInput) fileInput.value = '';
       }
+    } catch (error) {
+      alert(error.response?.data?.message || 'Failed to upload timetable');
+    } finally {
+      setLoading(false);
     }
   };
-  
 
-  const handleUpdateClick = (event) => {
-    setEventToEdit({
-      id: event.id,        
-      title: event.title,
-      description: event.description,
-      start: event.start,
-      end: event.end
-    });
-    setShowEventForm(true);
-    setSelectedEvent(null);
-  };
-
-  const handleFormSuccess = () => {
-    setShowEventForm(false);
-    setEventToEdit(null);
-    queryClient.invalidateQueries(['calendar-events']);
-  };
-
-  const getDaysInMonth = (date) => new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-  const getFirstDayOfMonth = (date) => new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-  const formatDate = (date) => new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'short' }).format(date);
-
-  const getEventsForDay = (day) => events.filter(event => {
-    const eventDate = new Date(event.start);
-    return eventDate.getDate() === day && 
-           eventDate.getMonth() === currentDate.getMonth() && 
-           eventDate.getFullYear() === currentDate.getFullYear();
-  });
-
-  const renderCalendarGrid = () => {
-    const daysInMonth = getDaysInMonth(currentDate);
-    const firstDay = getFirstDayOfMonth(currentDate);
-    const days = [];
-
-    for (let i = 0; i < firstDay; i++) {
-      days.push(<div key={`empty-${i}`} className="h-24 bg-gradient-to-br from-[#FF5F85]/20 to-[#FD356E]/20 opacity-20 rounded-lg" />);
+  const syncWithGoogleCalendar = async () => {
+    try {
+      setSyncLoading(true);
+      const response = await axios.post(`${process.env.REACT_APP_API}/api/sync-calendar`);
+      
+      if (response.data.success) {
+        alert('Timetable successfully synced with Google Calendar!');
+      }
+    } catch (error) {
+      alert('Failed to sync with Google Calendar. Please ensure you are connected to Google Calendar.');
+    } finally {
+      setSyncLoading(false);
     }
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      const dayEvents = getEventsForDay(day);
-      days.push(
-        <div key={day} className="h-24 border border-gray-600 p-2 bg-gradient-to-r from-[#23242A] via-[#2F2F3B] to-[#23242A] rounded-lg shadow-lg">
-          <div className="font-semibold text-[#A0AEC0] mb-1">{day}</div>
-          {dayEvents.map(event => (
-            <div 
-              key={event.id} 
-              onClick={() => setSelectedEvent(event)}
-              className="text-xs bg-[#FD356E] text-white p-1 rounded-md cursor-pointer truncate hover:bg-[#FF5F85]"
-            >
-              {event.title}
-            </div>
-          ))}
-        </div>
-      );
-    }
-
-    return days;
   };
 
-  const navigateMonth = (direction) => setCurrentDate(prev => {
-    const newDate = new Date(prev);
-    newDate.setMonth(prev.getMonth() + direction);
-    return newDate;
-  });
+  const fetchTimetableData = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`${process.env.REACT_APP_API}/api/timetable-data`);
+      
+      if (response.data.success) {
+        setHeaders(response.data.headers);
+        setTimetableData(response.data.timetableData);
+      }
+    } catch (error) {
+      console.error('Error fetching timetable data:', error);
+      alert('Failed to fetch timetable data');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  if (isLoading) {
-    return <div className="flex items-center justify-center h-64">
-      <div className="animate-spin h-12 w-12 border-b-4 border-[#FD356E] rounded-full"></div>
-    </div>;
-  }
+  useEffect(() => {
+    fetchTimetableData();
+  }, []);
 
   return (
-    <div className="p-6 bg-[#1E1E24] rounded-2xl shadow-2xl border border-[#FD356E]/10 relative">
-      {error && (
-        <div className="mb-4 p-4 bg-[#FD356E]/10 text-[#FD356E] rounded-lg">{error.message}</div>
-      )}
-
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2 text-[#FF5F85]">
-            <Calendar className="h-6 w-6" />
-            <h2 className="text-2xl font-semibold text-[#E2E8F0]">My Calendar Events</h2>
-          </div>
-          <div className="flex items-center gap-2">
-            <button onClick={() => navigateMonth(-1)} className="p-2 text-[#FD356E] hover:bg-[#FD356E]/10 rounded">
-              ←
+    <div className="container mx-auto p-4 text-white">
+      <CalendarView/>
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold mb-4">Upload Class Timetable</h2>
+        <div className="flex flex-col gap-4 md:flex-row md:items-center">
+          <input 
+            type="file" 
+            accept=".xlsx, .xls" 
+            onChange={handleFileChange}
+            className="bg-gray-700 p-2 rounded cursor-pointer" 
+          />
+          
+          {file && (
+            <button
+              className={`bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded transition duration-200 ${
+                loading ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+              onClick={handleSubmit}
+              disabled={loading}
+            >
+              {loading ? 'Uploading...' : 'Upload Timetable'}
             </button>
-            <span className="text-lg font-semibold text-[#CBD5E0]">
-              {new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(currentDate)}
-            </span>
-            <button onClick={() => navigateMonth(1)} className="p-2 text-[#FD356E] hover:bg-[#FD356E]/10 rounded">
-              →
-            </button>
-          </div>
-        </div>
+          )}
 
-        <div className="grid grid-cols-7 gap-0 text-gray-400">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-            <div key={day} className="p-2 text-center font-medium border-b border-[#2A2A32]">
-              {day}
-            </div>
-          ))}
+          {timetableData.length > 0 && (
+            <button
+              className={`bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded transition duration-200 ${
+                syncLoading ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+              onClick={syncWithGoogleCalendar}
+              disabled={syncLoading}
+            >
+              {syncLoading ? 'Syncing...' : 'Sync with Google Calendar'}
+            </button>
+          )}
         </div>
-        <div className="grid grid-cols-7 gap-2 mt-2">{renderCalendarGrid()}</div>
       </div>
 
-      {selectedEvent && (
-        <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center">
-          <div className="p-6 max-w-md w-full bg-[#1E1E24] rounded-xl border border-[#FD356E]/10 text-[#E2E8F0] shadow-2xl">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold">{selectedEvent.title}</h3>
-              <X 
-                onClick={() => setSelectedEvent(null)} 
-                className="text-gray-400 cursor-pointer hover:text-[#FD356E]" 
-              />
-            </div>
-            
-            <p className="text-sm text-gray-300 mb-2">{selectedEvent.description}</p>
+      {timetableData.length > 0 && (
+        <div className="overflow-x-auto mt-4">
+          <h3 className="text-xl font-semibold mb-4">Current Timetable</h3>
+          <table className="min-w-full border border-gray-700">
+            <thead>
+              <tr className="bg-gray-800">
+                {headers.map((header, index) => (
+                  <th key={index} className="px-4 py-3 border-b border-gray-700 text-left font-bold">
+                    {header}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {timetableData.map((entry, index) => (
+                <tr 
+                  key={index} 
+                  className={`border-t border-gray-700 hover:bg-gray-700 transition duration-150 ${
+                    index % 2 === 0 ? 'bg-gray-800' : ''
+                  }`}
+                >
+                  {headers.map((header, colIndex) => (
+                    <td key={colIndex} className="px-4 py-3 whitespace-pre-line">
+                      {entry[header]}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-            <div className="flex items-center gap-2 text-gray-400 text-sm mb-1">
-              <Calendar className="h-4 w-4" />
-              {formatDate(selectedEvent.start)}
+          {/* <div className="mt-8 bg-gray-800 p-4 rounded">
+            <h4 className="text-lg font-semibold mb-2">Legend:</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <div>DWDM - Data Warehousing and Data Mining</div>
+              <div>InfoSec - Information Security</div>
+              <div>DCAS - Database Cluster Administration and Security</div>
+              <div>SEP - Smart Engineering Project</div>
             </div>
-            <div className="flex items-center gap-2 text-gray-400 text-sm mb-4">
-              <Clock className="h-4 w-4" />
-              {formatDate(selectedEvent.end)}
-            </div>
-
-            <div className="flex justify-end gap-2 mt-4">
-              <button
-                onClick={() => handleUpdateClick(selectedEvent)}
-                className="px-4 py-2 text-sm bg-[#FD356E] text-white rounded hover:bg-[#FF5F85]"
-              >
-                Update
-              </button>
-              <button
-                onClick={handleDeleteEvent}
-                className="px-4 py-2 text-sm bg-gray-600 text-white rounded hover:bg-gray-700"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
+          </div> */}
         </div>
       )}
-      {showEventForm && (
-        <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center">
-          <div className="relative">
-            <EventForm 
-              initialData={eventToEdit}
-              onSuccess={handleFormSuccess}
-              onClose={() => {
-                setShowEventForm(false);
-                setEventToEdit(null);
-              }}
-            />
-          </div>
+
+      {timetableData.length === 0 && !loading && (
+        <div className="text-center py-8 text-gray-400 bg-gray-800 rounded">
+          <p className="text-lg">No timetable data available.</p>
+          <p className="text-sm mt-2">Upload an Excel file to view your class schedule.</p>
         </div>
       )}
     </div>
   );
 };
 
-export default CalendarView;
+export default Classtimetable;

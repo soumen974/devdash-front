@@ -5,9 +5,16 @@ import CalendarView from '../components/CalendarView';
 const Classtimetable = () => {
   const [file, setFile] = useState(null);
   const [timetableData, setTimetableData] = useState([]);
-  const [headers, setHeaders] = useState([]);
+  const [headers, setHeaders] = useState(['TIME', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY']);
   const [loading, setLoading] = useState(false);
   const [syncLoading, setSyncLoading] = useState(false);
+  const currentYear = new Date().getFullYear();
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+  const currentMonth = new Date().getMonth();
+  const [startMonth, setStartMonth] = useState(currentMonth);
+  const [endMonth, setEndMonth] = useState(currentMonth + 4);
+  
+  const years = Array.from({length: 6}, (_, i) => currentYear + i);
 
   axios.defaults.withCredentials = true;
 
@@ -21,6 +28,19 @@ const Classtimetable = () => {
     }
   };
 
+  const handleStartMonthChange = (e) => {
+    const newStartMonth = parseInt(e.target.value);
+    setStartMonth(newStartMonth);
+    if (newStartMonth > endMonth) {
+      setEndMonth(newStartMonth);
+    }
+  };
+
+  const handleEndMonthChange = (e) => {
+    const newEndMonth = parseInt(e.target.value);
+    setEndMonth(newEndMonth);
+  };
+
   const handleSubmit = async () => {
     if (!file) return;
     
@@ -28,6 +48,9 @@ const Classtimetable = () => {
     try {
       const formData = new FormData();
       formData.append('file', file);
+      formData.append('startMonth', startMonth);
+      formData.append('endMonth', endMonth);
+      formData.append('year', selectedYear);
 
       const response = await axios.post(`${process.env.REACT_APP_API}/api/upload-timetable`, formData, {
         headers: {
@@ -52,7 +75,11 @@ const Classtimetable = () => {
   const syncWithGoogleCalendar = async () => {
     try {
       setSyncLoading(true);
-      const response = await axios.post(`${process.env.REACT_APP_API}/api/sync-calendar`);
+      const response = await axios.post(`${process.env.REACT_APP_API}/api/sync-calendar`, {
+        startMonth,
+        endMonth,
+        year: selectedYear
+      });
       
       if (response.data.success) {
         alert('Timetable successfully synced with Google Calendar!');
@@ -70,12 +97,15 @@ const Classtimetable = () => {
       const response = await axios.get(`${process.env.REACT_APP_API}/api/timetable-data`);
       
       if (response.data.success) {
-        setHeaders(response.data.headers);
-        setTimetableData(response.data.timetableData);
+        // Ensure we're setting valid data
+        setHeaders(response.data.headers || []);
+        setTimetableData(response.data.timetableData || []);
       }
     } catch (error) {
       console.error('Error fetching timetable data:', error);
-      alert('Failed to fetch timetable data');
+      // Set empty arrays on error
+      setHeaders([]);
+      setTimetableData([]);
     } finally {
       setLoading(false);
     }
@@ -90,6 +120,53 @@ const Classtimetable = () => {
       <CalendarView/>
       <div className="mb-8">
         <h2 className="text-2xl font-bold mb-4">Upload Class Timetable</h2>
+        
+        <div className="flex gap-4 mb-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">Year</label>
+            <select 
+              value={selectedYear} 
+              onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+              className="bg-gray-700 p-2 rounded"
+            >
+              {years.map(year => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium mb-1">Start Month</label>
+            <select 
+              value={startMonth} 
+              onChange={handleStartMonthChange}
+              className="bg-gray-700 p-2 rounded"
+            >
+              {Array.from({length: 12}, (_, i) => (
+                <option key={i} value={i}>
+                  {new Date(0, i).toLocaleString('default', { month: 'long' })}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">End Month</label>
+            <select 
+              value={endMonth} 
+              onChange={handleEndMonthChange}
+              className="bg-gray-700 p-2 rounded"
+            >
+              {Array.from({length: 12}, (_, i) => (
+                <option key={i} value={i} disabled={i < startMonth}>
+                  {new Date(0, i).toLocaleString('default', { month: 'long' })}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
         <div className="flex flex-col gap-4 md:flex-row md:items-center">
           <input 
             type="file" 
@@ -154,16 +231,6 @@ const Classtimetable = () => {
               ))}
             </tbody>
           </table>
-
-          {/* <div className="mt-8 bg-gray-800 p-4 rounded">
-            <h4 className="text-lg font-semibold mb-2">Legend:</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-              <div>DWDM - Data Warehousing and Data Mining</div>
-              <div>InfoSec - Information Security</div>
-              <div>DCAS - Database Cluster Administration and Security</div>
-              <div>SEP - Smart Engineering Project</div>
-            </div>
-          </div> */}
         </div>
       )}
 
