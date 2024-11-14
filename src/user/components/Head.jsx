@@ -43,7 +43,7 @@ export default function Head({sideBar, setsideBar}) {
         setError('');
       } catch (error) {
         setError(error.response?.data?.error || 'Error fetching data');
-        setLoading(true);
+        setLoading(false);
         navigate('/auth/login');
       }
     };

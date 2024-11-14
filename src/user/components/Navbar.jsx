@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { Menu, X, ChevronDown, Bell, User, BarChart2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,NavLink  } from 'react-router-dom';
 import Logo from "../assets/Logo.svg";
 
 export default function Navbar() {
@@ -65,10 +65,10 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">
             <div className="flex space-x-6">
-              <NavLink href="#" text="Product" />
-              <NavLink href="#" text="Features" hasDropdown />
-              <NavLink href="#" text="Analytics" />
-              <NavLink href="#" text="Support" />
+              <Navlink  href="/product" text="Product" />
+              <Navlink href="/features" text="Features" hasDropdown />
+              <Navlink href="/analytics" text="Analytics" />
+              <Navlink href="/support" text="Support" />
             </div>
 
             {/* Action Buttons */}
@@ -96,7 +96,7 @@ export default function Navbar() {
         {isMobileMenuOpen && (
           <div className="lg:hidden bg-zinc-900/95 shadow-lg backdrop-blur-lg p-2 rounded-lg">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              <MobileNavLink href="#" text="Product" />
+              <MobileNavLink href="/product" text="Product" />
               <MobileNavLink href="#" text="Features" />
               <MobileNavLink href="#" text="Analytics" />
               <MobileNavLink href="#" text="Support" />
@@ -115,14 +115,18 @@ export default function Navbar() {
 }
 
 // Helper Components
-const NavLink = ({ href, text, hasDropdown }) => (
-  <a 
-    href={href}
-    className="text-gray-300 hover:text-white flex items-center space-x-1 transition-colors duration-200"
+const Navlink = ({ href, text, hasDropdown }) => (
+  <NavLink
+    to={href}
+    end={href === '/'} 
+    className={({ isActive }) =>
+      `flex items-center ${isActive ? 'text-white hover:text-gray-300 font-bold ' : 'text-gray-300 hover:text-white'} 
+       flex items-center space-x-1 transition-colors duration-200`
+      }
   >
     <span>{text}</span>
     {hasDropdown && <ChevronDown className="h-4 w-4" />}
-  </a>
+  </NavLink>
 );
 
 const MobileNavLink = ({ href, text }) => (
