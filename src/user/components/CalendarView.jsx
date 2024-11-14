@@ -157,7 +157,7 @@ const CalendarView = ({ variant = 'full' }) => {
           key={day} 
           className={`${
             variant === 'compact' 
-              ? 'h-8 p-1' 
+              ? 'h-10 p-1' 
               : 'h-24 p-2'
           } border border-gray-600 bg-gradient-to-r from-[#23242A] via-[#2F2F3B] to-[#23242A] rounded-lg shadow-lg relative`}
         >

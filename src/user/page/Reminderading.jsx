@@ -125,15 +125,15 @@ const ReminderAdding = () => {
       {/* Overlay Event Form */}
       {showEventForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="relative bg-[#2D2F3C] p-8 rounded-lg shadow-lg w-full max-w-fit">
-            <EventForm />
-            <button
-              onClick={() => setShowEventForm(false)}
-              className="absolute top-2 right-2 text-white text-lg font-semibold"
-            >
-              ✕
-            </button>
-          </div>
+          {/* <div className="relative bg-[#2D2F3C] p-8 rounded-lg shadow-lg w-full max-w-fit">
+          
+          </div> */}
+          <EventForm 
+        onClose={() => setShowEventForm(false)}
+        onSuccess={() => {
+          setShowEventForm(false);
+        }}
+      />
         </div>
       )}
 
