@@ -1,63 +1,9 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, X ,Loader } from 'lucide-react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Calendar, Clock, X, Loader } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
 import EventForm from './EventForm';
-
-const EventsPopover = ({ events, position, onClose, onEventClick }) => {
-  return (
-    <div 
-      className="absolute z-50 bg-[#2A2A32] rounded-lg shadow-xl border border-[#FD356E]/20 p-2 min-w-[200px]"
-      style={{ top: position.y, left: position.x }}
-    >
-      <div className="flex flex-col gap-1">
-        {events.map(event => (
-          <div
-            key={event.id}
-            onClick={() => onEventClick(event)}
-            className="p-2 hover:bg-[#FD356E]/10 rounded cursor-pointer text-sm text-white"
-          >
-            <div className="font-medium">{event.title}</div>
-            <div className="text-xs text-gray-400">
-              {new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const fetchEvents = async () => {
-  const statusResponse = await fetch(`${process.env.REACT_APP_API}/google/status`, {
-    credentials: 'include'
-  });
-  
-  const statusData = await statusResponse.json();
-  
-  if (!statusData.connected) {
-    return []; 
-  }
-
-  const response = await fetch(`${process.env.REACT_APP_API}/calendar/events`, {
-    credentials: 'include'
-  });
-
-  if (!response.ok) {
-    const data = await response.json();
-    throw new Error(data.message || 'Failed to fetch events');
-  }
-
-  const data = await response.json();
-  return data.events.map(event => ({
-    id: event.id,
-    title: event.summary,
-    description: event.description,
-    start: new Date(event.start),
-    end: new Date(event.end),
-    creator: event.creator,
-    status: event.status
-  }));
-};
+import { useCalendarEvents, useDeleteEvent } from '../store/useCalendarEvent';
+import EventsPopover from './EventsPopover';
 
 const CalendarView = ({ variant = 'full' }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -67,32 +13,13 @@ const CalendarView = ({ variant = 'full' }) => {
   const [activePopover, setActivePopover] = useState(null);
   const queryClient = useQueryClient();
 
-  const { data: events = [], error, isLoading } = useQuery({
-    queryKey: ['calendar-events'],
-    queryFn: fetchEvents,
-    refetchInterval: 1000,
-    refetchOnWindowFocus: true,
-    staleTime: 0
-  });
+  const { data: events = [], error, isLoading } = useCalendarEvents();
+  const { deleteEvent } = useDeleteEvent();
 
   const handleDeleteEvent = async () => {
     if (window.confirm('Are you sure you want to delete this event?')) {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API}/calendar/delete/${selectedEvent.id}`, {
-          method: 'DELETE',
-          credentials: 'include',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          }
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.message || 'Failed to delete event');
-        }
-
+        await deleteEvent(selectedEvent.id);
         queryClient.invalidateQueries(['calendar-events']);
         setSelectedEvent(null);
       } catch (error) {
@@ -202,12 +129,14 @@ const CalendarView = ({ variant = 'full' }) => {
   });
 
   if (isLoading) {
-    return <div className="flex items-center justify-center min-h-[400px]">
-    <div className="flex flex-col items-center gap-4">
-      <Loader className="h-8 w-8 text-[#FD356E] animate-spin" />
-      <p className="text-gray-400">Loading ...</p>
-    </div>
-  </div>
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="flex flex-col items-center gap-4">
+          <Loader className="h-8 w-8 text-[#FD356E] animate-spin" />
+          <p className="text-gray-400">Loading ...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -215,7 +144,9 @@ const CalendarView = ({ variant = 'full' }) => {
       variant === 'compact' ? 'w-[300px]' : ''
     }`}>
       {error && (
-        <div className="mb-4 p-4 bg-[#FD356E]/10 text-[#FD356E] rounded-lg">{error.message}</div>
+        <div className="mb-4 p-4 bg-[#FD356E]/10 text-[#FD356E] rounded-lg">
+          {error.message}
+        </div>
       )}
 
       <div className="mb-6">
@@ -227,13 +158,19 @@ const CalendarView = ({ variant = 'full' }) => {
             <h2 className="text-2xl font-semibold text-[#E2E8F0]">My Calendar Events</h2>
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={() => navigateMonth(-1)} className="p-2 text-[#FD356E] hover:bg-[#FD356E]/10 rounded">
+            <button 
+              onClick={() => navigateMonth(-1)} 
+              className="p-2 text-[#FD356E] hover:bg-[#FD356E]/10 rounded"
+            >
               ←
             </button>
             <span className="text-lg font-semibold text-[#CBD5E0]">
               {new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(currentDate)}
             </span>
-            <button onClick={() => navigateMonth(1)} className="p-2 text-[#FD356E] hover:bg-[#FD356E]/10 rounded">
+            <button 
+              onClick={() => navigateMonth(1)} 
+              className="p-2 text-[#FD356E] hover:bg-[#FD356E]/10 rounded"
+            >
               →
             </button>
           </div>
