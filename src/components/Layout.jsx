@@ -1,6 +1,7 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import Navbar from "../components/Navbar";
+import Navbar from "../user/components/Navbar";
+import Footer from "../components/Footer";
 export default function Layout() {
   return (
     <div className='bg-[#19191C]  '>
@@ -10,7 +11,9 @@ export default function Layout() {
             <Outlet />
       </div>
     </div>
-    <footer></footer>
+    <footer>
+      <Footer/>
+    </footer>
     </div>
   )
 }

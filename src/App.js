@@ -1,6 +1,9 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Layout from "./user/components/Layout";
-import Home from "./user/page/Home";
+import Layout from "./components/Layout";
+import Home from "./pages/Home";
+import Product from "./pages/Product";
+import Support from "./pages/Support";
+import Analytics from "./pages/Analytics";
 import Notfound from "./components/Notfound";
 import Auth from "./Auth/pages/Auth";
 import Devlayout from "./user/components/Devlayout";
@@ -27,6 +30,12 @@ function App() {
 
           <Route path="/" element={<Layout />}>
            <Route path="/" element={<Home/>} />
+           <Route path="/product" element={<Product/>} />
+           <Route path="/support" element={<Support/>} />
+           <Route path="/analytics" element={<Analytics/>} />
+
+
+          
           </Route>
 
           <Route path="/auth/register" element={<Auth/>} />
