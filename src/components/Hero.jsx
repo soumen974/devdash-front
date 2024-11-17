@@ -36,39 +36,17 @@ export default function Hero() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 to-black overflow-hidden relative">
       {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute w-full h-full">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full mix-blend-screen animate-float"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                width: `${Math.random() * 300 + 50}px`,
-                height: `${Math.random() * 300 + 50}px`,
-                background: `radial-gradient(circle, ${
-                  ['rgba(236,72,153,0.1)', 'rgba(139,92,246,0.1)', 'rgba(59,130,246,0.1)'][
-                    Math.floor(Math.random() * 3)
-                  ]
-                } 0%, transparent 70%)`,
-                animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${Math.random() * 10 + 10}s`
-              }}
-            />
-          ))}
-        </div>
-      </div>
+   
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="pt-20 pb-24 text-center lg:pt-32">
           {/* Announcement Banner */}
           <div className="mb-12 flex justify-center">
             <div className="group relative rounded-full px-6 py-3 text-sm leading-6 text-gray-200 ring-1 ring-gray-700/10 hover:ring-pink-500/50 bg-gray-800/40 backdrop-blur-md transition-all duration-300 hover:scale-105">
-              <Sparkles className="w-4 h-4 inline-block mr-2 text-pink-500" />
+              <Sparkles className="w-4 h-4 inline-block mr-2 text-[#FD356E]" />
               <span className="hidden md:inline">Get your free portfolio page upon deployment</span>
               <span className="md:hidden">Free portfolio page!</span>
-              <a href="#" className="font-semibold text-pink-400 ml-2 inline-flex items-center group-hover:text-pink-300">
+              <a href="#" className="font-semibold bg-gradient-to-r from-[#FD356E] to-[#FF5F85] bg-clip-text text-transparent ml-2 inline-flex items-center group-hover:text-[#FF5F85] ">
                 Grab now
                 <ChevronRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" />
               </a>
@@ -78,7 +56,7 @@ export default function Hero() {
           {/* Main Content */}
           <div className="mx-auto max-w-4xl">
             <h1 className="text-5xl font-bold tracking-tight text-white sm:text-7xl">
-              <span className="inline-block animate-text-gradient bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-[200%_auto] bg-clip-text text-transparent">
+              <span className="inline-block animate-text-gradient  bg-gradient-to-r from-[#FD356E] to-[#FF5F85] bg-clip-text text-transparent">
                 A developer dashboard
               </span>
               <br />
@@ -96,7 +74,7 @@ export default function Hero() {
                 onClick={checkAuthentication}
                 disabled={loading}
                 className={`
-                  relative overflow-hidden rounded-full bg-gradient-to-r from-pink-500 to-purple-600 px-8 py-4 
+                  relative overflow-hidden rounded-full  bg-gradient-to-r from-[#FD356E] to-[#FF5F85] px-8 py-4 
                   text-base font-semibold text-white shadow-lg transition-all duration-300 
                   hover:scale-105 hover:shadow-pink-500/25 disabled:opacity-70 disabled:cursor-not-allowed
                   flex items-center group
@@ -104,7 +82,7 @@ export default function Hero() {
               >
                 <span className="relative z-10">Get started</span>
                 <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#FF5F85] to-[#FD356E] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </button>
               
               <a

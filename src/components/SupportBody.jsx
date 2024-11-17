@@ -61,13 +61,13 @@ const SupportBody = () => {
             <span className="text-sm">24/7 Support Available</span>
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6  animate-text-gradient bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-[200%_auto] bg-clip-text text-transparent">
             How can we help you?
           </h1>
           
           {/* Search Bar */}
           <div className="max-w-xl mx-auto relative group">
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full opacity-50 blur group-hover:opacity-75 transition-opacity" />
+            <div className="absolute inset-0  rounded-full px-6 py-3 text-sm leading-6 text-gray-200 ring-1 ring-gray-700/10 hover:ring-pink-500/50 bg-gray-800/40 backdrop-blur-md transition-all duration-300 hover:scale-105y" />
             <div className="relative bg-white/10 backdrop-blur-xl rounded-full flex items-center p-2">
               <Search className="w-5 h-5 ml-3 text-gray-400" />
               <input

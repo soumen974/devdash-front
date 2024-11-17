@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import axios from "axios";
-import { Menu, X, ChevronDown, Bell, User, BarChart2 } from 'lucide-react';
-import { useNavigate ,NavLink  } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { Menu, X, ChevronDown, Bell } from 'lucide-react';
 import Logo from "../assets/Logo.svg";
 
-export default function Navbar() {
+const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [developerData, setDeveloperData] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const [activeDropdown, setActiveDropdown] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,120 +16,142 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_API}/auth/protected`, { withCredentials: true });
-        setDeveloperData(response.data.developer_data);
-        navigate('/dashboard');
-      } catch (error) {
-        setError(error.response?.data?.error || 'Error fetching data');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="fixed inset-0 bg-zinc-900 flex items-center justify-center">
-        <div className="relative w-16 h-16">
-          <div className="absolute inset-0 rounded-full border-4 border-pink-500/20 animate-ping" />
-          <div className="absolute inset-2 rounded-full border-4 border-t-pink-500 animate-spin" />
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-zinc-900/95 shadow-lg backdrop-blur-lg' : 'bg-transparent'
-    }`}>
+    <nav
+      className={`fixed w-full z-50 transition-all duration-500 ${
+        isScrolled
+          ? 'bg-zinc-900/95 shadow-xl backdrop-blur-xl'
+          : 'bg-transparent'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo and Brand */}
-          <a href='/' className="flex items-center space-x-3">
-            <div className="flex-shrink-0">
-              <div className="h-8 w-8 bg-white  rounded-lg flex items-center justify-center">
-                <img src={Logo} className="h-5 w-5 text-white" />
+          {/* Enhanced Logo */}
+          <a href="/" className="flex items-center space-x-3 group">
+            <div className="flex-shrink-0 relative">
+              <div className="  rounded-xl flex items-center justify-center transform transition-all duration-300 group-hover:rotate-6 group-hover:scale-110 overflow-hidden">
+              <img src={Logo} className="h-9 w-9 " />
               </div>
             </div>
-            <span className="text-white font-bold text-xl">FoxDash</span>
+            <div className="flex flex-col">
+              <span className="text-white font-bold text-xl tracking-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[#FD356E] group-hover:to-[#FF5F85] transition-all duration-300">
+                FoxDash
+              </span>
+              <span className="text-xs text-gray-400 tracking-wider font-medium">
+                Developer Dashboard
+              </span>
+            </div>
           </a>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">
-            <div className="flex space-x-6">
-              <Navlink  href="/product" text="Product" />
-              <Navlink href="/features" text="Features" hasDropdown />
-              <Navlink href="/analytics" text="Analytics" />
-              <Navlink href="/support" text="Support" />
+            {/* Navigation Links */}
+            <div className="flex items-center space-x-8">
+              {['Product', 'Features', 'Analytics', 'Support'].map((item) => (
+                <NavLink
+                  key={item}
+                  to={`/${item.toLowerCase()}`}
+                  className={({ isActive }) =>
+                    `relative px-1 py-2 text-sm font-medium transition-all duration-300 ${
+                      isActive
+                        ? 'text-white'
+                        : 'text-gray-300 hover:text-white'
+                    }`
+                  }
+                  onMouseEnter={() => setActiveDropdown(item)}
+                  onMouseLeave={() => setActiveDropdown(null)}
+                >
+                  <span className="relative z-10 flex items-center">
+                    {item}
+                    {item === 'Features' && (
+                      <ChevronDown className="inline-block ml-1 h-4 w-4 transform group-hover:rotate-180 transition-transform duration-300" />
+                    )}
+                  </span>
+                  <div
+                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] transform origin-left transition-transform duration-300 ${
+                      activeDropdown === item ? 'scale-x-100' : 'scale-x-0'
+                    }`}
+                  />
+                </NavLink>
+              ))}
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center space-x-4">
-              <button className="text-gray-300 hover:text-white relative">
-                <Bell className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 h-3 w-3 bg-pink-500 rounded-full" />
-              </button>
-              <a href='/auth/login' className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg transition-colors duration-200">
-                Sign In
+            <div className="flex items-center space-x-6">
+              
+              <a
+                href="/auth/login"
+                className="relative group overflow-hidden bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white rounded-md hover:bg-[#FF5F85]   px-6 py-2.5  font-medium text-sm hover:shadow-lg hover:shadow-pink-500/25 transition-all duration-300 hover:-translate-y-0.5"
+              >
+                <span className="relative z-10">Sign In</span>
+                
               </a>
             </div>
           </div>
 
           {/* Mobile Menu Button */}
-          <button 
-            className="lg:hidden p-2 rounded-lg text-gray-400 hover:text-white hover:bg-zinc-800"
+          <button
+            className="lg:hidden relative group p-2"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            <div className="relative flex overflow-hidden items-center justify-center w-8 h-8">
+              <div className="flex flex-col justify-between w-6 h-5 transform transition-all duration-300">
+                <span
+                  className={`bg-gradient-to-r from-pink-500 to-blue-500 h-0.5 w-6 transform transition-transform duration-300 ${
+                    isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''
+                  }`}
+                />
+                <span
+                  className={`bg-gradient-to-r from-pink-500 to-blue-500 h-0.5 w-6 transform transition-transform duration-300 ${
+                    isMobileMenuOpen ? 'opacity-0' : ''
+                  }`}
+                />
+                <span
+                  className={`bg-gradient-to-r from-pink-500 to-blue-500 h-0.5 w-6 transform transition-transform duration-300 ${
+                    isMobileMenuOpen ? '-rotate-45 -translate-y-2.5' : ''
+                  }`}
+                />
+              </div>
+            </div>
           </button>
         </div>
 
         {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden bg-zinc-900/95 shadow-lg backdrop-blur-lg p-2 rounded-lg">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              <MobileNavLink href="/product" text="Product" />
-              <MobileNavLink href="#" text="Features" />
-              <MobileNavLink href="#" text="Analytics" />
-              <MobileNavLink href="#" text="Support" />
-              <button className="w-full mt-4 bg-pink-500 hover:bg-pink-600 text-white px-4 py-2  rounded-lg transition-colors duration-200">
-                Sign In
-              </button>
-            </div>
+        <div
+          className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            isMobileMenuOpen ? 'max-h-96' : 'max-h-0'
+          }`}
+        >
+          <div className="px-2 pt-2 pb-3 space-y-1 backdrop-blur-xl rounded-xl bg-zinc-900/90 mb-4">
+            {['Product', 'Features', 'Analytics', 'Support'].map((item) => (
+              <NavLink
+                key={item}
+                to={`/${item.toLowerCase()}`}
+                className={({ isActive }) =>
+                  `block px-4 py-3 text-base font-medium rounded-lg transition-all duration-200 ${
+                    isActive
+                      ? 'bg-gradient-to-r from-pink-500/10 to-blue-500/10 text-white'
+                      : 'text-gray-300 hover:text-white hover:bg-zinc-800/50'
+                  }`
+                }
+              >
+                {item}
+              </NavLink>
+            ))}
+            <a
+              href="/auth/login"
+              className="block mt-4 px-4 py-3 text-center bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white rounded-lg font-medium hover:shadow-lg hover:shadow-pink-500/25 transition-all duration-300"
+            >
+              Sign In
+            </a>
           </div>
-        )}
+        </div>
       </div>
 
-      {/* Bottom Border */}
-      <div className="h-px bg-gradient-to-r from-transparent via-gray-700/50 to-transparent" />
+      {/* Gradient Border */}
+      <div className="h-px bg-gradient-to-r from-transparent via-pink-500/20 to-transparent" />
     </nav>
   );
-}
+};
 
-// Helper Components
-const Navlink = ({ href, text, hasDropdown }) => (
-  <NavLink
-    to={href}
-    end={href === '/'} 
-    className={({ isActive }) =>
-      `flex items-center ${isActive ? 'text-white hover:text-gray-300 font-bold ' : 'text-gray-300 hover:text-white'} 
-       flex items-center space-x-1 transition-colors duration-200`
-      }
-  >
-    <span>{text}</span>
-    {hasDropdown && <ChevronDown className="h-4 w-4" />}
-  </NavLink>
-);
-
-const MobileNavLink = ({ href, text }) => (
-  <a 
-    href={href}
-    className="block px-3 py-2 rounded-lg text-base text-gray-300 hover:text-white hover:bg-zinc-800 transition-colors duration-200"
-  >
-    {text}
-  </a>
-);
+export default Navbar;
