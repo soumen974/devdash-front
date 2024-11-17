@@ -32,11 +32,11 @@ const ProductHero = () => {
   ];
 
   return (
-    <div className="min-h-[90vh] bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-violet-950 via-zinc-900 to-black overflow-hidden relative">
+    <div className="min-h-[90vh] bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#fd356e2a] via-zinc-900 to-black overflow-hidden relative">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-full h-full bg-[url('data:image/svg+xml,...')] opacity-20" />
-        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-b from-violet-500/20 to-transparent blur-3xl" />
+        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-b from-[#fd356e2a] to-transparent blur-3xl" />
         <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-t from-pink-500/20 to-transparent blur-3xl" />
       </div>
 
@@ -57,7 +57,7 @@ const ProductHero = () => {
               </div>
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-violet-400 via-pink-400 to-violet-400 animate-text">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#FD356E] to-[#fc7b99] animate-text">
               Your All-in-One
               <br />
               Developer Suite
@@ -74,7 +74,7 @@ const ProductHero = () => {
                 Try Free Demo
                 <div className="absolute inset-x-0 h-px bottom-0 bg-gradient-to-r from-transparent via-pink-500 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
               </button>
-              <button className="group flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-pink-500 to-violet-500 rounded-full text-white font-medium transition-all duration-300 hover:scale-105">
+              <button className="group flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] rounded-full text-white font-medium transition-all duration-300 hover:scale-105">
                 Get Started
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
@@ -92,13 +92,13 @@ const ProductHero = () => {
                       : 'bg-white/10 hover:bg-white/15'}`}
                 >
                   <div className="absolute -top-2 right-4">
-                    <span className="inline-block px-3 py-1 text-xs font-medium text-white bg-gradient-to-r from-pink-500 to-violet-500 rounded-full">
+                    <span className="inline-block px-3 py-1 text-xs font-medium text-white bg-gradient-to-r from-[#FD356E] to-[#FF5F85] rounded-full">
                       {feature.highlight}
                     </span>
                   </div>
                   
                   <div className="flex flex-col items-center text-center">
-                    <div className="mb-4 p-3 bg-white/10 rounded-full">
+                    <div className="mb-4 p-3 text-white bg-white/10 rounded-full">
                       {feature.icon}
                     </div>
                     <h3 className="text-white font-medium mb-2">{feature.title}</h3>
@@ -117,7 +117,7 @@ const ProductHero = () => {
                 alt="Platform preview"
                 className="rounded-xl w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-tr from-violet-500/20 to-pink-500/20 opacity-0 hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-tr to-[#fd356e4f]  from-[#ff5f8423] opacity-0 hover:opacity-100 transition-opacity duration-500" />
             </div>
             
             {/* Floating badges */}

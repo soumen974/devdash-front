@@ -70,19 +70,11 @@ export default function Hero() {
 
             {/* CTA Buttons */}
             <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6">
-              <button
-                onClick={checkAuthentication}
-                disabled={loading}
-                className={`
-                  relative overflow-hidden rounded-full  bg-gradient-to-r from-[#FD356E] to-[#FF5F85] px-8 py-4 
-                  text-base font-semibold text-white shadow-lg transition-all duration-300 
-                  hover:scale-105 hover:shadow-pink-500/25 disabled:opacity-70 disabled:cursor-not-allowed
-                  flex items-center group
-                `}
-              >
-                <span className="relative z-10">Get started</span>
-                <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#FF5F85] to-[#FD356E] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              
+              <button  onClick={checkAuthentication}
+                disabled={loading} className="group flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] rounded-full text-white font-medium transition-all duration-300 hover:scale-105">
+                Get Started
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
               
               <a
@@ -152,7 +144,7 @@ export default function Hero() {
                   className="w-full rounded-lg shadow-2xl ring-1 ring-gray-900/10 transition-all duration-700 
                            hover:scale-[1.02] cursor-pointer"
                 />
-                <div className="absolute inset-0 bg-gradient-to-tr from-pink-500/20 via-purple-500/20 to-blue-500/20 
+                <div className="absolute inset-0 bg-gradient-to-tr to-[#fd356e4f]  from-[#ff5f8423]
                               opacity-0 hover:opacity-100 transition-all duration-700" />
               </div>
             </div>
