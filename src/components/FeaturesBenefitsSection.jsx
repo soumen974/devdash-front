@@ -113,7 +113,7 @@ const FeaturesBenefitsSection = () => {
               </div>
               <h2 className="text-4xl font-bold mb-8">
                 <span className="inline-block animate-text-gradient bg-gradient-to-r from-[#FD356E] to-[#FF5F85] bg-clip-text text-transparent">
-                  Why Choose DevDashboard?
+                  Why Choose FoxDash?
                 </span>
               </h2>
               <div className="space-y-4">
