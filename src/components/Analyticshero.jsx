@@ -58,13 +58,13 @@ const DevAnalyticsHero = () => {
           {/* Announcement Banner */}
           <div className="mb-12 flex justify-center">
             <div className="inline-flex items-center rounded-full px-6 py-3 text-sm 
-                          bg-white/5 border border-white/10 hover:border-indigo-500/50 
+                          bg-white/5 border border-white/10 hover:border-[#FD356E] 
                           transition-all duration-300 hover:scale-105 backdrop-blur-sm">
-              <Brain className="w-4 h-4 text-indigo-400 mr-2" />
+              <Brain className="w-4 h-4 text-[#FD356E] mr-2" />
               <span className="text-gray-300">
                 New: AI-powered coding insights
               </span>
-              <span className="ml-2 text-indigo-400 flex items-center">
+              <span className="ml-2 text-[#FD356E] flex items-center">
                 Try beta
                 <ArrowRight className="w-3 h-3 ml-1" />
               </span>
@@ -74,7 +74,7 @@ const DevAnalyticsHero = () => {
           {/* Heading */}
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8">
             <span className="inline-block animate-text-gradient bg-gradient-to-r 
-                           from-indigo-500 via-purple-500 to-pink-500 
+                            from-[#FD356E] to-[#FF5F85] 
                            bg-[200%_auto] bg-clip-text text-transparent">
               Developer Insights
             </span>
@@ -94,19 +94,18 @@ const DevAnalyticsHero = () => {
           {/* CTA Buttons */}
           <div className="mt-12 flex flex-col sm:flex-row justify-center gap-6">
             <button className="group relative overflow-hidden rounded-full 
-                           bg-gradient-to-r from-indigo-500 to-purple-600 
+                           bg-gradient-to-r  from-[#FD356E] to-[#FF5F85] 
                            px-8 py-4 font-semibold text-white shadow-lg 
                            transition-all duration-300 hover:scale-105 
-                           hover:shadow-indigo-500/25 flex items-center">
-              <Github className="mr-2 w-5 h-5" />
+                           hover:shadow-[#FD356E] flex items-center">
+              <Github className="mr-2 z-10 w-5 h-5" />
               <span className="relative z-10">Connect GitHub</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 
-                            to-indigo-500 opacity-0 group-hover:opacity-100 
+              <div className="absolute inset-0 bg-gradient-to-r  from-[#FD356E] to-[#FF5F85] opacity-0 group-hover:opacity-100 
                             transition-opacity duration-300" />
             </button>
             
             <button className="rounded-full px-8 py-4 text-gray-300 
-                           border border-gray-700 hover:border-indigo-500/50 
+                           border border-gray-700 hover:border-[#FD356E] 
                            transition-all duration-300 hover:text-white 
                            hover:scale-105 flex items-center">
               <Code2 className="mr-2 w-5 h-5" />
@@ -139,9 +138,9 @@ const DevAnalyticsHero = () => {
                          hover:scale-105 transition-all duration-300"
               >
                 <div className="p-4 rounded-full bg-white/5 border border-white/10 
-                            group-hover:border-indigo-500/50 transition-colors 
+                            group-hover:border-[#FD356E] transition-colors 
                             duration-300 mb-4">
-                  <feature.icon className="w-6 h-6 text-indigo-400" />
+                  <feature.icon className="w-6 h-6 text-[#FD356E]" />
                 </div>
                 <h3 className="text-white font-semibold mb-2">{feature.title}</h3>
                 <p className="text-gray-400 text-sm">{feature.description}</p>

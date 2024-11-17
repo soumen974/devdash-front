@@ -97,17 +97,17 @@ const Navbar = () => {
             <div className="relative flex overflow-hidden items-center justify-center w-8 h-8">
               <div className="flex flex-col justify-between w-6 h-5 transform transition-all duration-300">
                 <span
-                  className={`bg-gradient-to-r from-pink-500 to-blue-500 h-0.5 w-6 transform transition-transform duration-300 ${
+                  className={`bg-gradient-to-r from-[#FD356E] to-[#FF5F85] h-0.5 w-6 transform transition-transform duration-300 ${
                     isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''
                   }`}
                 />
                 <span
-                  className={`bg-gradient-to-r from-pink-500 to-blue-500 h-0.5 w-6 transform transition-transform duration-300 ${
+                  className={`bg-gradient-to-r from-[#FD356E] to-[#FF5F85] h-0.5 w-6 transform transition-transform duration-300 ${
                     isMobileMenuOpen ? 'opacity-0' : ''
                   }`}
                 />
                 <span
-                  className={`bg-gradient-to-r from-pink-500 to-blue-500 h-0.5 w-6 transform transition-transform duration-300 ${
+                  className={`bg-gradient-to-r from-[#FD356E] to-[#FF5F85] h-0.5 w-6 transform transition-transform duration-300 ${
                     isMobileMenuOpen ? '-rotate-45 -translate-y-2.5' : ''
                   }`}
                 />
@@ -130,7 +130,7 @@ const Navbar = () => {
                 className={({ isActive }) =>
                   `block px-4 py-3 text-base font-medium rounded-lg transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-pink-500/10 to-blue-500/10 text-white'
+                      ? 'bg-gradient-to-r from-[#fd356e2a] to-[#ff5f8449] text-white'
                       : 'text-gray-300 hover:text-white hover:bg-zinc-800/50'
                   }`
                 }
@@ -140,7 +140,7 @@ const Navbar = () => {
             ))}
             <a
               href="/auth/login"
-              className="block mt-4 px-4 py-3 text-center bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white rounded-lg font-medium hover:shadow-lg hover:shadow-pink-500/25 transition-all duration-300"
+              className="block mt-4 px-4 py-3 text-center bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white rounded-lg font-medium hover:shadow-lg hover:shadow-pink-500/25 transition-all duration-300"
             >
               Sign In
             </a>
