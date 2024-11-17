@@ -1,15 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CalendarView from '../components/CalendarView';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: true,
+      staleTime: 0,
+      cacheTime: 0,
+    },
+  },
+});
 
 const Classtimetable = () => {
   const [file, setFile] = useState(null);
   const [timetableData, setTimetableData] = useState([]);
   const [headers, setHeaders] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [syncLoading, setSyncLoading] = useState(false);
+  const [calendarEmail, setCalendarEmail] = useState(null);
+  const [isConnected, setIsConnected] = useState(false);
+  const [error, setError] = useState(null);
 
   axios.defaults.withCredentials = true;
+
+  const checkCalendarStatus = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API}/google/status`, {
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Status check failed: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setCalendarEmail(data.email);
+      setIsConnected(data.connected);
+      setError(null);
+    } catch (error) {
+      console.error(error.message);
+      setError('Failed to check calendar status');
+      setIsConnected(false);
+    }
+  };
+
+  const handleConnectToCalendar = () => {
+    try {
+      window.location.href = `${process.env.REACT_APP_API}/google/connect`;
+    } catch (error) {
+      console.error('Connection attempt failed');
+      setError('Failed to connect to Google Calendar');
+    }
+  };
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -49,21 +95,6 @@ const Classtimetable = () => {
     }
   };
 
-  const syncWithGoogleCalendar = async () => {
-    try {
-      setSyncLoading(true);
-      const response = await axios.post(`${process.env.REACT_APP_API}/api/sync-calendar`);
-      
-      if (response.data.success) {
-        alert('Timetable successfully synced with Google Calendar!');
-      }
-    } catch (error) {
-      alert('Failed to sync with Google Calendar. Please ensure you are connected to Google Calendar.');
-    } finally {
-      setSyncLoading(false);
-    }
-  };
-
   const fetchTimetableData = async () => {
     try {
       setLoading(true);
@@ -83,13 +114,34 @@ const Classtimetable = () => {
 
   useEffect(() => {
     fetchTimetableData();
+    checkCalendarStatus();
+
+    const intervalId = setInterval(checkCalendarStatus, 5000);
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
     <div className="container mx-auto p-4 text-white">
-      <CalendarView/>
       <div className="mb-8">
-        <h2 className="text-2xl font-bold mb-4">Upload Class Timetable</h2>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold">Upload Class Timetable</h2>
+          <div className="flex items-center space-x-4">
+            {isConnected ? (
+              <div className="flex items-center space-x-2">
+                <span className="text-green-600">✓</span>
+                <span className="text-sm">Connected to: {calendarEmail}</span>
+              </div>
+            ) : (
+              <button
+                onClick={handleConnectToCalendar}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition-all"
+              >
+                Connect to Google Calendar
+              </button>
+            )}
+          </div>
+        </div>
+
         <div className="flex flex-col gap-4 md:flex-row md:items-center">
           <input 
             type="file" 
@@ -109,20 +161,18 @@ const Classtimetable = () => {
               {loading ? 'Uploading...' : 'Upload Timetable'}
             </button>
           )}
-
-          {timetableData.length > 0 && (
-            <button
-              className={`bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded transition duration-200 ${
-                syncLoading ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
-              onClick={syncWithGoogleCalendar}
-              disabled={syncLoading}
-            >
-              {syncLoading ? 'Syncing...' : 'Sync with Google Calendar'}
-            </button>
-          )}
         </div>
       </div>
+
+      {error && (
+        <div className="mb-4 p-4 bg-red-100 text-red-700 rounded-md">
+          {error}
+        </div>
+      )}
+
+      <QueryClientProvider client={queryClient}>
+        <CalendarView />
+      </QueryClientProvider>
 
       {timetableData.length > 0 && (
         <div className="overflow-x-auto mt-4">
@@ -154,16 +204,6 @@ const Classtimetable = () => {
               ))}
             </tbody>
           </table>
-
-          {/* <div className="mt-8 bg-gray-800 p-4 rounded">
-            <h4 className="text-lg font-semibold mb-2">Legend:</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-              <div>DWDM - Data Warehousing and Data Mining</div>
-              <div>InfoSec - Information Security</div>
-              <div>DCAS - Database Cluster Administration and Security</div>
-              <div>SEP - Smart Engineering Project</div>
-            </div>
-          </div> */}
         </div>
       )}
 

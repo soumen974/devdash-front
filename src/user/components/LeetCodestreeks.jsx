@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import CalendarView from './CalendarView';
 const LeetCodeStats = () => {
   const [username, setUsername] = useState('sob99338');
   const [streaks, setStreaks] = useState([]);
@@ -98,6 +98,7 @@ const LeetCodeStats = () => {
             {loading ? 'Loading...' : 'Search'}
           </button>
         </div>
+
 
         {profileData && (
           <div className="space-y-6">
@@ -199,6 +200,9 @@ const LeetCodeStats = () => {
             )}
           </div>
         )}
+
+
+
       </div>
     </div>
   );

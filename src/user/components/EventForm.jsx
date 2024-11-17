@@ -34,19 +34,19 @@ const EventForm = ({ initialData, onSuccess, onClose}) => {
     e.preventDefault();
     setErrorMessage('');
     setSuccessMessage('');
-    
+  
     if (!eventDetails.eventname || !eventDetails.startdate || !eventDetails.enddate) {
       setErrorMessage('Please fill out all required fields.');
       return;
     }
-
+  
     try {
       const url = initialData 
         ? `${process.env.REACT_APP_API}/calendar/update/${initialData.id}`
         : `${process.env.REACT_APP_API}/calendar/add-event`;
-
+  
       const method = initialData ? 'PUT' : 'POST';
-
+  
       const response = await fetch(url, {
         method,
         headers: {
@@ -55,15 +55,16 @@ const EventForm = ({ initialData, onSuccess, onClose}) => {
         credentials: 'include',
         body: JSON.stringify(eventDetails),
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to save event');
       }
-
+  
       setSuccessMessage(initialData ? 'Event updated successfully!' : 'Event added successfully!');
+      
       if (onSuccess) {
         setTimeout(() => {
-          onSuccess();
+          onSuccess({ refetch: true });
         }, 1500);
       }
     } catch (error) {

@@ -118,4 +118,5 @@ export default function StreaksTable({ setTrackFormShow, trackFormShow }) {
       )}
     </div>
   );
+  
 }
