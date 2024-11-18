@@ -301,7 +301,8 @@ export const useUserImage = () => {
     const [name, setname] = useState(null);
     const [headline, setheadline] = useState(null);
     const [description, setdescription] = useState(null);
-    const [myusername, setmyusername] = useState(null)
+    const [myusername, setmyusername] = useState(null);
+    const [resumeUrl, setresumeUrl] = useState(null)
     const [isLoading, setisLoading] = useState(false);
 
 
@@ -319,6 +320,7 @@ export const useUserImage = () => {
         setheadline(response.data.data.headline);
         setdescription(response.data.data.description);
         setmyusername(response.data.data.username);
+        setresumeUrl(response.data.data.resumeUrl);
         setisLoading(false);
       } catch (err) {
         setError('Failed to fetch personal data');
@@ -331,5 +333,5 @@ export const useUserImage = () => {
       fetchPersonalData();
     }, []);
   
-    return { imageUrl, error,name,headline,description,myusername ,isLoading};
+    return { imageUrl, error,name,headline,description,myusername ,isLoading,resumeUrl};
   };

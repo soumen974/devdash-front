@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { FileText, Download, AlertCircle, Loader2, Code } from 'lucide-react';
-
+import { useUserImage } from "./PersonalDataList";
 function ResumePdfMaker() {
+  const {resumeUrl} = useUserImage();
   const [latexCode, setLatexCode] = useState(`
     \documentclass{article}
 \begin{document}
@@ -148,9 +149,9 @@ const handleGeneratePdf = async () => {
             
             <div className="p-6">
               <div className="bg-[#2A2A32] rounded-xl h-[calc(100vh-400px)] overflow-hidden">
-                {pdfUrl ? (
+                {pdfUrl || resumeUrl ? (
                   <iframe
-                    src={pdfUrl}
+                    src={ pdfUrl || resumeUrl}
                     title="PDF Preview"
                     className="w-full h-full border-0"
                   />

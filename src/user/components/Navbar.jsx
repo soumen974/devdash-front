@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink ,useNavigate} from 'react-router-dom';
 import { Menu, X, ChevronDown, Bell } from 'lucide-react';
 import Logo from "../assets/Logo.svg";
-
+import axios from 'axios';
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +17,29 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        await axios.get(`${process.env.REACT_APP_API}/auth/protected`, { withCredentials: true });
+        navigate('/dashboard');
+      } catch (error) {
+       setLoading(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  if(loading){
+    return (
+      <div className="fixed inset-0 bg-[#19191C] flex items-center justify-center">
+        <div className="w-12 h-12 rounded-full border-4 border-t-[#FD356E] border-r-[#FD356E] border-b-transparent border-l-transparent animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <nav
