@@ -139,7 +139,7 @@ const Home = () => {
         <div className="sticky top-20 left-20 z-10 ">
             <div className="flex justify-end">
                 <a
-                  href={`http://localhost:3001/${myusername}`}
+                  href={`https://myportfoliofoxdash.vercel.app/${myusername}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF5F85] to-[#FD356E] text-white rounded-xl hover:from-[#FD356E] hover:to-[#FF5F85] transition-all duration-300 shadow-lg hover:shadow-xl"
