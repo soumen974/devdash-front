@@ -1,0 +1,25 @@
+{
+    "templates": [
+      {
+        "id": "template1",
+        "name": "Professional Classic",
+        "category": "professional",
+        "preview": "/api/placeholder/200/280",
+        "latex": "\\documentclass[11pt,a4paper]{article}\n\\usepackage{geometry}\n\\geometry{left=0.75in,right=0.75in,top=0.75in,bottom=0.75in}\n\\usepackage{enumitem}\n\\usepackage{hyperref}\n\n\\begin{document}\n\\centerline{\\huge\\textbf{John Doe}}\n\\vspace{0.25em}\n\\centerline{\n    \\small Phone: (123) 456-7890 | \n    Email: john@example.com |\n    LinkedIn: linkedin.com/in/johndoe\n}\n\\vspace{1em}\n\n\\section*{Education}\n\\textbf{University Name} \\hfill 2018 - 2022\n\\\\Bachelor of Science in Computer Science\n\\\\GPA: 3.8/4.0\n\n\\section*{Experience}\n\\textbf{Software Engineer} \\hfill 2022 - Present\n\\\\Company Name\n\\begin{itemize}[leftmargin=*]\n\\item Developed and maintained web applications using React and Node.js\n\\item Improved application performance by 40\\% through optimization\n\\end{itemize}\n\n\\section*{Skills}\n\\textbf{Programming:} JavaScript, Python, Java, C++\n\\\\\\textbf{Technologies:} React, Node.js, Docker, AWS\n\\\\\\textbf{Tools:} Git, JIRA, Jenkins\n\n\\end{document}"
+      },
+      {
+        "id": "template2",
+        "name": "Modern Minimal",
+        "category": "modern",
+        "preview": "/api/placeholder/200/280",
+        "latex": "\\documentclass[11pt,a4paper]{article}\n\\usepackage[hidelinks]{hyperref}\n\\usepackage{xcolor}\n\\usepackage{geometry}\n\\usepackage{titlesec}\n\\geometry{left=0.75in,right=0.75in,top=0.75in,bottom=0.75in}\n\n\\definecolor{primary}{RGB}{253, 53, 110}\n\n\\titleformat{\\section}\n  {\\color{primary}\\Large\\bfseries}\n  {}{0em}{}[\\titlerule]\n\n\\begin{document}\n\\begin{center}\n    {\\huge\\textbf{Jane Smith}}\n    \\\\[0.5em]\n    {\\small \n    \\href{mailto:jane@example.com}{jane@example.com} |\n    (123) 456-7890 |\n    \\href{https://linkedin.com/in/janesmith}{linkedin.com/in/janesmith}\n    }\n\\end{center}\n\n\\section{Summary}\nInnovative software engineer with 3+ years of experience in full-stack development.\n\n\\section{Experience}\n\\textbf{Senior Software Developer} \\hfill 2021 - Present\n\\\\Company Name\n\\begin{itemize}\n\\item Led development of microservices architecture\n\\item Mentored junior developers and conducted code reviews\n\\end{itemize}\n\n\\section{Skills}\n\\textbf{Languages:} TypeScript, Python, Go\n\\\\\\textbf{Frontend:} React, Vue.js, Angular\n\\\\\\textbf{Backend:} Node.js, Django, PostgreSQL\n\n\\end{document}"
+      },
+      {
+        "id": "template3",
+        "name": "Academic Focus",
+        "category": "academic",
+        "preview": "/api/placeholder/200/280",
+        "latex": "\\documentclass[11pt,a4paper]{article}\n\\usepackage{geometry}\n\\usepackage{enumitem}\n\\usepackage{hyperref}\n\\geometry{margin=1in}\n\n\\begin{document}\n\\begin{center}\n    {\\huge\\textbf{Dr. Robert Johnson}}\n    \\\\[0.5em]\n    Department of Computer Science\n    \\\\University Name\n    \\\\[0.5em]\n    {\\small\n    email@university.edu |\n    (123) 456-7890\n    }\n\\end{center}\n\n\\section*{Education}\n\\textbf{Ph.D. in Computer Science} \\hfill 2018 - 2022\n\\\\University Name\n\\\\Thesis: \"Advanced Machine Learning Techniques in Natural Language Processing\"\n\n\\section*{Research Interests}\n\\begin{itemize}[leftmargin=*]\n\\item Natural Language Processing\n\\item Machine Learning\n\\item Artificial Intelligence\n\\end{itemize}\n\n\\section*{Publications}\n\\textbf{Journal Articles}\n\\begin{enumerate}[leftmargin=*]\n\\item \"Title of Research Paper 1\" (2022)\n\\\\Journal of Computer Science\n\\item \"Title of Research Paper 2\" (2021)\n\\\\International Journal of AI\n\\end{enumerate}\n\n\\end{document}"
+      }
+    ]
+  }
