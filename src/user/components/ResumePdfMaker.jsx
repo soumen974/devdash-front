@@ -4,31 +4,58 @@ import { FileText, Download, AlertCircle, Loader2, Code } from 'lucide-react';
 
 function ResumePdfMaker() {
   const [latexCode, setLatexCode] = useState(`
-    % Resume Template
-    \\documentclass[a4paper,11pt]{article}
-    % ... [previous LaTeX code remains the same] ...
+    \documentclass{article}
+\begin{document}
+Hello, World!
+\end{document}
+
+
   `);
   
   const [pdfUrl, setPdfUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleGeneratePdf = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_API}/build/generate-pdf`, { latexCode },
-        {
-          withCredentials: true, 
+const handleGeneratePdf = async () => {
+  setIsLoading(true);
+  setError(null);
+  
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_API}/build/generate-pdf`, 
+      { latexCode },
+      {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json'
         }
-      );
+      }
+    );
+
+    if (response.data.success) {
       setPdfUrl(response.data.pdf_url);
-    } catch (error) {
-      setError('Failed to generate PDF. Please try again.');
-    } finally {
-      setIsLoading(false);
+      // Optional: Add success notification
+    } else {
+      throw new Error(response.data.error || 'Failed to generate PDF');
     }
-  };
+
+  } catch (error) {
+    const errorMessage = error.response?.data?.error || error.message;
+    
+    
+    // Show specific error messages based on error types
+    if (error.response?.status === 400) {
+      setError('Invalid LaTeX code. Please check your syntax.');
+    } else if (error.response?.status === 401) {
+      setError('Authentication failed. Please login again.');
+    } else {
+      setError(`PDF generation failed: ${errorMessage}`);
+    }
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen  text-white p-6 relative overflow-hidden">
