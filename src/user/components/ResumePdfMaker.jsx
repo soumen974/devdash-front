@@ -3,7 +3,7 @@ import axios from 'axios';
 import { FileText, Download, AlertCircle, Loader2, Code } from 'lucide-react';
 import { useUserImage } from "./PersonalDataList";
 import latexTemplates from './resumeTemplates.json'; 
-
+import resumeTem_1 from "../assets/resumeTem-1.png";
 function ResumePdfMaker() {
   const {resumeUrl} = useUserImage();
   
@@ -11,7 +11,7 @@ function ResumePdfMaker() {
 
   const [latexCode, setLatexCode] = useState(templates[1].code);
   const [selectedTemplate, setSelectedTemplate] = useState(1);
-  
+
   const [pdfUrl, setPdfUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -82,6 +82,7 @@ function ResumePdfMaker() {
                   : 'bg-[#2A2A32] text-gray-400 hover:bg-[#FD356E]/20'}`}
             >
               Template {num}
+              <img className='h-20 w-20' src={num==1 ? resumeTem_1 : null} alt="" />
             </button>
           ))}
         </div>
