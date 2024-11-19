@@ -93,7 +93,7 @@ const ProjectsList = ({UseForShow}) => {
 
       {!UseForShow?
       (
-        <div className='bg-gradient-to-b from-[#2A2A32] to-[#232328] rounded-2xl'>
+        <div className='bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-lg  transition-all duration-300'>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {projects.map((project) => (
           <div key={project._id} className="bg-[#1E1E24] backdrop-blur-sm  transition-all duration-300 rounded-lg shadow-md p-6">
@@ -197,7 +197,7 @@ const ProjectsList = ({UseForShow}) => {
         ))}
       </div>
       { projects.length === 0 && (
-          <div className="flex flex-col items-center justify-center min-h-[300px] text-center">
+          <div className="flex flex-col items-center justify-center min-h-[250px] text-center">
             <div className="bg-[#2A2A32] rounded-full p-4 mb-4">
             <DatabaseZap className="h-8 w-8 text-[#FD356E]" />
             </div>

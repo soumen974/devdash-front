@@ -14,6 +14,7 @@ const ExperienceList = ({UseForShow}) => {
   const [experiences, setExperiences] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingExperience, setEditingExperience] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchExperiences();
@@ -23,6 +24,7 @@ const ExperienceList = ({UseForShow}) => {
     try {
       const { data } = await api.get('/dev');
       setExperiences(data);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching experiences:', error);
     }
@@ -58,6 +60,17 @@ const ExperienceList = ({UseForShow}) => {
       console.error('Error removing skill:', error);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[250px]">
+        <div className="animate-pulse flex flex-col items-center">
+          <div className="h-8 w-64 bg-zinc-800 rounded mb-4"></div>
+          <div className="h-4 w-48 bg-zinc-800 rounded"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className=" max-w-6xl mx-auto">
@@ -95,7 +108,7 @@ const ExperienceList = ({UseForShow}) => {
 
       /* editable compoent */
       (
-      <div className="bg-gradient-to-b p-2 from-[#2A2A32] to-[#232328] rounded-2xl">
+      <div className="bg-zinc-900/50 border border-zinc-800/50 rounded-lg">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {experiences.map((experience) => (
             <div key={experience._id} className="bg-[#1E1E24] backdrop-blur-sm  transition-all duration-300 rounded-lg shadow-md p-6">
@@ -183,7 +196,7 @@ const ExperienceList = ({UseForShow}) => {
           ))}
         </div>
         { experiences.length === 0 && (
-              <div className="flex flex-col items-center justify-center min-h-[300px] text-center">
+              <div className="flex flex-col items-center justify-center min-h-[250px] text-center">
                 <div className="bg-[#2A2A32] rounded-full p-4 mb-4">
                 <DatabaseZap className="h-8 w-8 text-[#FD356E]" />
                 </div>
