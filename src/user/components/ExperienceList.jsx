@@ -1,6 +1,6 @@
 // ExperienceList.jsx
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, X } from 'lucide-react';
+import { Plus, Edit, Trash2, X ,DatabaseZap } from 'lucide-react';
 import axios from 'axios';
 import ExperienceForm from '../components/ExperienceForm';
 
@@ -95,10 +95,10 @@ const ExperienceList = ({UseForShow}) => {
 
       /* editable compoent */
       (
-      <div className="">
+      <div className="bg-gradient-to-b p-2 from-[#2A2A32] to-[#232328] rounded-2xl">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {experiences.map((experience) => (
-            <div key={experience._id} className="bg-white rounded-lg shadow-md p-6">
+            <div key={experience._id} className="bg-[#1E1E24] backdrop-blur-sm  transition-all duration-300 rounded-lg shadow-md p-6">
               <div className="flex justify-between items-start mb-4">
                 <div className="flex items-center gap-4">
                   {experience.companyLogoUrl && (
@@ -109,7 +109,7 @@ const ExperienceList = ({UseForShow}) => {
                     />
                   )}
                   <div>
-                    <h2 className="text-xl  font-bold">{experience.position}</h2>
+                    <h2 className="text-xl text-white font-bold">{experience.position}</h2>
                     <p className="text-gray-600">{experience.companyName}</p>
                   </div>
                 </div>
@@ -140,10 +140,10 @@ const ExperienceList = ({UseForShow}) => {
                 
                 {experience.learnings?.length > 0 && (
                   <div>
-                    <h3 className="font-semibold mb-2">Key Learnings</h3>
+                    <h3 className="font-semibold mb-2  text-white">Key Learnings</h3>
                     <ul className="list-disc pl-4">
                       {experience.learnings.map((learning) => (
-                        <li key={learning._id} className="text-gray-600 flex items-center justify-between">
+                        <li key={learning._id} className="text-gray-700 flex items-center justify-between">
                           {learning.name}
                           <button
                             onClick={() => handleRemoveLearning(experience._id, learning._id)}
@@ -159,12 +159,12 @@ const ExperienceList = ({UseForShow}) => {
                 
                 {experience.skills?.length > 0 && (
                   <div>
-                    <h3 className="font-semibold mb-2">Skills</h3>
+                    <h3 className="font-semibold text-white mb-2">Skills</h3>
                     <div className="flex flex-wrap gap-2">
                       {experience.skills.map((skill) => (
                         <span 
                           key={skill._id}
-                          className="px-3 py-1 bg-gray-100 rounded-full text-sm flex items-center gap-2"
+                          className="px-3 py-1 bg-gray-700 text-white rounded-full text-sm flex items-center gap-2"
                         >
                           {skill.name}
                           <button
@@ -182,6 +182,17 @@ const ExperienceList = ({UseForShow}) => {
             </div>
           ))}
         </div>
+        { experiences.length === 0 && (
+              <div className="flex flex-col items-center justify-center min-h-[300px] text-center">
+                <div className="bg-[#2A2A32] rounded-full p-4 mb-4">
+                <DatabaseZap className="h-8 w-8 text-[#FD356E]" />
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-2">No  Recent Experiences Found</h3>
+                <p className="text-gray-400 max-w-md">
+                  Create your first Recent Experiences to get started tracking your tasks and deadlines.
+                </p>
+              </div>
+            )}
       </div>
       ):
 

@@ -3,14 +3,22 @@ import axios from 'axios';
 import { Plus, Edit, Trash2, X } from 'lucide-react';
 
 // Social Media Form Component
-const SocialMediaForm = ({ onSubmit, initialValues ,editdata,onClose}) => {
-  const [formData, setFormData] = useState(initialValues || {
+const SocialMediaForm = ({ onSubmit , editdata ,onClose}) => {
+  const [formData, setFormData] = useState( {
     github: '',
     linkedin: '',
     x: '',
     insta: '',
     upwork: '',
   });
+
+  useEffect(() => {
+    if (editdata) {
+      setFormData({
+        ...editdata,
+      });
+    }
+  }, [editdata]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -167,7 +175,7 @@ const SocialMediaList = ({ socials, onDelete,onSubmit  }) => {
       <ul className="space-y-4">
         {Array.isArray(Object.values(socials)) && Object.values(socials).length > 0 ? (
           Object.values(socials).map((social) => (
-            <li key={social.username} className="bg-white rounded-md shadow-md p-4">
+            <li key={social.username} className="bg-[#1E1E24] backdrop-blur-sm  transition-all duration-300 text-white rounded-md shadow-md p-4">
               <div className="flex justify-between items-center">
                 <div>
                   <p className="font-medium">GitHub: {social.github}</p>
@@ -176,12 +184,23 @@ const SocialMediaList = ({ socials, onDelete,onSubmit  }) => {
                   <p className="font-medium">Upwork: {social.upwork}</p>
                   <p className="font-medium">x: {social.x}</p>
                 </div>
-                <button
-                  onClick={() => onDelete(social.username)}
-                  className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded"
-                >
-                  Delete
-                </button>
+               
+                <div className="flex gap-2">
+                  <button 
+                    className="p-2 text-gray-600 hover:text-blue-600 transition-colors"
+                    onClick={() => {
+                      setShowForm(true);
+                    }}
+                  >
+                    <Edit size={16} />
+                  </button>
+                  <button 
+                    className="p-2 text-gray-600 hover:text-red-600 transition-colors"
+                    onClick={() => onDelete(social.username)}
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
               </div>
             </li>
           ))
