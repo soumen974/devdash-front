@@ -91,11 +91,11 @@ export default function StreaksTable({ setTrackFormShow, trackFormShow }) {
   };
 
   return (
-    <div className="">
+    <div className="bg-gradient-to-b from-[#2A2A32] to-[#232328] rounded-md p-2 ">
       {isLoading ? (
         <div className="flex justify-center items-center h-full">Loading...</div> // Loading state
-      ) : username ? (
-        <div className="border overflow-auto border-gray-600 rounded-md p-3 gap-2 grid grid-cols-8">
+      ) :username ? (
+        <div className="  overflow-auto  rounded-md p-3 gap-2 grid grid-cols-8">
           {contributions.map((day, index) => (
             <div
               key={day.date}
@@ -112,7 +112,7 @@ export default function StreaksTable({ setTrackFormShow, trackFormShow }) {
       ) : (
         <div className="border border-gray-600 rounded-md p-3 grid">
           <div className="w-[55vw] h-28 flex justify-center items-center text-black">
-            <h1 onClick={() => { setTrackFormShow(true); }} className="bg-green-200 p-2 rounded-sm">Track github</h1>
+            <button onClick={() => { setTrackFormShow(true); }} className="px-4 py-2 bg-[#FD356E] text-white rounded-md hover:bg-[#FF5F85] transition-colors">Track github</button>
           </div>
         </div>
       )}

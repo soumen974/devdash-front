@@ -146,12 +146,15 @@ export default function Head({sideBar, setsideBar}) {
                         <div className="   ">
                           
                           {imageUrl ? <img className='w-9 h-9 rounded-full' src={imageUrl} alt="User" />
-                          : <div className="bg-gray-700  rounded-full p-2"> <User className='w-6 h-6  ' /></div>
+                          : <div className="bg-[#1E1E24]  rounded-full p-2">
+                             <User className='w-6 h-6  ' />
+                             
+                             </div>
                           }
                         </div>
                         <div className="relative">
                           <ChevronDown className='h-4 w-4 ' />
-                          <div className="absolute   group-hover:grid hidden items-center gap-1  shadow-md  top-8 bg-[#1A1B21] rounded-md p-5  -right-5">
+                          <div className="absolute   group-hover:grid hidden items-center gap-1  shadow-md  top-8 bg-[#1E1E24] rounded-md p-5  -right-5">
                             <p className='text-white flex gap-2 text-md'><User className='h-5 w-5'/> {developerData.username}</p>
                             <p className='text-white flex gap-2  '><Mail className='h-5 w-5' /> {developerData.email}</p>
                             {/* <p className='text-white'>{developerData.id}</p> */}

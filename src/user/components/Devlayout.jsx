@@ -63,11 +63,10 @@ export default function Devlayout() {
       <main className=' '>
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute w-full h-full bg-[url('data:image/svg+xml,...')] opacity-20" />
-        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-b from-violet-500/20 to-transparent blur-3xl" />
+        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-b from-pink-500/20 to-transparent blur-3xl" />
         <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-t from-pink-500/20 to-transparent blur-3xl" />
       </div>
         <div className="mx-auto max-w-screen-2xl  mt-20">
-          
         <Outlet />
         </div>
       </main>
