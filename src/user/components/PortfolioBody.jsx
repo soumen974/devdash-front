@@ -2,7 +2,7 @@ import { SiAltiumdesigner } from "react-icons/si";
 import { TbCodeDots } from "react-icons/tb";
 import { PiCodeBold } from "react-icons/pi";
 import { Link } from 'react-router-dom'; 
-import GithubStreaks from "../page/StreaksTable";
+import GithubStreaks from "./GitStreaksPublic";
 import ExperienceList from "./ExperienceList";
 import ProjectsList from "./ProjectsList";
 import LicenceCertificationList from "./LicenceCertificationList";
@@ -184,7 +184,7 @@ const Home = () => {
           <h1 className='text-2xl md:text-4xl flex gap-1 pb-5'>GitHub Contributions
             {/* <KnowMore link={'https://github.com/soumen974'} /> */}
             </h1>
-          {/* <GithubStreaks /> */}
+          <GithubStreaks />
         </div>
 
         {/* recent experience */}

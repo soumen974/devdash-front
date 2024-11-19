@@ -2,69 +2,66 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { FileText, Download, AlertCircle, Loader2, Code } from 'lucide-react';
 import { useUserImage } from "./PersonalDataList";
+import latexTemplates from './resumeTemplates.json'; 
+
 function ResumePdfMaker() {
   const {resumeUrl} = useUserImage();
-  const [latexCode, setLatexCode] = useState(`
-    \documentclass{article}
-\begin{document}
-Hello, World!
-\end{document}
+  
+  const templates = latexTemplates;
 
-
-  `);
+  const [latexCode, setLatexCode] = useState(templates[1].code);
+  const [selectedTemplate, setSelectedTemplate] = useState(1);
   
   const [pdfUrl, setPdfUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-const handleGeneratePdf = async () => {
-  setIsLoading(true);
-  setError(null);
-  
-  try {
-    const response = await axios.post(
-      `${process.env.REACT_APP_API}/build/generate-pdf`, 
-      { latexCode },
-      {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json'
+  const handleTemplateSelect = (templateNumber) => {
+    setSelectedTemplate(templateNumber);
+    setLatexCode(templates[templateNumber].code);
+  };
+
+  const handleGeneratePdf = async () => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API}/build/generate-pdf`, 
+        { latexCode },
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json'
+          }
         }
+      );
+
+      if (response.data.success) {
+        setPdfUrl(response.data.pdf_url);
+      } else {
+        throw new Error(response.data.error || 'Failed to generate PDF');
       }
-    );
 
-    if (response.data.success) {
-      setPdfUrl(response.data.pdf_url);
-      // Optional: Add success notification
-    } else {
-      throw new Error(response.data.error || 'Failed to generate PDF');
+    } catch (error) {
+      const errorMessage = error.response?.data?.error || error.message;
+      
+      if (error.response?.status === 400) {
+        setError('Invalid LaTeX code. Please check your syntax.');
+      } else if (error.response?.status === 401) {
+        setError('Authentication failed. Please login again.');
+      } else {
+        setError(`PDF generation failed: ${errorMessage}`);
+      }
+    } finally {
+      setIsLoading(false);
     }
-
-  } catch (error) {
-    const errorMessage = error.response?.data?.error || error.message;
-    
-    
-    // Show specific error messages based on error types
-    if (error.response?.status === 400) {
-      setError('Invalid LaTeX code. Please check your syntax.');
-    } else if (error.response?.status === 401) {
-      setError('Authentication failed. Please login again.');
-    } else {
-      setError(`PDF generation failed: ${errorMessage}`);
-    }
-  } finally {
-    setIsLoading(false);
-  }
-};
-
+  };
 
   return (
-    <div className="min-h-screen  text-white p-6 relative overflow-hidden">
-      {/* Background Decorations */}
-      
+    <div className="min-h-screen text-white p-6 relative overflow-hidden">
       <div className="max-w-7xl mx-auto relative">
-        {/* Header */}
-        <div className=" mb-8">
+        <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] bg-clip-text text-transparent">
             Resume PDF Maker
           </h1>
@@ -73,9 +70,22 @@ const handleGeneratePdf = async () => {
           </p>
         </div>
 
-        
+        {/* Template Selection Buttons */}
+        <div className="flex gap-4 mb-6">
+          {[1, 2, 3].map((num) => (
+            <button
+              key={num}
+              onClick={() => handleTemplateSelect(num)}
+              className={`px-4 py-2 rounded-xl transition-all duration-200 
+                ${selectedTemplate === num 
+                  ? 'bg-[#FD356E] text-white' 
+                  : 'bg-[#2A2A32] text-gray-400 hover:bg-[#FD356E]/20'}`}
+            >
+              Template {num}
+            </button>
+          ))}
+        </div>
 
-        {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Editor Section */}
           <div className="space-y-4">
