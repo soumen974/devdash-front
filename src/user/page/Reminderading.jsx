@@ -11,13 +11,23 @@ const log = {
   }
 };
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: true,
+      staleTime: 0,
+      cacheTime: 0,
+    },
+  },
+});
+
 const ReminderAdding = () => {
   const [calendarEmail, setCalendarEmail] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showEventForm, setShowEventForm] = useState(false);
-  const queryClient = new QueryClient();
+  // const queryClient = new QueryClient();
 
   const checkCalendarStatus = async () => {
     try {
@@ -76,6 +86,13 @@ const ReminderAdding = () => {
     );
   }
 
+  // const handleEventFormSuccess = () => {
+  //   setShowEventForm(false);
+  //   // Invalidate and refetch calendar events
+  //   queryClient.invalidateQueries(['calendar-events']);
+  // };
+
+
   return (
     <div className="relative p-6 space-y-8 bg-[#1E1E24] rounded-lg shadow-xl text-white">
       <div className="grid grid-cols-2 gap-4">
@@ -129,11 +146,12 @@ const ReminderAdding = () => {
           
           </div> */}
           <EventForm 
-        onClose={() => setShowEventForm(false)}
-        onSuccess={() => {
-          setShowEventForm(false);
-        }}
-      />
+            onClose={() => setShowEventForm(false)}
+            onSuccess={({ refetch }) => {
+              setShowEventForm(false);
+              queryClient.invalidateQueries(['calendar-events']);
+            }}
+          />
         </div>
       )}
 
