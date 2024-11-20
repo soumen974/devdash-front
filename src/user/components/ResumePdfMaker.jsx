@@ -117,7 +117,6 @@ function ResumePdfMaker() {
         >
           Choose Template 
         </button>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Editor Section */}
           <div className="space-y-4">
