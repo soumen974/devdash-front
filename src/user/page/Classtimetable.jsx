@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CalendarView from '../components/CalendarView';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import DownloadExcel from '../components/DownloadExcel';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,8 +22,41 @@ const Classtimetable = () => {
   const [calendarEmail, setCalendarEmail] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState(null);
+  const [startMonth, setStartMonth] = useState(new Date().getMonth());
+  const [endMonth, setEndMonth] = useState(new Date().getMonth());
+
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  
 
   axios.defaults.withCredentials = true;
+
+  const calculateDateRange = () => {
+    const currentYear = new Date().getFullYear();
+    let startYear = currentYear;
+    let endYear = currentYear;
+    
+    const startMonthNum = Number(startMonth);
+    const endMonthNum = Number(endMonth);
+    
+    if (endMonthNum < startMonthNum) {
+      endYear = currentYear + 1;
+    }
+    
+    const startDate = new Date(startYear, startMonthNum, 1);
+    const endDate = new Date(endYear, endMonthNum + 1, 0);
+    
+    console.log('Start Date:', startDate);
+    console.log('End Date:', endDate);
+    
+    return {
+      startDate,
+      endDate
+    };
+  };
+  
 
   const checkCalendarStatus = async () => {
     try {
@@ -74,26 +108,36 @@ const Classtimetable = () => {
     try {
       const formData = new FormData();
       formData.append('file', file);
-
-      const response = await axios.post(`${process.env.REACT_APP_API}/api/upload-timetable`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+      
+      // Calculate proper date range
+      const startDate = new Date(new Date().getFullYear(), startMonth, 1);
+      const endDate = new Date(new Date().getFullYear(), endMonth + 1, 0);
+      
+      formData.append('startDate', startDate.toISOString());
+      formData.append('endDate', endDate.toISOString());
+  
+      const response = await axios.post(
+        `${process.env.REACT_APP_API}/api/upload-timetable`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+          withCredentials: true
         }
-      });
-
-      if (response.status === 200) {
+      );
+  
+      if (response.data.success) {
         fetchTimetableData();
-        alert('Timetable uploaded successfully!');
+        alert(`Timetable uploaded and ${response.data.data.calendarEvents} events created!`);
         setFile(null);
-        const fileInput = document.querySelector('input[type="file"]');
-        if (fileInput) fileInput.value = '';
       }
     } catch (error) {
       alert(error.response?.data?.message || 'Failed to upload timetable');
     } finally {
       setLoading(false);
     }
-  };
+  };  
 
   const fetchTimetableData = async () => {
     try {
@@ -122,6 +166,39 @@ const Classtimetable = () => {
 
   return (
     <div className="container mx-auto p-4 text-white">
+
+      <div className="flex flex-col md:flex-row gap-4 mb-4">
+        <div className="flex-1">
+          <label className="block text-sm font-medium mb-2">Start Month</label>
+          <select
+            value={startMonth}
+            onChange={(e) => setStartMonth(parseInt(e.target.value))}
+            className="w-full bg-gray-700 text-white rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            {months.map((month, index) => (
+              <option key={index} value={index}>
+                {month}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="flex-1">
+          <label className="block text-sm font-medium mb-2">End Month</label>
+          <select
+            value={endMonth}
+            onChange={(e) => setEndMonth(parseInt(e.target.value))}
+            className="w-full bg-gray-700 text-white rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            {months.map((month, index) => (
+              <option key={index} value={index}>
+                {month}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       <div className="mb-8">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Upload Class Timetable</h2>
@@ -161,6 +238,7 @@ const Classtimetable = () => {
               {loading ? 'Uploading...' : 'Upload Timetable'}
             </button>
           )}
+          <DownloadExcel/>
         </div>
       </div>
 
@@ -169,7 +247,7 @@ const Classtimetable = () => {
           {error}
         </div>
       )}
-
+      
       <QueryClientProvider client={queryClient}>
         <CalendarView />
       </QueryClientProvider>

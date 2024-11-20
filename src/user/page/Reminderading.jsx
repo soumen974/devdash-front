@@ -86,11 +86,11 @@ const ReminderAdding = () => {
     );
   }
 
-  const handleEventFormSuccess = () => {
-    setShowEventForm(false);
-    // Invalidate and refetch calendar events
-    queryClient.invalidateQueries(['calendar-events']);
-  };
+  // const handleEventFormSuccess = () => {
+  //   setShowEventForm(false);
+  //   // Invalidate and refetch calendar events
+  //   queryClient.invalidateQueries(['calendar-events']);
+  // };
 
 
   return (

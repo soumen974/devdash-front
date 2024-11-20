@@ -1,61 +1,36 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, X ,Loader } from 'lucide-react';
+import { Calendar, Clock, X, Loader } from 'lucide-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import EventForm from './EventForm';
-
-const EventsPopover = ({ events, position, onClose, onEventClick }) => {
-  return (
-    <div 
-      className="absolute z-50 bg-[#2A2A32] rounded-lg shadow-xl border border-[#FD356E]/20 p-2 min-w-[200px]"
-      style={{ top: position.y, left: position.x }}
-    >
-      <div className="flex flex-col gap-1">
-        {events.map(event => (
-          <div
-            key={event.id}
-            onClick={() => onEventClick(event)}
-            className="p-2 hover:bg-[#FD356E]/10 rounded cursor-pointer text-sm text-white"
-          >
-            <div className="font-medium">{event.title}</div>
-            <div className="text-xs text-gray-400">
-              {new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
+import EventsPopover from './EventsPopover';
 
 const fetchEvents = async () => {
   const statusResponse = await fetch(`${process.env.REACT_APP_API}/google/status`, {
     credentials: 'include'
   });
-  
+
   const statusData = await statusResponse.json();
   
   if (!statusData.connected) {
-    return []; 
+    return [];
   }
 
-  const response = await fetch(`${process.env.REACT_APP_API}/calendar/events`, {
+  const calendarResponse = await fetch(`${process.env.REACT_APP_API}/calendar/events`, {
     credentials: 'include'
   });
 
-  if (!response.ok) {
-    const data = await response.json();
-    throw new Error(data.message || 'Failed to fetch events');
-  }
+  const calendarData = await calendarResponse.json();
 
-  const data = await response.json();
-  return data.events.map(event => ({
+  return (calendarData?.events || []).map(event => ({
     id: event.id,
     title: event.summary,
     description: event.description,
-    start: new Date(event.start),
-    end: new Date(event.end),
+    start: new Date(event.start?.dateTime || event.start?.date || event.start),
+    end: new Date(event.end?.dateTime || event.end?.date || event.end),
     creator: event.creator,
-    status: event.status
+    status: event.status,
+    recurrence: event.recurrence,
+    source: 'calendar'
   }));
 };
 
@@ -73,8 +48,27 @@ const CalendarView = ({ variant = 'full' }) => {
     refetchInterval: 1000,
     refetchOnWindowFocus: true,
     staleTime: 0,
-    cacheTime: 0,
+    cacheTime: 0
   });
+
+  const getEventsForDay = (day) => {
+    return events.filter(event => {
+      const currentDateToCheck = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        day
+      );
+      const eventDate = new Date(event.start);
+      return currentDateToCheck.getTime() === new Date(eventDate.setHours(0,0,0,0)).getTime();
+    });
+  };
+
+  const formatEventTitle = (event) => {
+    if (event.recurrence) {
+      return `${event.title} (Recurring)`;
+    }
+    return event.title;
+  };
 
   const handleDeleteEvent = async () => {
     if (window.confirm('Are you sure you want to delete this event?')) {
@@ -108,7 +102,8 @@ const CalendarView = ({ variant = 'full' }) => {
       title: event.title,
       description: event.description,
       start: event.start,
-      end: event.end
+      end: event.end,
+      recurrence: event.recurrence
     });
     setShowEventForm(true);
     setSelectedEvent(null);
@@ -122,14 +117,22 @@ const CalendarView = ({ variant = 'full' }) => {
 
   const getDaysInMonth = (date) => new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
   const getFirstDayOfMonth = (date) => new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-  const formatDate = (date) => new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'short' }).format(date);
-
-  const getEventsForDay = (day) => events.filter(event => {
-    const eventDate = new Date(event.start);
-    return eventDate.getDate() === day && 
-           eventDate.getMonth() === currentDate.getMonth() && 
-           eventDate.getFullYear() === currentDate.getFullYear();
-  });
+  
+  const formatDate = (date) => {
+    try {
+      if (!(date instanceof Date) || isNaN(date)) {
+        return 'Invalid Date';
+      }
+      return new Intl.DateTimeFormat('en-US', { 
+        dateStyle: 'full', 
+        timeStyle: 'short',
+        timeZone: 'Asia/Kolkata' 
+      }).format(date);
+    } catch (error) {
+      console.log('Date formatting error:', error);
+      return 'Invalid Date';
+    }
+  };
 
   const renderCalendarGrid = () => {
     const daysInMonth = getDaysInMonth(currentDate);
@@ -174,19 +177,18 @@ const CalendarView = ({ variant = 'full' }) => {
                 if (dayEvents.length === 1) {
                   setSelectedEvent(dayEvents[0]);
                 } else {
-                  const rect = e.currentTarget.getBoundingClientRect();
                   setActivePopover({
                     events: dayEvents,
                     position: {
-                      x: rect.left,
-                      y: rect.bottom + window.scrollY
+                      x: e.clientX,
+                      y: e.clientY
                     }
                   });
                 }
               }}
               className="text-xs bg-[#FD356E] text-white p-1 rounded-md cursor-pointer truncate hover:bg-[#FF5F85]"
             >
-              {dayEvents[0].title} {dayEvents.length > 1 && `+${dayEvents.length - 1} more`}
+              {formatEventTitle(dayEvents[0])} {dayEvents.length > 1 && `+${dayEvents.length - 1} more`}
             </div>
           )}
         </div>
@@ -204,11 +206,11 @@ const CalendarView = ({ variant = 'full' }) => {
 
   if (isLoading) {
     return <div className="flex items-center justify-center min-h-full">
-    <div className="flex flex-col items-center gap-4">
-      <Loader className="h-8 w-8 text-[#FD356E] animate-spin" />
-      <p className="text-gray-400">Loading ...</p>
+      <div className="flex flex-col items-center gap-4">
+        <Loader className="h-8 w-8 text-[#FD356E] animate-spin" />
+        <p className="text-gray-400">Loading ...</p>
+      </div>
     </div>
-  </div>
   }
 
   return (
@@ -273,6 +275,12 @@ const CalendarView = ({ variant = 'full' }) => {
               <Clock className="h-4 w-4" />
               {formatDate(selectedEvent.end)}
             </div>
+
+            {selectedEvent.recurrence && (
+              <div className="text-sm text-gray-400 mb-4">
+                Recurring event: Repeats weekly for {selectedEvent.recurrence[0].match(/COUNT=(\d+)/)?.[1] || 16} weeks
+              </div>
+            )}
 
             <div className="flex justify-end gap-2 mt-4">
               <button
