@@ -49,25 +49,25 @@ const SupportBody = () => {
     <div className="min-[90vh]  bg-gradient-to-b from-zinc-900 to-black text-white py-16 px-4 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-pink-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-r from-[#fd356e1f] to-[#ff5f8422] rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-r from-[#fd356e1f] to-[#ff5f8422] rounded-full blur-3xl animate-pulse" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10 mt-6">
         {/* Header Section */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm mb-4">
-            <Clock className="w-4 h-4 text-purple-400" />
+            <Clock className="w-4 h-4 text-[#FD356E]" />
             <span className="text-sm">24/7 Support Available</span>
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6  animate-text-gradient bg-gradient-to-r from-[#FD356E] to-[#FF5F85] bg-clip-text text-transparent">
             How can we help you?
           </h1>
           
           {/* Search Bar */}
           <div className="max-w-xl mx-auto relative group">
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full opacity-50 blur group-hover:opacity-75 transition-opacity" />
+            <div className="absolute inset-0  rounded-full px-6 py-3 text-sm leading-6 text-gray-200 ring-1 ring-gray-700/10 hover:ring-pink-500/50 bg-gray-800/40 backdrop-blur-md transition-all duration-300 hover:scale-105y" />
             <div className="relative bg-white/10 backdrop-blur-xl rounded-full flex items-center p-2">
               <Search className="w-5 h-5 ml-3 text-gray-400" />
               <input
@@ -87,13 +87,13 @@ const SupportBody = () => {
             <button
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
-              className={`relative group p-6 rounded-2xl transition-all duration-300 ${
+              className={`relative hover:scale-105 group p-6 rounded-2xl transition-all duration-300 ${
                 activeCategory === category.id 
-                  ? 'bg-white/15 scale-105' 
+                  ? 'bg-white/15 ' 
                   : 'bg-white/5 hover:bg-white/10'
               }`}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#fd356e56] to-[#ff5f8463] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="relative flex items-center gap-4">
                 <div className="p-3 bg-white/10 rounded-xl">
                   {category.icon}

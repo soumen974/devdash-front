@@ -166,110 +166,110 @@ const PersonalDataList = () => {
           </div>
         ) : (
           <div className="relative bg-gradient-to-b from-[#2A2A32] to-[#232328] rounded-2xl p-8 md:p-12 overflow-hidden">
-          {/* Background Decorative Elements */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#FF5F85] rounded-full opacity-5 blur-3xl -mr-32 -mt-32" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#FD356E] rounded-full opacity-5 blur-3xl -ml-32 -mb-32" />
-    
-          {/* Profile Header */}
-          <div className="relative flex flex-col md:flex-row items-start gap-8 mb-12">
-            {/* Profile Image */}
-            <div className="relative group">
-              {formData.imageUrl ? (
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#FF5F85]/20 to-[#FD356E]/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <img
-                    src={formData.imageUrl}
-                    alt={formData.name}
-                    className="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover shadow-lg transition-transform duration-300 group-hover:scale-[1.02]"
-                  />
+            {/* Background Decorative Elements */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#FF5F85] rounded-full opacity-5 blur-3xl -mr-32 -mt-32" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#FD356E] rounded-full opacity-5 blur-3xl -ml-32 -mb-32" />
+      
+            {/* Profile Header */}
+            <div className="relative flex flex-col md:flex-row items-start gap-8 mb-12">
+              {/* Profile Image */}
+              <div className="relative group">
+                {formData.imageUrl ? (
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#FF5F85]/20 to-[#FD356E]/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <img
+                      src={formData.imageUrl}
+                      alt={formData.name}
+                      className="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover shadow-lg transition-transform duration-300 group-hover:scale-[1.02]"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl bg-[#1E1E24] flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+                    <User className="w-16 h-16 text-gray-500/50" />
+                  </div>
+                )}
+                <div className="absolute -bottom-3 -right-3 w-24 h-24 bg-gradient-to-br from-[#FF5F85] to-[#FD356E] rounded-full opacity-10 blur-2xl" />
+              </div>
+      
+              {/* Profile Info */}
+              <div className="flex-1 space-y-6">
+                <div className="space-y-2">
+                  <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
+                    {formData.name || "Your Name"}
+                  </h1>
+                  <p className="text-[#FF5F85] text-xl font-medium">
+                    {formData.headline || "Your Headline"}
+                  </p>
                 </div>
-              ) : (
-                <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl bg-[#1E1E24] flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
-                  <User className="w-16 h-16 text-gray-500/50" />
+      
+                {/* Contact Info Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="group bg-[#1E1E24]/50 backdrop-blur-sm rounded-xl p-4 hover:bg-[#1E1E24] transition-all duration-300">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-[#FF5F85]/10 rounded-lg group-hover:bg-[#FF5F85]/20 transition-colors duration-300">
+                        <Mail className="w-5 h-5 text-[#FF5F85]" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-400">Email</p>
+                        <p className="text-white font-medium">{formData.email || "add your email"}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="group bg-[#1E1E24]/50 backdrop-blur-sm rounded-xl p-4 hover:bg-[#1E1E24] transition-all duration-300">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-[#FF5F85]/10 rounded-lg group-hover:bg-[#FF5F85]/20 transition-colors duration-300">
+                        <Phone className="w-5 h-5 text-[#FF5F85]" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-400">Phone</p>
+                        <p className="text-white font-medium">{formData.phone || "add your phone no."}</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              )}
-              <div className="absolute -bottom-3 -right-3 w-24 h-24 bg-gradient-to-br from-[#FF5F85] to-[#FD356E] rounded-full opacity-10 blur-2xl" />
+              </div>
             </div>
-    
-            {/* Profile Info */}
-            <div className="flex-1 space-y-6">
-              <div className="space-y-2">
-                <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
-                  {formData.name || "Your Name"}
-                </h1>
-                <p className="text-[#FF5F85] text-xl font-medium">
-                  {formData.headline || "Your Headline"}
+      
+            {/* Content Sections */}
+            <div className="space-y-8">
+              {/* Summary Section */}
+              <div className="group bg-[#1E1E24]/50 backdrop-blur-sm rounded-xl p-6 hover:bg-[#1E1E24] transition-all duration-300">
+                <div className="flex items-center gap-2 mb-4">
+                  <h2 className="text-xl font-semibold text-white">Summary</h2>
+                  <div className="flex-1 h-px bg-gradient-to-r from-[#FF5F85]/20 to-transparent" />
+                </div>
+                <p className="text-gray-300 leading-relaxed">
+                  {formData.description || "Your professional summary goes here..."}
                 </p>
               </div>
-    
-              {/* Contact Info Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="group bg-[#1E1E24]/50 backdrop-blur-sm rounded-xl p-4 hover:bg-[#1E1E24] transition-all duration-300">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-[#FF5F85]/10 rounded-lg group-hover:bg-[#FF5F85]/20 transition-colors duration-300">
-                      <Mail className="w-5 h-5 text-[#FF5F85]" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-400">Email</p>
-                      <p className="text-white font-medium">{formData.email || "add your email"}</p>
-                    </div>
-                  </div>
+      
+              {/* About Section */}
+              <div className="group bg-[#1E1E24]/50 backdrop-blur-sm rounded-xl p-6 hover:bg-[#1E1E24] transition-all duration-300">
+                <div className="flex items-center gap-2 mb-4">
+                  <h2 className="text-xl font-semibold text-white">About</h2>
+                  <div className="flex-1 h-px bg-gradient-to-r from-[#FF5F85]/20 to-transparent" />
                 </div>
-                <div className="group bg-[#1E1E24]/50 backdrop-blur-sm rounded-xl p-4 hover:bg-[#1E1E24] transition-all duration-300">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-[#FF5F85]/10 rounded-lg group-hover:bg-[#FF5F85]/20 transition-colors duration-300">
-                      <Phone className="w-5 h-5 text-[#FF5F85]" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-400">Phone</p>
-                      <p className="text-white font-medium">{formData.phone || "add your phone no."}</p>
-                    </div>
-                  </div>
+                <p className="text-gray-300 leading-relaxed whitespace-pre-wrap">
+                  {formData.about || "Tell us about yourself..."}
+                </p>
+              </div>
+      
+              {/* Resume Link */}
+              {formData.resumeUrl && (
+                <div className="flex justify-end">
+                  <a
+                    href={formData.resumeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF5F85] to-[#FD356E] text-white rounded-xl hover:from-[#FD356E] hover:to-[#FF5F85] transition-all duration-300 shadow-lg hover:shadow-xl"
+                  >
+                    <FileText className="w-5 h-5" />
+                    <span>View Resume</span>
+                    <ArrowUpRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300" />
+                  </a>
                 </div>
-              </div>
+              )}
             </div>
-          </div>
-    
-          {/* Content Sections */}
-          <div className="space-y-8">
-            {/* Summary Section */}
-            <div className="group bg-[#1E1E24]/50 backdrop-blur-sm rounded-xl p-6 hover:bg-[#1E1E24] transition-all duration-300">
-              <div className="flex items-center gap-2 mb-4">
-                <h2 className="text-xl font-semibold text-white">Summary</h2>
-                <div className="flex-1 h-px bg-gradient-to-r from-[#FF5F85]/20 to-transparent" />
-              </div>
-              <p className="text-gray-300 leading-relaxed">
-                {formData.description || "Your professional summary goes here..."}
-              </p>
-            </div>
-    
-            {/* About Section */}
-            <div className="group bg-[#1E1E24]/50 backdrop-blur-sm rounded-xl p-6 hover:bg-[#1E1E24] transition-all duration-300">
-              <div className="flex items-center gap-2 mb-4">
-                <h2 className="text-xl font-semibold text-white">About</h2>
-                <div className="flex-1 h-px bg-gradient-to-r from-[#FF5F85]/20 to-transparent" />
-              </div>
-              <p className="text-gray-300 leading-relaxed whitespace-pre-wrap">
-                {formData.about || "Tell us about yourself..."}
-              </p>
-            </div>
-    
-            {/* Resume Link */}
-            {formData.resumeUrl && (
-              <div className="flex justify-end">
-                <a
-                  href={formData.resumeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF5F85] to-[#FD356E] text-white rounded-xl hover:from-[#FD356E] hover:to-[#FF5F85] transition-all duration-300 shadow-lg hover:shadow-xl"
-                >
-                  <FileText className="w-5 h-5" />
-                  <span>View Resume</span>
-                  <ArrowUpRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300" />
-                </a>
-              </div>
-            )}
-          </div>
         </div>
         )}
       </div>
@@ -301,7 +301,8 @@ export const useUserImage = () => {
     const [name, setname] = useState(null);
     const [headline, setheadline] = useState(null);
     const [description, setdescription] = useState(null);
-    const [myusername, setmyusername] = useState(null)
+    const [myusername, setmyusername] = useState(null);
+    const [resumeUrl, setresumeUrl] = useState(null)
     const [isLoading, setisLoading] = useState(false);
 
 
@@ -319,6 +320,7 @@ export const useUserImage = () => {
         setheadline(response.data.data.headline);
         setdescription(response.data.data.description);
         setmyusername(response.data.data.username);
+        setresumeUrl(response.data.data.resumeUrl);
         setisLoading(false);
       } catch (err) {
         setError('Failed to fetch personal data');
@@ -331,5 +333,5 @@ export const useUserImage = () => {
       fetchPersonalData();
     }, []);
   
-    return { imageUrl, error,name,headline,description,myusername ,isLoading};
+    return { imageUrl, error,name,headline,description,myusername ,isLoading,resumeUrl};
   };

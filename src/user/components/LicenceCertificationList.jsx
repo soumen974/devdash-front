@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, X } from 'lucide-react';
+import { Plus, Edit, Trash2, X ,DatabaseZap } from 'lucide-react';
 import axios from 'axios';
 import LicenceCertificationForm from "./LicenceCertificationForm";
 // Configure axios defaults
@@ -12,6 +12,7 @@ const LicenceCertificationList = ({UseForShow}) => {
   const [licenceCertifications, setLicenceCertifications] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editinglicenceCertifications, setEditinglicenceCertifications] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     
@@ -21,6 +22,7 @@ const LicenceCertificationList = ({UseForShow}) => {
     try {
         const { data } = await api.get('/devs/licence-certification');
         setLicenceCertifications(data);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -44,6 +46,17 @@ const LicenceCertificationList = ({UseForShow}) => {
       console.error('Error removing skill:', error);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[250px]">
+        <div className="animate-pulse flex flex-col items-center">
+          <div className="h-8 w-64 bg-zinc-800 rounded mb-4"></div>
+          <div className="h-4 w-48 bg-zinc-800 rounded"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className=" max-w-6xl mx-auto">
@@ -81,10 +94,10 @@ const LicenceCertificationList = ({UseForShow}) => {
 
       /* editable compoent */
       (
-      <div className="">
+      <div className="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-lg  transition-all duration-300 ">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {licenceCertifications.map((lnc) => (
-            <div key={lnc._id} className="bg-white rounded-lg shadow-md p-6">
+            <div key={lnc._id} className="bg-[#1E1E24] backdrop-blur-sm  transition-all duration-300 rounded-lg shadow-md p-6">
               <div className="flex justify-between items-start mb-4">
                 <div className="flex items-center gap-4">
                   {lnc.company_name_logoUrl && (
@@ -95,7 +108,7 @@ const LicenceCertificationList = ({UseForShow}) => {
                     />
                   )}
                   <div>
-                    <h2 className="text-xl  font-bold">{lnc.certification_title}</h2>
+                    <h2 className="text-xl text-white font-bold">{lnc.certification_title}</h2>
                     <p className="text-gray-600">{lnc.company_name}</p>
                   </div>
                 </div>
@@ -127,12 +140,12 @@ const LicenceCertificationList = ({UseForShow}) => {
                
                 {lnc.skills?.length > 0 && (
                   <div>
-                    <h3 className="font-semibold mb-2">Skills</h3>
+                    <h3 className="font-semibold mb-2 text-white">Skills</h3>
                     <div className="flex flex-wrap gap-2">
                       {lnc.skills.map((skill) => (
                         <span 
                           key={skill._id}
-                          className="px-3 py-1 bg-gray-100 rounded-full text-sm flex items-center gap-2"
+                          className="px-3 py-1 bg-gray-700 text-gray-200 rounded-full text-sm flex items-center gap-2"
                         >
                           {skill.name}
                           <button
@@ -150,6 +163,17 @@ const LicenceCertificationList = ({UseForShow}) => {
             </div>
           ))}
         </div>
+        { licenceCertifications.length === 0 && (
+          <div className="flex flex-col items-center justify-center min-h-[250px] text-center">
+            <div className="bg-[#2A2A32] rounded-full p-4 mb-4">
+            <DatabaseZap className="h-8 w-8 text-[#FD356E]" />
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-2">No  Licence and Certifications Found</h3>
+            <p className="text-gray-400 max-w-md">
+              Create your first  Licence and Certifications to get started tracking your tasks and deadlines.
+            </p>
+          </div>
+        )}
       </div>
       ):
 

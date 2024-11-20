@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, X } from 'lucide-react';
+import { Plus, Edit, Trash2, X ,DatabaseZap} from 'lucide-react';
 import axios from 'axios';
 import ProjectsForm from '../components/ProjectsForm';
 
@@ -93,9 +93,10 @@ const ProjectsList = ({UseForShow}) => {
 
       {!UseForShow?
       (
+        <div className='bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-lg  transition-all duration-300'>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {projects.map((project) => (
-          <div key={project._id} className="bg-white rounded-lg shadow-md p-6">
+          <div key={project._id} className="bg-[#1E1E24] backdrop-blur-sm  transition-all duration-300 rounded-lg shadow-md p-6">
             <div className="flex justify-between items-start mb-4">
               <div className="flex items-center gap-4">
                 {project.thumbNailImage && (
@@ -106,7 +107,7 @@ const ProjectsList = ({UseForShow}) => {
                   />
                 )}
                 <div>
-                  <h2 className="text-xl font-bold">{project.title}</h2>
+                  <h2 className="text-xl text-white font-bold">{project.title}</h2>
                   <div className="flex items-center gap-2">
                     <a
                       href={project.github_link}
@@ -153,7 +154,7 @@ const ProjectsList = ({UseForShow}) => {
 
               {project.learning?.length > 0 && (
                 <div>
-                  <h3 className="font-semibold mb-2">Key Learnings</h3>
+                  <h3 className="font-semibold text-white mb-2">Key Learnings</h3>
                   <ul className="list-disc pl-4">
                     {project.learning.map((learning) => (
                       <li key={learning._id} className="text-gray-600 flex items-center justify-between">
@@ -172,12 +173,12 @@ const ProjectsList = ({UseForShow}) => {
               
               {project.skills?.length > 0 && (
                 <div>
-                  <h3 className="font-semibold mb-2">Skills</h3>
+                  <h3 className="font-semibold text-white mb-2">Skills</h3>
                   <div className="flex flex-wrap gap-2">
                     {project.skills.map((skill) => (
                       <span 
                         key={skill._id}
-                        className="px-3 py-1 bg-gray-100 rounded-full text-sm flex items-center gap-2"
+                        className="px-3 py-1 bg-gray-700 text-gray-200 rounded-full text-sm flex items-center gap-2"
                       >
                         {skill.name}
                         <button
@@ -194,6 +195,18 @@ const ProjectsList = ({UseForShow}) => {
             </div>
           </div>
         ))}
+      </div>
+      { projects.length === 0 && (
+          <div className="flex flex-col items-center justify-center min-h-[250px] text-center">
+            <div className="bg-[#2A2A32] rounded-full p-4 mb-4">
+            <DatabaseZap className="h-8 w-8 text-[#FD356E]" />
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-2">No Projects Found</h3>
+            <p className="text-gray-400 max-w-md">
+              Create your first Projects to get started tracking your tasks and deadlines.
+            </p>
+          </div>
+        )}
       </div>
       )
       :(

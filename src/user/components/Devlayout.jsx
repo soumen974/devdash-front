@@ -61,11 +61,12 @@ export default function Devlayout() {
       <Head sideBar={sideBar} setsideBar={setsideBar}/>
 
       <main className=' '>
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#FD356E]/5 rounded-full blur-3xl -mr-48 -mt-48"></div>
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#FD356E]/5 rounded-full blur-3xl -ml-48 -mb-48"></div>
-
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute w-full h-full bg-[url('data:image/svg+xml,...')] opacity-20" />
+        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-b from-pink-500/20 to-transparent blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-t from-pink-500/20 to-transparent blur-3xl" />
+      </div>
         <div className="mx-auto max-w-screen-2xl  mt-20">
-          
         <Outlet />
         </div>
       </main>

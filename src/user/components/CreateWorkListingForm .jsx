@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import AnalogDateInput  from '../components/AnalogTimeInput'; 
-
-const CreateWorkListingForm = () => {
+import {X } from 'lucide-react';
+const CreateWorkListingForm = ({  onClose, onSubmit}) => {
   const [formData, setFormData] = useState({
     task_name: '',
     task_description: '',
@@ -42,7 +42,7 @@ const CreateWorkListingForm = () => {
   };
 
   return (
-    <div className="min-h-[400px] flex items-center justify-center w-full p-4">
+    <div className="fixed z-40 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md backdrop-blur-lg bg-[#1E1E24]/90 rounded-2xl shadow-2xl border border-[#FD356E]/10 overflow-hidden">
         {/* Header Section */}
         <div className="relative px-6 pt-8 pb-6 bg-gradient-to-r from-[#1E1E24] to-[#2A2A32]">
@@ -53,6 +53,12 @@ const CreateWorkListingForm = () => {
           <p className="text-gray-400 text-sm relative">
             Fill out the form to create a new work listing 
           </p>
+          <button
+              onClick={onClose}
+              className="p-2 absolute top-5 right-5 text-gray-400 hover:text-gray-300 transition-colors"
+            >
+              <X size={20} />
+            </button>
         </div>
 
         

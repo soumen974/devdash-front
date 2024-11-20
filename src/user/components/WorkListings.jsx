@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { AlertCircle, Calendar, Clock, Loader } from 'lucide-react';
-
+import { AlertCircle, Calendar, Clock, Loader , Plus} from 'lucide-react';
+import CreateWorkListingForm  from "./CreateWorkListingForm ";
 // Custom Alert Component
 const Alert = ({ variant = 'default', children }) => {
   const styles = {
@@ -59,46 +59,51 @@ const WorkListings = () => {
     message: ''
   });
   const [isLoading, setIsLoading] = useState(true);
-
+  const [showForm, setShowForm] = useState(false);
   useEffect(() => {
-    const fetchWorkListings = async () => {
-      try {
-        const response = await fetch(`${process.env.REACT_APP_API}/work/workListings`, {
-          credentials: 'include'
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.message || 'Failed to fetch work listings');
-        }
-
-        setWorkListings(data.workListings);
-      } catch (error) {
-        setStatus({
-          type: 'error',
-          message: error.message || 'Error fetching work listings'
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchWorkListings();
   }, []);
+  const fetchWorkListings = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API}/work/workListings`, {
+        credentials: 'include'
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to fetch work listings');
+      }
+
+      setWorkListings(data.workListings);
+    } catch (error) {
+      setStatus({
+        type: 'error',
+        message: error.message || 'Error fetching work listings'
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="  p-4 md:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
-        
-
-        <div className=" mb-8">
-          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] bg-clip-text text-transparent">
-           Your Work Listings          </h1>
-          <p className="text-gray-400">
-           Manage and track your assigned tasks
-          </p>
+        <div className="flex justify-between items-center mb-4 mt-14">
+          <div className="">
+            <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] bg-clip-text text-transparent">
+            Your Work Listings          </h1>
+            <p className="text-gray-400">
+            Manage and track your assigned tasks
+            </p>
+          </div>
+          <button 
+          onClick={() => {setShowForm(true)}} 
+          className="px-6 flex items-center py-3 bg-gradient-to-r from-[#FD356E] to-[#FF5F85] text-white rounded-lg hover:from-[#FF5F85] hover:to-[#FD356E] focus:outline-none focus:ring-2 focus:ring-[#FF5F85] focus:ring-offset-2 focus:ring-offset-[#2A2A32] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+          <Plus size={20} /> Add Work Listings  
+        </button>
         </div>
 
         {/* Status Messages */}
@@ -145,6 +150,13 @@ const WorkListings = () => {
           </>
         )}
       </div>
+      {showForm && (
+      <CreateWorkListingForm 
+       onClose={() => {
+        setShowForm(false);
+      }}
+      onSubmit={fetchWorkListings}/>
+      )}
     </div>
   );
 };
